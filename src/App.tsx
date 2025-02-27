@@ -16,6 +16,7 @@ import ComingMovies from "./Pages/ComingMovies";
 import TIXIDNews_Articles from "./Pages/TIXIDNews_Article";
 import MovieVideo from "./Pages/MovieVideo";
 import Account from "./Pages/UserAccount/Account";
+import SlotBooking from "./Pages/SlotBooKingPage/SloteBooking";
 
 const App: React.FC = () => {
   return (
@@ -70,6 +71,14 @@ const App: React.FC = () => {
             element={
               <Layout>
                 <ComingMovies />
+              </Layout>
+            }
+          />
+          <Route
+            path="/slot-booking"
+            element={
+              <Layout>
+                <SlotBooking />
               </Layout>
             }
           />
