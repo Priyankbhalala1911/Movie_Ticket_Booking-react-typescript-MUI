@@ -20,6 +20,7 @@ import Image3 from "../../assets/Images/CarsoualImage/Ghostbusters Afterlife.svg
 import Image4 from "../../assets/Images/CarsoualImage/House of Gucci.svg";
 import { customColors } from "../../Theme";
 import { ArrowBackIosNew, ArrowForwardIos } from "@mui/icons-material";
+import { useNavigate } from "react-router";
 
 interface Brands {
   xxi: boolean;
@@ -80,7 +81,8 @@ const responsive = {
 };
 
 const CarsoulMovie: React.FC<Movie> = ({ loading }) => {
-  const carouselRef = useRef<any>(null); // Ref for handling the carousel manually
+  const carouselRef = useRef<any>(null);
+  const navigate = useNavigate();
 
   return (
     <Box
@@ -91,7 +93,6 @@ const CarsoulMovie: React.FC<Movie> = ({ loading }) => {
         position: "relative",
       }}
     >
-      {/* Previous Button (Outside Carousel) */}
       <IconButton
         onClick={() => carouselRef.current?.previous()}
         sx={{
@@ -141,10 +142,11 @@ const CarsoulMovie: React.FC<Movie> = ({ loading }) => {
                 textAlign: "center",
                 transition: "all 0.5s ease-in-out",
                 mx: { lg: "19.5px", md: "17px", sm: "12px", xs: "0" },
-                overflow: "hidden",
+                "&:hover": { cursor: "pointer" },
               }}
               elevation={0}
               key={index}
+              onClick={() => navigate("/slot-booking")}
             >
               {loading ? (
                 <CardMedia
