@@ -2,6 +2,7 @@ import React from "react";
 import {
   BrowserRouter,
   Navigate,
+  Outlet,
   Route,
   Routes,
   useLocation,
@@ -17,6 +18,9 @@ import TIXIDNews_Articles from "./Pages/TIXIDNews_Article";
 import MovieVideo from "./Pages/MovieVideo";
 import Account from "./Pages/UserAccount/Account";
 import SlotBooking from "./Pages/SlotBooKingPage/SloteBooking";
+import ChooseSeat from "./Pages/Choose-Seat/ChooseSeat";
+import TicketDetails from "./Pages/Ticket-Details/TicketDetails";
+import PaymentSuccess from "./Pages/PaymentSuccess";
 
 const App: React.FC = () => {
   return (
@@ -26,75 +30,31 @@ const App: React.FC = () => {
           <Route path="/account/*" element={<Account />}>
             <Route path="*" element={<Navigate to="/account/login" />} />
           </Route>
-          <Route
-            path="/"
-            element={
-              <Layout>
-                <Home />
-              </Layout>
-            }
-          ></Route>
-          <Route
-            path="/my-ticket"
-            element={
-              <Layout>
-                <MyTicket />
-              </Layout>
-            }
-          />
-          <Route
-            path="/news"
-            element={
-              <Layout>
-                <TIXIDNews />
-              </Layout>
-            }
-          />
-          <Route
-            path="/news/:id"
-            element={
-              <Layout>
-                <TIXIDNews_Articles />
-              </Layout>
-            }
-          />
-          <Route
-            path="/news/video/:id"
-            element={
-              <Layout>
-                <MovieVideo />
-              </Layout>
-            }
-          />
-          <Route
-            path="/comingMovies"
-            element={
-              <Layout>
-                <ComingMovies />
-              </Layout>
-            }
-          />
-          <Route
-            path="/slot-booking"
-            element={
-              <Layout>
-                <SlotBooking />
-              </Layout>
-            }
-          />
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="slot-booking" element={<SlotBooking />} />
+            <Route path="choose-seat" element={<ChooseSeat />} />
+            <Route path="ticket-details" element={<TicketDetails />} />
+            <Route path="payment-success" element={<PaymentSuccess />} />
+            <Route path="my-ticket" element={<MyTicket />} />
+            <Route path="news" element={<TIXIDNews />} />
+            <Route path="news/:id" element={<TIXIDNews_Articles />} />
+            <Route path="news/video/:id" element={<MovieVideo />} />
+            <Route path="comingMovies" element={<ComingMovies />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </>
   );
 };
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+const Layout = () => {
   const location = useLocation();
   const islogin = location.pathname === "/login";
   return (
     <>
       {!islogin && <Navbar />}
-      {children}
+      <Outlet />
       {!islogin && <Footer />}
     </>
   );

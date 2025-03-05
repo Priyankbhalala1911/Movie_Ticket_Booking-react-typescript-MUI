@@ -146,7 +146,7 @@ const CarsoulMovie: React.FC<Movie> = ({ loading }) => {
               }}
               elevation={0}
               key={index}
-              onClick={() => navigate("/slot-booking")}
+              onClick={() => navigate("slot-booking")}
             >
               {loading ? (
                 <CardMedia
@@ -250,7 +250,6 @@ const CarsoulMovie: React.FC<Movie> = ({ loading }) => {
         </Carousel>
       </Container>
 
-      {/* Next Button (Outside Carousel) */}
       <IconButton
         onClick={() => carouselRef.current?.next()}
         sx={{

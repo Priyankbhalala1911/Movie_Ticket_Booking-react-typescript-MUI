@@ -4,6 +4,7 @@ import { Container } from "@mui/material";
 import CarsoualAdv from "./CarsoulAdv";
 import MovieNews from "./MovieNews";
 import MoviePoster from "./MoviePoster";
+import { Outlet } from "react-router";
 
 const Home: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);

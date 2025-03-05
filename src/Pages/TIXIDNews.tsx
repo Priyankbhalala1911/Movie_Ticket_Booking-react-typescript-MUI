@@ -104,9 +104,10 @@ const TIXIDNews: React.FC = () => {
                 },
               }}
             >
-              <MenuItem value="">Filter</MenuItem>
-              <MenuItem value="sorted">Sorted</MenuItem>
-              <MenuItem value="unsorted">Unsorted</MenuItem>
+              <MenuItem value="">Sort</MenuItem>
+              <MenuItem value="sorted">Spotlight</MenuItem>
+              <MenuItem value="unsorted">News</MenuItem>
+              <MenuItem value="unsorted">Video</MenuItem>
             </Select>
           </Box>
         </Box>
