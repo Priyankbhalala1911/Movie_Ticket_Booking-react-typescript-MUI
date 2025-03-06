@@ -89,7 +89,7 @@ const FooterSection: FooterLink[] = [
 const Footer: React.FC = () => {
   const navigate = useNavigate();
   return (
-    <>
+    <Box>
       <Divider orientation="horizontal" />
       <Box
         sx={{
@@ -197,7 +197,7 @@ const Footer: React.FC = () => {
           </Box>
         </Container>
       </Box>
-    </>
+    </Box>
   );
 };
 export default Footer;
