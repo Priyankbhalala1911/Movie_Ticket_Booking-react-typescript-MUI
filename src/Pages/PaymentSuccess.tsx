@@ -64,7 +64,7 @@ const PaymentSuccess: React.FC = () => {
           }}
           onClick={() => {
             window.scrollTo(0, 0);
-            navigate("/my-ticket");
+            navigate("/my-ticket/active-ticket");
           }}
         >
           My Ticket
