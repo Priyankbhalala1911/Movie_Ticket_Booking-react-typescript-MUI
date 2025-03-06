@@ -10,7 +10,13 @@ const CinemaPolis: React.FC = () => {
           <Avatar sx={{ bgcolor: "#1A2C50", width: "32px", height: "32px" }}>
             <Grade sx={{ color: `${customColors.pastelYellow}` }} />
           </Avatar>
-          <Typography variant="h4" color="primary" flex={1} px="16px">
+          <Typography
+            fontSize={{ lg: "24px", md: "22px", sm: "20px", xs: "18px" }}
+            fontWeight={600}
+            color="primary"
+            flex={1}
+            px="16px"
+          >
             MANGGO TWO SQUARE CINEMAPOLIS
           </Typography>
           <Button sx={{ bgcolor: "#000E62" }} variant="contained" size="small">
