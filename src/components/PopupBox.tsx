@@ -9,12 +9,14 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
+import { useNavigate } from "react-router";
 
 interface PopupBoxProps {
   open: boolean;
   onClose: () => void;
 }
 const PopUpBox: React.FC<PopupBoxProps> = ({ open, onClose }) => {
+  const navigate = useNavigate();
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md">
       <DialogTitle>Want to go back?</DialogTitle>
@@ -40,7 +42,13 @@ const PopUpBox: React.FC<PopupBoxProps> = ({ open, onClose }) => {
         <Button variant="outlined" color="primary" onClick={onClose}>
           Return
         </Button>
-        <Button variant="contained">
+        <Button
+          variant="contained"
+          onClick={() => {
+            navigate("/choose-seat");
+            window.scrollTo(0, 0);
+          }}
+        >
           <Typography color="warning">Cancelled</Typography>
         </Button>
       </DialogActions>
