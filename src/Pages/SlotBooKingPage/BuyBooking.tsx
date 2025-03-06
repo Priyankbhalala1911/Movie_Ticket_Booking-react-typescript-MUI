@@ -48,7 +48,10 @@ const BuyBooking: React.FC = () => {
           variant="contained"
           color="primary"
           fullWidth
-          onClick={() => navigate("/choose-seat")}
+          onClick={() => {
+            navigate("/choose-seat");
+            window.scrollTo(0, 0);
+          }}
         >
           <Typography variant="h5" color="warning">
             BUY NOW
