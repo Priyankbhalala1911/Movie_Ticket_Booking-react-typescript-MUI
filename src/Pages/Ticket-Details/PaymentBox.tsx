@@ -8,23 +8,26 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import paymentLogo1 from "../../assets/Images/PaymentLogo/Dana Logo.svg";
 import { useState } from "react";
-import PopUpBox from "../../components/PopupBox";
+import PaymentMethod from "../../components/PaymentMethod";
+
+interface method {
+  name: string;
+  logo: string;
+}
 
 const PaymentBox: React.FC = () => {
-  const [error, setError] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [selectMethod, setSelectMethod] = useState<method | null>({
+    name: "DANA",
+    logo: paymentLogo1,
+  });
   const navigate = useNavigate();
 
-  const handleClick = () => {
-    if (error) {
-      setError(true);
-    } else {
-      navigate("/payment-success");
-      window.scrollTo(0, 0);
-    }
-  };
+  console.log(selectMethod);
+
   return (
     <>
       <Card
@@ -130,9 +133,8 @@ const PaymentBox: React.FC = () => {
                 fontSize="12px"
                 fontWeight={700}
                 color="info"
-                component={Link}
-                to={"/"}
-                sx={{ textDecoration: "none" }}
+                sx={{ textDecoration: "none", cursor: "pointer" }}
+                onClick={() => setOpen(true)}
               >
                 See All
               </Typography>
@@ -140,9 +142,9 @@ const PaymentBox: React.FC = () => {
           </Box>
           <Box mt="24px">
             <Stack direction="row" alignItems="center" gap="16px">
-              <img src={paymentLogo1} alt="Dana Logo" width="40px" />
+              <img src={selectMethod?.logo} alt="Dana Logo" width="40px" />
               <Typography variant="h6" color="primary">
-                DANA
+                {selectMethod?.name}
               </Typography>
             </Stack>
           </Box>
@@ -153,14 +155,27 @@ const PaymentBox: React.FC = () => {
           </Box>
         </CardContent>
         <CardActions sx={{ px: "16px", mb: "25px" }}>
-          <Button variant="contained" fullWidth onClick={handleClick}>
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={() => {
+              navigate("/payment-success");
+              window.scrollTo(0, 0);
+            }}
+          >
             <Typography variant="h5" color="warning">
               BUY TICKETS
             </Typography>
           </Button>
         </CardActions>
       </Card>
-      {error && <PopUpBox open={error} onClose={() => setError(false)} />}
+      {open && (
+        <PaymentMethod
+          open={open}
+          onClose={() => setOpen(false)}
+          setSelectMethod={setSelectMethod}
+        />
+      )}
     </>
   );
 };
