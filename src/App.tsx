@@ -10,7 +10,7 @@ import {
 import Navbar from "./components/navbar/Navbar";
 import "./App.css";
 import Home from "./Pages/HomePage/Home";
-import MyTicket from "./Pages/MyTicket";
+import MyTicket from "./Pages/My-Ticket/MyTicket";
 import TIXIDNews from "./Pages/TIXIDNews";
 import Footer from "./components/navbar/Footer";
 import ComingMovies from "./Pages/ComingMovies";
@@ -21,6 +21,8 @@ import SlotBooking from "./Pages/SlotBooKingPage/SloteBooking";
 import ChooseSeat from "./Pages/Choose-Seat/ChooseSeat";
 import TicketDetails from "./Pages/Ticket-Details/TicketDetails";
 import PaymentSuccess from "./Pages/PaymentSuccess";
+import ActiveTicket from "./Pages/My-Ticket/ActiveTicket";
+import TransactionList from "./Pages/My-Ticket/TrasactionList";
 
 const App: React.FC = () => {
   return (
@@ -36,7 +38,11 @@ const App: React.FC = () => {
             <Route path="choose-seat" element={<ChooseSeat />} />
             <Route path="ticket-details" element={<TicketDetails />} />
             <Route path="payment-success" element={<PaymentSuccess />} />
-            <Route path="my-ticket" element={<MyTicket />} />
+            <Route path="my-ticket" element={<MyTicket />}>
+              <Route index element={<Navigate to="active-ticket" replace />} />
+              <Route path="active-ticket" element={<ActiveTicket />} />
+              <Route path="transaction-list" element={<TransactionList />} />
+            </Route>
             <Route path="news" element={<TIXIDNews />} />
             <Route path="news/:id" element={<TIXIDNews_Articles />} />
             <Route path="news/video/:id" element={<MovieVideo />} />
