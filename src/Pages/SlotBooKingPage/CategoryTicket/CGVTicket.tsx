@@ -19,7 +19,13 @@ const CGVTicket: React.FC<MovieTime> = ({ showTime }) => {
           <Avatar sx={{ bgcolor: "#1A2C50", width: "32px", height: "32px" }}>
             <Grade sx={{ color: `${customColors.pastelYellow}` }} />
           </Avatar>
-          <Typography variant="h4" color="primary" flex={1} px="16px">
+          <Typography
+            color="primary"
+            flex={1}
+            px="16px"
+            fontSize={{ lg: "24px", md: "22px", sm: "20px", xs: "18px" }}
+            fontWeight={600}
+          >
             GRAND INDONESIA CGV
           </Typography>
           <Button color="secondary" variant="contained" size="small">
