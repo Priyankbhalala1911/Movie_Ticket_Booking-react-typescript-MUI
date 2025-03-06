@@ -1,9 +1,13 @@
 import { KeyboardBackspace } from "@mui/icons-material";
 import { Box, Button, Divider, Stack, Typography } from "@mui/material";
+import { useState } from "react";
 import { useNavigate } from "react-router";
+import PopUpBox from "../../components/PopupBox";
 
 const Details: React.FC = () => {
+  const [error, setError] = useState(false);
   const navigate = useNavigate();
+
   return (
     <>
       <Stack
@@ -69,14 +73,12 @@ const Details: React.FC = () => {
             disableTouchRipple
             startIcon={<KeyboardBackspace />}
             sx={{ fontSize: "20px", fontWeight: 700 }}
-            onClick={() => {
-              navigate("/choose-seat");
-              window.scrollTo(0, 0);
-            }}
+            onClick={() => setError(true)}
           >
             Return
           </Button>
         </Box>
+        {error && <PopUpBox open={error} onClose={() => setError(false)} />}
       </Stack>
     </>
   );
