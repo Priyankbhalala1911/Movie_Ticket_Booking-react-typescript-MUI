@@ -1,67 +1,58 @@
 import React from "react";
-import {
-  BrowserRouter,
-  Navigate,
-  Outlet,
-  Route,
-  Routes,
-  useLocation,
-} from "react-router";
-import Navbar from "./components/navbar/Navbar";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router";
+
 import "./App.css";
-import Home from "./Pages/HomePage/Home";
-import MyTicket from "./Pages/My-Ticket/MyTicket";
-import TIXIDNews from "./Pages/TIXIDNews";
-import Footer from "./components/navbar/Footer";
-import ComingMovies from "./Pages/ComingMovies";
-import TIXIDNews_Articles from "./Pages/TIXIDNews_Article";
-import MovieVideo from "./Pages/MovieVideo";
-import Account from "./Pages/UserAccount/Account";
-import SlotBooking from "./Pages/SlotBooKingPage/SloteBooking";
-import ChooseSeat from "./Pages/Choose-Seat/ChooseSeat";
-import TicketDetails from "./Pages/Ticket-Details/TicketDetails";
-import PaymentSuccess from "./Pages/PaymentSuccess";
-import ActiveTicket from "./Pages/My-Ticket/ActiveTicket";
-import TransactionList from "./Pages/My-Ticket/TrasactionList";
+import Home from "./Pages/HomePage";
+import MyTicket from "./Pages/MyTicketPage";
+import TIXIDNews from "./Pages/TIXIDNewsPage";
+import ComingMovies from "./Pages/ComingMoviesPage";
+import TIXIDNews_Articles from "./Pages/TIXIDNews_ArticlesPage";
+import MovieVideo from "./Pages/MovieVideoPage";
+import Account from "./Pages/UserAccountPage";
+import SlotBooking from "./Pages/SlotBooKingPage";
+import ChooseSeat from "./Pages/ChooseSeatPage";
+import TicketDetails from "./Pages/TicketDetailsPage";
+import PaymentSuccess from "./Pages/PaymentSuccessPage";
+import ActiveTicket from "./Section/MyTicketPage/ActiveTicket";
+import TransactionList from "./Section/MyTicketPage/TrasactionList";
+import Layout from "./Layout";
+import { routes } from "./Config/routes";
 
 const App: React.FC = () => {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/account/*" element={<Account />}>
-            <Route path="*" element={<Navigate to="/account/login" />} />
+          <Route path={`${routes.Account}/*`} element={<Account />}>
+            <Route path="*" element={<Navigate to={routes.Login} />} />
           </Route>
-          <Route path="/" element={<Layout />}>
+          <Route path={routes.default} element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path="slot-booking" element={<SlotBooking />} />
-            <Route path="choose-seat" element={<ChooseSeat />} />
-            <Route path="ticket-details" element={<TicketDetails />} />
-            <Route path="payment-success" element={<PaymentSuccess />} />
-            <Route path="my-ticket" element={<MyTicket />}>
-              <Route index element={<Navigate to="active-ticket" replace />} />
-              <Route path="active-ticket" element={<ActiveTicket />} />
-              <Route path="transaction-list" element={<TransactionList />} />
+            <Route path={routes.slotBooking} element={<SlotBooking />} />
+            <Route path={routes.chooseSeat} element={<ChooseSeat />} />
+            <Route path={routes.ticketDetails} element={<TicketDetails />} />
+            <Route path={routes.paymentSuccess} element={<PaymentSuccess />} />
+            <Route path={routes.myTicket} element={<MyTicket />}>
+              <Route
+                index
+                element={<Navigate to={routes.activeTicket} replace />}
+              />
+              <Route path={routes.activeTicket} element={<ActiveTicket />} />
+              <Route
+                path={routes.transactionList}
+                element={<TransactionList />}
+              />
             </Route>
-            <Route path="news" element={<TIXIDNews />} />
-            <Route path="news/:id" element={<TIXIDNews_Articles />} />
-            <Route path="news/video/:id" element={<MovieVideo />} />
-            <Route path="comingMovies" element={<ComingMovies />} />
+            <Route path={routes.TIXNews} element={<TIXIDNews />} />
+            <Route
+              path={routes.TIXNewsArticles}
+              element={<TIXIDNews_Articles />}
+            />
+            <Route path={routes.TIXNewsVideo} element={<MovieVideo />} />
+            <Route path={routes.ComingMovies} element={<ComingMovies />} />
           </Route>
         </Routes>
       </BrowserRouter>
-    </>
-  );
-};
-
-const Layout = () => {
-  const location = useLocation();
-  const islogin = location.pathname === "/login";
-  return (
-    <>
-      {!islogin && <Navbar />}
-      <Outlet />
-      {!islogin && <Footer />}
     </>
   );
 };
