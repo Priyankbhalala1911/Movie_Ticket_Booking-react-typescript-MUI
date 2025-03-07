@@ -1,8 +1,4 @@
-import News1 from "../assets/Images/MovieNews/News1.svg";
-import News2 from "../assets/Images/MovieNews/TIX ID News=Yowis Ben.svg";
-import News3 from "../assets/Images/MovieNews/TIX ID News=Ghostbusters.svg";
-import News4 from "../assets/Images/MovieNews/TIX ID News=House of Gucci.svg";
-import News5 from "../assets/Images/MovieNews/TIX ID News=Raging Fire.svg";
+import { News1, News2, News3, News4, News5 } from "../assets";
 
 interface MovieNews {
   id: number;
