@@ -1,41 +1,43 @@
 import { Box, Button, Typography } from "@mui/material";
-import { Dispatch, SetStateAction } from "react";
-
-interface SeatsProps {
-  selectedSeats: Set<string>;
-  setSelectedSeats: Dispatch<SetStateAction<Set<string>>>;
-}
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../Store";
+import { selectSeat } from "../../Store/Slices/SeatSlice";
 
 const rows = ["A", "B", "C", "D", "E", "F", "G", "H"];
 const cols = 10;
 const bookedSeats = new Set(["B3", "B4", "C11", "F18"]);
-const ChooseSeatBlock: React.FC<SeatsProps> = ({
-  setSelectedSeats,
-  selectedSeats,
-}) => {
+const MAX_SELECT_SEAT = 5;
+
+const ChooseSeatBlock: React.FC = () => {
+  const dispatch = useDispatch();
+  const selectedSeats = useSelector(
+    (state: RootState) => state.seats.selectedSeat
+  );
+
   const toggleSeatSelection = (seat: string) => {
     if (bookedSeats.has(seat)) return;
-    const newSelectedSeats = new Set(selectedSeats);
-    if (newSelectedSeats.has(seat)) {
-      newSelectedSeats.delete(seat);
+
+    let newSelectedSeats = [...selectedSeats];
+
+    if (newSelectedSeats.includes(seat)) {
+      newSelectedSeats = newSelectedSeats.filter((s) => s !== seat);
     } else {
-      newSelectedSeats.add(seat);
+      if (newSelectedSeats.length >= MAX_SELECT_SEAT) {
+        newSelectedSeats.shift();
+      }
+      newSelectedSeats.push(seat);
     }
-    setSelectedSeats(newSelectedSeats);
+
+    dispatch(selectSeat(newSelectedSeats));
   };
 
-  console.log(selectedSeats);
   return (
     <Box>
       <Box
         sx={{
           display: "flex",
           gap: { xs: 4, xm: 6, md: 8 },
-          minWidth: {
-            xs: "600px",
-            sm: "800px",
-            md: "1350px",
-          },
+          minWidth: { xs: "600px", sm: "800px", md: "1350px" },
           justifyContent: { xs: "flex-start", md: "center" },
         }}
       >
@@ -73,20 +75,20 @@ const ChooseSeatBlock: React.FC<SeatsProps> = ({
                         },
                         bgcolor: bookedSeats.has(seat)
                           ? "#1A2C50"
-                          : selectedSeats.has(seat)
+                          : selectedSeats.includes(seat)
                           ? "#118EEA"
                           : "transparent",
                         color:
-                          bookedSeats.has(seat) || selectedSeats.has(seat)
+                          bookedSeats.has(seat) || selectedSeats.includes(seat)
                             ? "white"
                             : "#1A2C50",
                         borderColor: bookedSeats.has(seat)
                           ? "#1A2C50"
-                          : selectedSeats.has(seat)
+                          : selectedSeats.includes(seat)
                           ? "#118EEA"
                           : "#9DA8BE",
                         "&:hover": {
-                          bgcolor: selectedSeats.has(seat)
+                          bgcolor: selectedSeats.includes(seat)
                             ? "#118EEA"
                             : "#282764",
                           color: "white",
@@ -122,4 +124,5 @@ const ChooseSeatBlock: React.FC<SeatsProps> = ({
     </Box>
   );
 };
+
 export default ChooseSeatBlock;
