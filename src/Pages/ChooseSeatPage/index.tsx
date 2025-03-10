@@ -2,11 +2,8 @@ import { Box, Stack, Typography } from "@mui/material";
 import ChooseTimeSlot from "../../Section/ChooseSeatPage/ChooseTimeSlot";
 import ChooseSeatBlock from "../../Section/ChooseSeatPage/ChooseSeatBlock";
 import SeatBookingBill from "../../Section/ChooseSeatPage/SeatBookingBill";
-import { useState } from "react";
 
 const ChooseSeat: React.FC = () => {
-  const [selectedSeats, setSelectedSeats] = useState<Set<string>>(new Set());
-  console.log(selectedSeats);
   return (
     <>
       <Stack
@@ -62,14 +59,11 @@ const ChooseSeat: React.FC = () => {
               width: "100%",
             }}
           >
-            <ChooseSeatBlock
-              setSelectedSeats={setSelectedSeats}
-              selectedSeats={selectedSeats}
-            />
+            <ChooseSeatBlock />
           </Box>
 
           <Box width="100%" mt="64px">
-            <SeatBookingBill selectedSeats={selectedSeats} />
+            <SeatBookingBill />
           </Box>
         </Box>
       </Stack>
