@@ -1,13 +1,18 @@
 import { Button, Grid, Typography } from "@mui/material";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import { RootState } from "../../Store";
 
-interface SeatProps {
-  selectedSeats: Set<string>;
-}
-const SeatBookingBill: React.FC<SeatProps> = ({ selectedSeats }) => {
-  const seatPrice = 45000;
-  const totalPrice = selectedSeats.size * seatPrice;
-  const formattedTotalPrice = totalPrice.toLocaleString("de-DE");
+const SeatBookingBill: React.FC = () => {
+  const selectedSeats = useSelector(
+    (state: RootState) => state.seats.selectedSeat
+  );
+  const selectSlot = useSelector((state: RootState) => state.shows);
+  const totalPrice = selectedSeats.length * Number(selectSlot.showPrice);
+  console.log(totalPrice);
+  const formattedTotalPrice = totalPrice.toLocaleString("de-DE", {
+    minimumFractionDigits: 3,
+  });
   const navigate = useNavigate();
   return (
     <>
@@ -31,7 +36,7 @@ const SeatBookingBill: React.FC<SeatProps> = ({ selectedSeats }) => {
             Chair
           </Typography>
 
-          {selectedSeats.size > 0 ? (
+          {selectedSeats.length > 0 ? (
             <Typography variant="h1" color="primary">
               {[...selectedSeats].join(", ")}{" "}
             </Typography>
@@ -76,6 +81,7 @@ const SeatBookingBill: React.FC<SeatProps> = ({ selectedSeats }) => {
                 navigate("/ticket-details");
                 window.scrollTo(0, 0);
               }}
+              disabled={selectedSeats.length === 0 && true}
             >
               CONFIRMATION
             </Button>
