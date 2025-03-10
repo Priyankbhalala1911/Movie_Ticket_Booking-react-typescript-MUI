@@ -4,16 +4,16 @@ import MovieDetails from "../../Section/SlotBookingPage/MovieDetails";
 import BuyBooking from "../../Section/SlotBookingPage/BuyBooking";
 import CityLocation from "../../Section/SlotBookingPage/CityLocation";
 import SearchTicket from "../../Section/SlotBookingPage/SearchTicket";
-import CategoryTicket from "../../Section/SlotBookingPage/CategoryTicket/CategoryTicket";
-import { useParams } from "react-router";
-import { MovieData } from "../../Data/MovieData";
+import CategoryTicket from "../../Section/SlotBookingPage/CategoryTicket";
+import { useSelector } from "react-redux";
+import { RootState } from "../../Store";
+import { selectSelectedMovie } from "../../Store/Slices/MovieSlice";
 
 const SlotBooking: React.FC = () => {
-  const { title } = useParams<{ title: string }>();
+  const selectedMovie = useSelector((state: RootState) =>
+    selectSelectedMovie(state)
+  );
 
-  const movie = MovieData.find((movie) => movie.title === title);
-
-  console.log(movie);
   return (
     <>
       <Stack
@@ -41,12 +41,12 @@ const SlotBooking: React.FC = () => {
               <DateSelection />
               <CityLocation />
               <SearchTicket />
-              {movie ? <CategoryTicket movie={movie} /> : null}
+              <CategoryTicket theaters={selectedMovie?.theaters || []} />
             </Grid>
 
             <Grid item xs={12} md={4} sm={5}>
-              {movie ? (
-                <MovieDetails movie={movie} />
+              {selectedMovie ? (
+                <MovieDetails movie={selectedMovie} />
               ) : (
                 <Typography color="error">Movie not found</Typography>
               )}
