@@ -5,6 +5,7 @@ export const customColors = {
   xxiGradientStart: "#F2C46F",
   xxiGradientEnd: "#C6943F",
   cinepolisBlue: "#000E62",
+  CGVColor: "#EC1E2B",
 };
 const Theme = createTheme({
   palette: {
