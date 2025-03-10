@@ -13,21 +13,40 @@ import { useNavigate } from "react-router";
 import { useState } from "react";
 import { Dana } from "../../assets";
 import PaymentMethodDialog from "../../components/PaymentMethod";
+import { useSelector } from "react-redux";
+import { RootState } from "../../Store";
 
 interface method {
   name: string;
   logo: string;
 }
 
+const convertPrice = (price: number): string => {
+  return price.toLocaleString("de-DE", {
+    minimumFractionDigits: 3,
+  });
+};
+
 const PaymentBox: React.FC = () => {
   const [open, setOpen] = useState(false);
+  const selectedSeat = useSelector(
+    (state: RootState) => state.seats.selectedSeat
+  );
+  const selectedPrice = useSelector(
+    (state: RootState) => state.shows.showPrice
+  );
   const [selectMethod, setSelectMethod] = useState<method | null>({
     name: "DANA",
     logo: Dana,
   });
   const navigate = useNavigate();
 
-  console.log(selectMethod);
+  const Regularprice = Number(selectedPrice) * selectedSeat.length;
+
+  const ServiceFees = 1.0 * selectedSeat.length;
+  const PromoVoucher = 10.0;
+
+  const TotalPrice = Regularprice + ServiceFees - PromoVoucher;
 
   return (
     <>
@@ -58,7 +77,8 @@ const PaymentBox: React.FC = () => {
                 REGULAR SEAT
               </Typography>
               <Typography>
-                Rp. 50.000 <b style={{ color: "#414A63" }}> X3</b>
+                Rp. {convertPrice(Regularprice)}{" "}
+                <b style={{ color: "#414A63" }}> X{selectedSeat.length}</b>
               </Typography>
             </Stack>
             <Stack
@@ -71,7 +91,8 @@ const PaymentBox: React.FC = () => {
                 SERVICE FEE
               </Typography>
               <Typography>
-                Rp. 3.000 <b style={{ color: "#414A63" }}> X3</b>
+                Rp. {convertPrice(ServiceFees)}{" "}
+                <b style={{ color: "#414A63" }}> X{selectedSeat.length}</b>
               </Typography>
             </Stack>
             <Divider sx={{ mt: "27px" }} />
@@ -89,7 +110,7 @@ const PaymentBox: React.FC = () => {
               <Typography variant="body1" color="primary" flex={1}>
                 PROMO TIX ID
               </Typography>
-              <Typography>- Rp. 70.000</Typography>
+              <Typography>- Rp. {convertPrice(PromoVoucher)}</Typography>
             </Stack>
             <Divider sx={{ mt: "27px" }} />
           </Box>
@@ -109,7 +130,7 @@ const PaymentBox: React.FC = () => {
                 Total Payment
               </Typography>
               <Typography fontWeight={700} color="primary">
-                Rp. 89.000
+                Rp. {convertPrice(TotalPrice)}
               </Typography>
             </Stack>
             <Divider sx={{ mt: "18px" }} />
