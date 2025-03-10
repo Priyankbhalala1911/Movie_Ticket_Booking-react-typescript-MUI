@@ -19,6 +19,9 @@ import { customColors } from "../../Theme";
 import { ArrowBackIosNew, ArrowForwardIos } from "@mui/icons-material";
 import { useNavigate } from "react-router";
 import { MovieData } from "../../Data/MovieData";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../Store";
+import { selectMovie } from "../../Store/Slices/MovieSlice";
 
 interface Movie {
   loading: boolean;
@@ -46,6 +49,8 @@ const responsive = {
 const CarsoulMovie: React.FC<Movie> = ({ loading }) => {
   const carouselRef = useRef<any>(null);
   const navigate = useNavigate();
+
+  const dispatch = useDispatch<AppDispatch>();
 
   return (
     <Box
@@ -109,7 +114,10 @@ const CarsoulMovie: React.FC<Movie> = ({ loading }) => {
               }}
               elevation={0}
               key={index}
-              onClick={() => navigate(`/slot-booking/${item.title}`)}
+              onClick={() => {
+                dispatch(selectMovie(item.id));
+                navigate(`/slot-booking`);
+              }}
             >
               {loading ? (
                 <CardMedia
@@ -171,7 +179,7 @@ const CarsoulMovie: React.FC<Movie> = ({ loading }) => {
                 }}
               >
                 {loading ? (
-                  item.brands.xxi && (
+                  item.brands.XXI && (
                     <Button
                       variant="contained"
                       sx={{
@@ -186,7 +194,7 @@ const CarsoulMovie: React.FC<Movie> = ({ loading }) => {
                 )}
 
                 {loading ? (
-                  item.brands.cgv && (
+                  item.brands.CGV && (
                     <Button variant="contained" color="secondary">
                       CGV
                     </Button>
