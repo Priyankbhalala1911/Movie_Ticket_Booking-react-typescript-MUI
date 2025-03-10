@@ -11,15 +11,9 @@ import { CGV, Cinemapolis, XXI } from "../../assets";
 import MenuItemSelect from "../../components/MenuItem";
 
 const Studio = [
-  { label: "XXI", value: <img src={XXI} alt="logo1" width={35} /> },
   { label: "2D", value: "2D" },
-  { label: "CGV", value: <img src={CGV} alt="logo2" width={35} /> },
   { label: "Gold Class 2D", value: "Gold Class 2D" },
   { label: "Velvet 2D", value: "Velvet 2D" },
-  {
-    label: "Cinemapolis",
-    value: <img src={Cinemapolis} alt="logo3" width={75} />,
-  },
   { label: "Regular 2D", value: "Regular 2D" },
 ];
 
@@ -38,10 +32,11 @@ const Cinema = [
 ];
 const SearchTicket: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
+
   return (
     <>
       <Grid container columnSpacing={1} py="32px">
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6}>  
           <Box sx={{ p: 1 }}>
             <TextField
               variant="outlined"
@@ -50,7 +45,7 @@ const SearchTicket: React.FC = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
               fullWidth
               size="small"
-              placeholder="Search Post"
+              placeholder="Search Cinema"
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
