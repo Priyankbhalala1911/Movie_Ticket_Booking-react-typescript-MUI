@@ -3,6 +3,10 @@ import { Box, Button, Divider, IconButton, Typography } from "@mui/material";
 import React, { useRef, useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../Store";
+import { selectDate } from "../../Store/Slices/MovieSlice";
+import { FormattedDate } from "../../Utils";
 
 const responsive = {
   superLargeDesktop: {
@@ -35,7 +39,9 @@ const generateDates = () => {
       .toLocaleString("default", { weekday: "short" })
       .toUpperCase();
 
-    date.push({ date: formatDate, day: day });
+    const pureDate = FormattedDate(futuredate);
+
+    date.push({ date: formatDate, day: day, futuredate: pureDate });
   }
   return date;
 };
@@ -43,7 +49,10 @@ const generateDates = () => {
 const DateSelection: React.FC = () => {
   const carouselRef = useRef<any>(null);
   const dates = generateDates();
-  const [selected, setSelected] = useState<string>(dates[0].date);
+  const dispatch = useDispatch();
+  const selectedDate = useSelector(
+    (state: RootState) => state.movies.selectedDate
+  );
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleNext = () => {
@@ -53,7 +62,6 @@ const DateSelection: React.FC = () => {
     }
   };
 
-  // Scroll to previous dates
   const handlePrev = () => {
     if (currentIndex > 0) {
       setCurrentIndex((prev) => prev - 1);
@@ -70,7 +78,6 @@ const DateSelection: React.FC = () => {
         justifyContent="space-between"
         width={{ sm: "calc(100% - 80px)", xs: "calc(100% - 60px)" }}
       >
-        {/* Left Arrow */}
         <IconButton
           onClick={handlePrev}
           color="primary"
@@ -82,7 +89,6 @@ const DateSelection: React.FC = () => {
           />
         </IconButton>
 
-        {/* Date Carousel */}
         <Box
           mx="auto"
           sx={{
@@ -98,8 +104,8 @@ const DateSelection: React.FC = () => {
             {dates.map((item, index) => (
               <Button
                 key={item.date}
-                variant={selected === item.date ? "contained" : "outlined"}
-                onClick={() => setSelected(item.date)}
+                variant={selectedDate === item.date ? "contained" : "outlined"}
+                onClick={() => dispatch(selectDate(item.futuredate))}
                 sx={{
                   p: { lg: "18px", md: "16px", sm: "14px", xs: "12px" },
                   display: "flex",
@@ -107,10 +113,14 @@ const DateSelection: React.FC = () => {
                   alignItems: "center",
                   mx: "auto",
                   borderRadius: "8px",
-                  bgcolor: selected === item.date ? "#1A2C50" : "transparent",
-                  color: selected === item.date ? "white" : "#1A2C50",
+                  bgcolor:
+                    selectedDate === item.futuredate
+                      ? "#1A2C50"
+                      : "transparent",
+                  color: selectedDate === item.futuredate ? "white" : "#1A2C50",
                   "&:hover": {
-                    bgcolor: selected === item.date ? "#1A2C50" : "#282764",
+                    bgcolor:
+                      selectedDate === item.futuredate ? "#1A2C50" : "#282764",
                     color: "#FFFFFF",
                   },
                 }}
