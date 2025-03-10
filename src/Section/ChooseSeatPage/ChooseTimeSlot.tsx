@@ -5,10 +5,20 @@ import {
 } from "@mui/icons-material";
 import { Button, Grid, Menu } from "@mui/material";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../Store";
+import { convertDurationToMinutes, generateShowtimes } from "../../Utils";
 
 const ChooseTimeSlot: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
+
+  const selectedTime = useSelector((state: RootState) => state.shows.showTimes);
+
+  const ShowTime = generateShowtimes(
+    selectedTime ?? "00:00",
+    convertDurationToMinutes("3 hours")
+  );
 
   const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -32,7 +42,7 @@ const ChooseTimeSlot: React.FC = () => {
           bgcolor: "transparent",
         }}
       >
-        14:40
+        {selectedTime}
       </Button>
       <Menu
         anchorEl={anchorEl}
@@ -53,21 +63,22 @@ const ChooseTimeSlot: React.FC = () => {
             bgcolor: "transparent",
           }}
         >
-          14:40
+          {selectedTime}
         </Button>
         <Grid container spacing={2} lg={12}>
-          {[...Array(8)].map((_, index) => {
+          {ShowTime.map((time, index) => {
             return (
               <Grid item lg={3} key={index}>
                 <Button
-                  variant={selectedSlot === _ ? "contained" : "text"}
+                  variant={selectedSlot === time ? "contained" : "text"}
                   color="primary"
                   aria-pressed
                   sx={{
-                    border: selectedSlot === _ ? "none" : "1px solid #9DA8BE",
+                    border:
+                      selectedSlot === time ? "none" : "1px solid #9DA8BE",
                     bgcolor:
-                      selectedSlot === _ ? "primary.main" : "transparent",
-                    color: selectedSlot === _ ? "white" : "black",
+                      selectedSlot === time ? "primary.main" : "transparent",
+                    color: selectedSlot === time ? "white" : "black",
                     "&:hover": {
                       bgcolor: "#282764",
                       color: "white",
@@ -79,7 +90,7 @@ const ChooseTimeSlot: React.FC = () => {
                     },
                   }}
                 >
-                  14:40
+                  {time}
                 </Button>
               </Grid>
             );
