@@ -4,12 +4,14 @@ interface FilterState {
   location: string;
   brand: string;
   cinema: string;
+  news: string;
 }
 
 const initialState: FilterState = {
   location: "Ahmedabad",
   brand: "XXI",
   cinema: "",
+  news: "spotlight",
 };
 const FilterSlice = createSlice({
   name: "FilterTheater",
