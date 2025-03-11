@@ -13,10 +13,6 @@ const cities = [
   "Anand",
   "Navsari",
   "Bharuch",
-  "Mehsana",
-  "Morbi",
-  "Nadiad",
-  "Gandhidham",
 ];
 
 const cityObjects = cities.map((city) => ({ label: city, value: city }));
@@ -29,6 +25,7 @@ const CityLocation: React.FC = () => {
         startIcon={<PlaceOutlined />}
         fontSize="20px"
         searchField
+        filterKey="location"
       />
     </>
   );
