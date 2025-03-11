@@ -10,12 +10,15 @@ import {
   Typography,
 } from "@mui/material";
 import { ReactNode, useState } from "react";
+import { useDispatch } from "react-redux";
+import { UpdatedFilter } from "../../Store/Slices/FilterSlice";
 
 interface MenuItemSelectProps {
   record: { label: string; value: string | ReactNode }[];
   startIcon?: ReactNode;
   fontSize?: string;
   searchField?: boolean;
+  filterKey?: "location" | "brand" 
 }
 
 const MenuItemSelect: React.FC<MenuItemSelectProps> = ({
@@ -23,10 +26,12 @@ const MenuItemSelect: React.FC<MenuItemSelectProps> = ({
   startIcon,
   fontSize,
   searchField,
+  filterKey,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedRecord, setSelectedRecord] = useState(record[0]);
   const [searchTerm, setSearchTerm] = useState("");
+  const dispatch = useDispatch();
 
   const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -42,6 +47,11 @@ const MenuItemSelect: React.FC<MenuItemSelectProps> = ({
     value: string | ReactNode;
   }) => {
     setSelectedRecord(record);
+
+    if (typeof record.label === "string") {
+      dispatch(UpdatedFilter({ key: filterKey, value: record.label }));
+    }
+
     handleClose();
   };
 
