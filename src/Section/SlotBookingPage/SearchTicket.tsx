@@ -6,7 +6,7 @@ import {
   InputAdornment,
   TextField,
 } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import { CGV, Cinemapolis, XXI } from "../../assets";
 import MenuItemSelect from "../../components/MenuItem";
 import { useDispatch, useSelector } from "react-redux";
