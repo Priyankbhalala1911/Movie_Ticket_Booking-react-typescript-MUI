@@ -29,7 +29,9 @@ const MenuItemSelect: React.FC<MenuItemSelectProps> = ({
   filterKey,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [selectedRecord, setSelectedRecord] = useState(record[0]);
+  const [selectedRecord, setSelectedRecord] = useState(
+    record.length > 0 ? record[0] : { label: "", value: "" }
+  );
   const [searchTerm, setSearchTerm] = useState("");
   const dispatch = useDispatch();
 
@@ -48,15 +50,17 @@ const MenuItemSelect: React.FC<MenuItemSelectProps> = ({
   }) => {
     setSelectedRecord(record);
 
-    if (typeof record.label === "string") {
+    if (filterKey && typeof record.label === "string") {
       dispatch(UpdatedFilter({ key: filterKey, value: record.label }));
     }
 
     handleClose();
   };
 
-  const filteredRecord = record.filter((item) =>
-    item.label.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredRecord = record.filter(
+    (item) =>
+      typeof item.label === "string" &&
+      item.label.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
