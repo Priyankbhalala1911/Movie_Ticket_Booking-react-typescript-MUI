@@ -6,9 +6,12 @@ import {
   InputAdornment,
   TextField,
 } from "@mui/material";
-import { useState } from "react";
+import React, { useState } from "react";
 import { CGV, Cinemapolis, XXI } from "../../assets";
 import MenuItemSelect from "../../components/MenuItem";
+import { useDispatch, useSelector } from "react-redux";
+import { UpdatedCinema } from "../../Store/Slices/FilterSlice";
+import { RootState } from "../../Store";
 
 const Studio = [
   { label: "2D", value: "2D" },
@@ -20,7 +23,6 @@ const Studio = [
 const Sort = [
   { label: "Nearest", value: "Nearest" },
   { label: "Cheapest Price", value: "Cheapest Price" },
-  { label: "Alphabet", value: "Alphabet" },
 ];
 const Cinema = [
   { label: "XXI", value: <img src={XXI} alt="logo1" width={35} /> },
@@ -31,18 +33,27 @@ const Cinema = [
   },
 ];
 const SearchTicket: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const searchTerm = useSelector(
+    (state: RootState) => state.filterTheater.cinema
+  );
+  const dispatch = useDispatch();
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(UpdatedCinema(event.target.value));
+  };
+
+  // console.log(searchTerm)
 
   return (
     <>
       <Grid container columnSpacing={1} py="32px">
-        <Grid item xs={12} md={6}>  
+        <Grid item xs={12} md={6}>
           <Box sx={{ p: 1 }}>
             <TextField
               variant="outlined"
               color="primary"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={handleChange}
               fullWidth
               size="small"
               placeholder="Search Cinema"
@@ -66,7 +77,7 @@ const SearchTicket: React.FC = () => {
             <MenuItemSelect record={Sort} fontSize="14px" />
           </Grid>
           <Grid item xs={4} textAlign="center">
-            <MenuItemSelect record={Cinema} fontSize="14px" />
+            <MenuItemSelect record={Cinema} fontSize="14px" filterKey="brand" />
           </Grid>
         </Grid>
       </Grid>
