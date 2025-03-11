@@ -46,7 +46,7 @@ export const MovieData: Movie[] = [
       {
         id: 1,
         name: "GRAND INDONESIA CGV",
-        location: "JL. MH. TAHMRIN NO.1",
+        location: "Surat",
         brand: "CGV",
         shows: [
           {
@@ -77,7 +77,7 @@ export const MovieData: Movie[] = [
       {
         id: 2,
         name: "MANGGO TWO SQUARE CINEMAPOLIS",
-        location: "JL. MH. TAHMRIN NO.1",
+        location: "Ahmedabad",
         brand: "Cinemapolis",
         shows: [
           {
@@ -90,7 +90,7 @@ export const MovieData: Movie[] = [
       {
         id: 3,
         name: "PLAZA INDONESIA XXI",
-        location: "JL. MH. TAHMRIN NO.1",
+        location: "Surat",
         brand: "XXI",
         shows: [
           {
@@ -115,7 +115,7 @@ export const MovieData: Movie[] = [
       {
         id: 1,
         name: "GRAND INDONESIA CGV",
-        location: "JL. MH. TAHMRIN NO.1",
+        location: "Rajkot",
         brand: "CGV",
         shows: [
           {
@@ -146,7 +146,7 @@ export const MovieData: Movie[] = [
       {
         id: 2,
         name: "MANGGO TWO SQUARE CINEMAPOLIS",
-        location: "JL. MH. TAHMRIN NO.1",
+        location: "Surat",
         brand: "Cinemapolis",
         shows: [
           {
@@ -159,7 +159,7 @@ export const MovieData: Movie[] = [
       {
         id: 3,
         name: "PLAZA INDONESIA XXI",
-        location: "JL. MH. TAHMRIN NO.1",
+        location: "Vadodara",
         brand: "XXI",
         shows: [
           {
@@ -184,7 +184,7 @@ export const MovieData: Movie[] = [
       {
         id: 1,
         name: "GRAND INDONESIA CGV",
-        location: "JL. MH. TAHMRIN NO.1",
+        location: "Navsari",
         brand: "CGV",
         shows: [
           {
@@ -215,7 +215,7 @@ export const MovieData: Movie[] = [
       {
         id: 3,
         name: "PLAZA INDONESIA XXI",
-        location: "JL. MH. TAHMRIN NO.1",
+        location: "Rajkot",
         brand: "XXI",
         shows: [
           {
@@ -240,7 +240,7 @@ export const MovieData: Movie[] = [
       {
         id: 1,
         name: "GRAND INDONESIA CGV",
-        location: "JL. MH. TAHMRIN NO.1",
+        location: "Bhavnagar",
         brand: "CGV",
         shows: [
           {
@@ -271,7 +271,7 @@ export const MovieData: Movie[] = [
       {
         id: 2,
         name: "MANGGO TWO SQUARE CINEMAPOLIS",
-        location: "JL. MH. TAHMRIN NO.1",
+        location: "Ahemadabad",
         brand: "Cinemapolis",
         shows: [
           {
@@ -284,7 +284,7 @@ export const MovieData: Movie[] = [
       {
         id: 3,
         name: "PLAZA INDONESIA XXI",
-        location: "JL. MH. TAHMRIN NO.1",
+        location: "Surat",
         brand: "XXI",
         shows: [
           {
