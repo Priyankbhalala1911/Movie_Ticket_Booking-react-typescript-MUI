@@ -8,9 +8,14 @@ const FilterNews: React.FC = () => {
   const filterNews = useSelector(
     (state: RootState) => state.filterTheater.news
   );
+  const postName = useSelector(
+    (state: RootState) => state.filterTheater.postName
+  );
 
   const FilterData = MovieNewsData.filter(
-    (news) => news.buttonName.toLowerCase() === filterNews.toLowerCase()
+    (news) =>
+      news.buttonName.toLowerCase() === filterNews.toLowerCase() &&
+      news.newsTitle.toLowerCase().includes(postName.toLowerCase())
   );
   const navigate = useNavigate();
   return (
