@@ -25,6 +25,7 @@ const Sort = [
   { label: "Cheapest Price", value: "Cheapest Price" },
 ];
 const Cinema = [
+  { label: "", value: "Select" },
   { label: "XXI", value: <img src={XXI} alt="logo1" width={35} /> },
   { label: "CGV", value: <img src={CGV} alt="logo2" width={35} /> },
   {
@@ -41,8 +42,6 @@ const SearchTicket: React.FC = () => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(UpdatedCinema(event.target.value));
   };
-
-  // console.log(searchTerm)
 
   return (
     <>
