@@ -11,13 +11,13 @@ import { convertDurationToMinutes, generateShowtimes } from "../../Utils";
 
 const ChooseTimeSlot: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
+  const selectedSlot = useSelector((state: RootState) => state.shows.showTimes);
 
   const selectedTime = useSelector((state: RootState) => state.shows.showTimes);
 
   const ShowTime = generateShowtimes(
     selectedTime ?? "00:00",
-    convertDurationToMinutes("3 hours")
+    convertDurationToMinutes("2 hours")
   );
 
   const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -72,7 +72,6 @@ const ChooseTimeSlot: React.FC = () => {
                 <Button
                   variant={selectedSlot === time ? "contained" : "text"}
                   color="primary"
-                  aria-pressed
                   sx={{
                     border:
                       selectedSlot === time ? "none" : "1px solid #9DA8BE",
