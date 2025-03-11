@@ -15,8 +15,10 @@ import {
   Visibility,
   VisibilityOff,
 } from "@mui/icons-material";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { Login } from "../../assets";
+import { useDispatch } from "react-redux";
+import { login } from "../../Store/Slices/AuthSlice";
 
 interface PageProps {
   setDirection: (dir: number) => void;
@@ -28,6 +30,8 @@ interface IState {
 
 const LoginPage: React.FC<PageProps> = ({ setDirection }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const location = useLocation();
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loginUser, setLoginUser] = useState<IState>({
     phoneNumber: "",
@@ -43,7 +47,11 @@ const LoginPage: React.FC<PageProps> = ({ setDirection }) => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("loginUser:", loginUser);
+    dispatch(
+      login({ phone: loginUser.phoneNumber, password: loginUser.password })
+    );
+    const from = location.state.from || "/slot-booking";
+    navigate(from, { replace: true });
   };
 
   return (
