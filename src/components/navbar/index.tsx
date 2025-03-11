@@ -25,15 +25,19 @@ import {
   Newspaper,
   NotificationsNone,
 } from "@mui/icons-material";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 import React, { useState } from "react";
 import { NavLink } from "react-router";
 import { Logo } from "../../assets";
+import { useSelector } from "react-redux";
+import { RootState } from "../../Store";
 
 const Navbar: React.FC = () => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
-  const [login, setLogin] = useState<boolean>(false);
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
   const navigate = useNavigate();
 
   const navigationMenu = [
@@ -153,13 +157,13 @@ const Navbar: React.FC = () => {
                 <NotificationsNone />
               </Badge>
             </IconButton>
-            {login ? (
+            {isAuthenticated ? (
               <Avatar
                 sx={{
                   background: "linear-gradient(#F2C46F,#C6943F)",
                   fontFamily: "Poppins",
                 }}
-              >
+                >
                 A
               </Avatar>
             ) : (
@@ -195,7 +199,7 @@ const Navbar: React.FC = () => {
             sx={{ color: "#FFFFFF", fontSize: "32px" }}
             onClick={() => setShowMenu(false)}
           >
-            <ChevronLeft fontSize="32px" />
+            <ChevronLeft sx={{ fontSize: "32px" }} />
           </IconButton>
         </Toolbar>
         <Divider />
