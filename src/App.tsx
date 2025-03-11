@@ -17,11 +17,13 @@ import ActiveTicket from "./Section/MyTicketPage/ActiveTicket";
 import TransactionList from "./Section/MyTicketPage/TrasactionList";
 import Layout from "./Layout";
 import { routes } from "./Config/routes";
+import ScrollToTop from "./components/ScrollTop";
 
 const App: React.FC = () => {
   return (
     <>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path={`${routes.Account}/*`} element={<Account />}>
             <Route path="*" element={<Navigate to={routes.Login} />} />
