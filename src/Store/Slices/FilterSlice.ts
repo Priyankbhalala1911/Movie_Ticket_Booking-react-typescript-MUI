@@ -5,13 +5,15 @@ interface FilterState {
   brand: string;
   cinema: string;
   news: string;
+  postName: string;
 }
 
 const initialState: FilterState = {
-  location: "Ahmedabad",
-  brand: "XXI",
+  location: "",
+  brand: "",
   cinema: "",
   news: "spotlight",
+  postName: "",
 };
 const FilterSlice = createSlice({
   name: "FilterTheater",
@@ -26,8 +28,12 @@ const FilterSlice = createSlice({
     UpdatedCinema: (state, action: PayloadAction<string>) => {
       state.cinema = action.payload;
     },
+    UpdatedPostName: (state, action: PayloadAction<string>) => {
+      state.postName = action.payload;
+    },
   },
 });
-export const { UpdatedFilter, UpdatedCinema } = FilterSlice.actions;
+export const { UpdatedFilter, UpdatedCinema, UpdatedPostName } =
+  FilterSlice.actions;
 
 export default FilterSlice.reducer;
