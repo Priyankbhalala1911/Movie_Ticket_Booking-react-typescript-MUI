@@ -15,7 +15,9 @@ const cities = [
   "Bharuch",
 ];
 
-const cityObjects = cities.map((city) => ({ label: city, value: city }));
+const city = cities.map((city) => ({ label: city, value: city }));
+
+const cityObjects = [{ label: "", value: "Select City" }, ...city];
 
 const CityLocation: React.FC = () => {
   return (
