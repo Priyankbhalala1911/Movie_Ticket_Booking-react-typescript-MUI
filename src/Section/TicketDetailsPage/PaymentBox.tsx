@@ -21,12 +21,6 @@ interface method {
   logo: string;
 }
 
-const convertPrice = (price: number): string => {
-  return price.toLocaleString("de-DE", {
-    minimumFractionDigits: 3,
-  });
-};
-
 const PaymentBox: React.FC = () => {
   const [open, setOpen] = useState(false);
   const selectedSeat = useSelector(
@@ -77,7 +71,7 @@ const PaymentBox: React.FC = () => {
                 REGULAR SEAT
               </Typography>
               <Typography>
-                Rp. {convertPrice(Regularprice)}{" "}
+                Rp. {Regularprice.toFixed(2)}{" "}
                 <b style={{ color: "#414A63" }}> X{selectedSeat.length}</b>
               </Typography>
             </Stack>
@@ -91,7 +85,7 @@ const PaymentBox: React.FC = () => {
                 SERVICE FEE
               </Typography>
               <Typography>
-                Rp. {convertPrice(ServiceFees)}{" "}
+                Rp. {ServiceFees.toFixed(2)}{" "}
                 <b style={{ color: "#414A63" }}> X{selectedSeat.length}</b>
               </Typography>
             </Stack>
@@ -110,7 +104,7 @@ const PaymentBox: React.FC = () => {
               <Typography variant="body1" color="primary" flex={1}>
                 PROMO TIX ID
               </Typography>
-              <Typography>- Rp. {convertPrice(PromoVoucher)}</Typography>
+              <Typography>- Rp. {PromoVoucher.toFixed(2)}</Typography>
             </Stack>
             <Divider sx={{ mt: "27px" }} />
           </Box>
@@ -130,7 +124,7 @@ const PaymentBox: React.FC = () => {
                 Total Payment
               </Typography>
               <Typography fontWeight={700} color="primary">
-                Rp. {convertPrice(TotalPrice)}
+                Rp. {TotalPrice.toFixed(2)}
               </Typography>
             </Stack>
             <Divider sx={{ mt: "18px" }} />
