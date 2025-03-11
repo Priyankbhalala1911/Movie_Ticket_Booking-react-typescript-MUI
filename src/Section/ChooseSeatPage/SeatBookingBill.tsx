@@ -9,10 +9,6 @@ const SeatBookingBill: React.FC = () => {
   );
   const selectSlot = useSelector((state: RootState) => state.shows);
   const totalPrice = selectedSeats.length * Number(selectSlot.showPrice);
-  console.log(totalPrice);
-  const formattedTotalPrice = totalPrice.toLocaleString("de-DE", {
-    minimumFractionDigits: 3,
-  });
   const navigate = useNavigate();
   return (
     <>
@@ -28,7 +24,7 @@ const SeatBookingBill: React.FC = () => {
             Total
           </Typography>
           <Typography variant="h1" color="primary">
-            RP. {formattedTotalPrice}
+            RP. {totalPrice.toFixed(2)}
           </Typography>
         </Grid>
         <Grid item md={3} sm={6} xs={12}>
