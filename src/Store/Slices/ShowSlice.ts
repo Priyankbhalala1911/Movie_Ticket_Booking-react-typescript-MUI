@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "..";
-import { act } from "react";
+
 
 interface showState {
   showTimes: string | null;
