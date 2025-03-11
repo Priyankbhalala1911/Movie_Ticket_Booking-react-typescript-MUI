@@ -15,9 +15,10 @@ import TicketDetails from "./Pages/TicketDetailsPage";
 import PaymentSuccess from "./Pages/PaymentSuccessPage";
 import ActiveTicket from "./Section/MyTicketPage/ActiveTicket";
 import TransactionList from "./Section/MyTicketPage/TrasactionList";
-import Layout from "./Layout";
+import Layout from "./Layout/Layout";
 import { routes } from "./Config/routes";
 import ScrollToTop from "./components/ScrollTop";
+import AuthWrapper from "./Layout/AuthWrapper";
 
 const App: React.FC = () => {
   return (
@@ -30,28 +31,33 @@ const App: React.FC = () => {
           </Route>
           <Route path={routes.default} element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path={routes.slotBooking} element={<SlotBooking />} />
-            <Route path={routes.chooseSeat} element={<ChooseSeat />} />
-            <Route path={routes.ticketDetails} element={<TicketDetails />} />
-            <Route path={routes.paymentSuccess} element={<PaymentSuccess />} />
-            <Route path={routes.myTicket} element={<MyTicket />}>
+            <Route element={<AuthWrapper />}>
+              <Route path={routes.slotBooking} element={<SlotBooking />} />
+              <Route path={routes.chooseSeat} element={<ChooseSeat />} />
+              <Route path={routes.ticketDetails} element={<TicketDetails />} />
               <Route
-                index
-                element={<Navigate to={routes.activeTicket} replace />}
+                path={routes.paymentSuccess}
+                element={<PaymentSuccess />}
               />
-              <Route path={routes.activeTicket} element={<ActiveTicket />} />
+              <Route path={routes.myTicket} element={<MyTicket />}>
+                <Route
+                  index
+                  element={<Navigate to={routes.activeTicket} replace />}
+                />
+                <Route path={routes.activeTicket} element={<ActiveTicket />} />
+                <Route
+                  path={routes.transactionList}
+                  element={<TransactionList />}
+                />
+              </Route>
+              <Route path={routes.TIXNews} element={<TIXIDNews />} />
               <Route
-                path={routes.transactionList}
-                element={<TransactionList />}
+                path={routes.TIXNewsArticles}
+                element={<TIXIDNews_Articles />}
               />
+              <Route path={routes.TIXNewsVideo} element={<MovieVideo />} />
+              <Route path={routes.ComingMovies} element={<ComingMovies />} />
             </Route>
-            <Route path={routes.TIXNews} element={<TIXIDNews />} />
-            <Route
-              path={routes.TIXNewsArticles}
-              element={<TIXIDNews_Articles />}
-            />
-            <Route path={routes.TIXNewsVideo} element={<MovieVideo />} />
-            <Route path={routes.ComingMovies} element={<ComingMovies />} />
           </Route>
         </Routes>
       </BrowserRouter>
