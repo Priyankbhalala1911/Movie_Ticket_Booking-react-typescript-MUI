@@ -10,6 +10,9 @@ import React from "react";
 import MenuItemSelect from "../../components/MenuItem";
 import FilterNews from "../../Section/TIXIDNewsPage/FilterNews";
 import MovieNews from "../../Section/TIXIDNewsPage/MovieNews";
+import { useDispatch, useSelector } from "react-redux";
+import { UpdatedPostName } from "../../Store/Slices/FilterSlice";
+import { RootState } from "../../Store";
 
 const Movies: string[] = [
   "Spiderman",
@@ -30,6 +33,10 @@ const record: Category[] = [
 ];
 
 const TIXIDNews: React.FC = () => {
+  const postName = useSelector(
+    (state: RootState) => state.filterTheater.postName
+  );
+  const dispatch = useDispatch();
   return (
     <>
       <Container
@@ -72,6 +79,8 @@ const TIXIDNews: React.FC = () => {
             <TextField
               variant="standard"
               placeholder="Search Post"
+              value={postName}
+              onChange={(e) => dispatch(UpdatedPostName(e.target.value))}
               fullWidth
               sx={{
                 "& .MuiInputBase-input": {
