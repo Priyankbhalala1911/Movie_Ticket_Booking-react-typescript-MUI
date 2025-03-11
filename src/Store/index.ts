@@ -3,6 +3,7 @@ import movieSlice from "./Slices/MovieSlice";
 import SeatSlice from "./Slices/SeatSlice";
 import ShowSlice from "./Slices/ShowSlice";
 import FilterSlice from "./Slices/FilterSlice";
+import AuthSlice from "./Slices/AuthSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     seats: SeatSlice,
     shows: ShowSlice,
     filterTheater: FilterSlice,
+    auth: AuthSlice,
   },
 });
 
