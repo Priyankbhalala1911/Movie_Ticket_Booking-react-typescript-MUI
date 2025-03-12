@@ -12,10 +12,12 @@ import {
 } from "@mui/material";
 import { Place } from "@mui/icons-material";
 import { Poster6 } from "../../assets";
+import { useNavigate } from "react-router";
 
 const ActiveTicket: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const navigate = useNavigate();
 
   return (
     <Stack
@@ -62,7 +64,10 @@ const ActiveTicket: React.FC = () => {
                 alignItems: "center",
                 gap: { lg: "48px", md: "36px", sm: "15px", xs: "5px" },
                 py: "16px",
+                cursor: "pointer",
+                "&:hover": { bgcolor: "rgba(0, 0, 0, 0.1)" },
               }}
+              onClick={() => navigate("/ticket")}
             >
               <CardMedia
                 component="img"
