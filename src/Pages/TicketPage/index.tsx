@@ -9,10 +9,12 @@ import {
 import { KeyboardBackspace } from "@mui/icons-material";
 import TicketDetails from "../../Section/TicketPage/TicketDetails";
 import PaymentDetails from "../../Section/TicketPage/PaymentDetails";
+import { useNavigate } from "react-router";
 
 const TicketPage: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const navigate = useNavigate();
   return (
     <Stack
       sx={{
@@ -43,6 +45,7 @@ const TicketPage: React.FC = () => {
             fontWeight: 700,
           }}
           startIcon={<KeyboardBackspace />}
+          onClick={() => navigate("/my-ticket/active-ticket")}
         >
           Return
         </Button>
