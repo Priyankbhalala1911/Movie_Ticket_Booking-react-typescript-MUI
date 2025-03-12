@@ -19,6 +19,7 @@ import Layout from "./Layout/Layout";
 import { routes } from "./Config/routes";
 import ScrollToTop from "./components/ScrollTop";
 import AuthWrapper from "./Layout/AuthWrapper";
+import TicketPage from "./Pages/TicketPage";
 
 const App: React.FC = () => {
   return (
@@ -57,6 +58,8 @@ const App: React.FC = () => {
               />
               <Route path={routes.TIXNewsVideo} element={<MovieVideo />} />
               <Route path={routes.ComingMovies} element={<ComingMovies />} />
+
+              <Route path={routes.ticket} element={<TicketPage />} />
             </Route>
           </Route>
         </Routes>
