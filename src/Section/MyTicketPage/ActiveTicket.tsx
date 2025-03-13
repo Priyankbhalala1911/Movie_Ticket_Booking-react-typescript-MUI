@@ -53,17 +53,16 @@ const ActiveTicket: React.FC = () => {
         ))}
       </Box>
 
-      <Stack width="100%" spacing={2}>
+      <Stack width="100%">
         {[1, 2, 3, 4].map((_, index) => (
           <Box key={index}>
             <Card
               elevation={0}
               sx={{
                 display: "flex",
-
                 alignItems: "center",
                 gap: { lg: "48px", md: "36px", sm: "15px", xs: "5px" },
-                py: "16px",
+                my: "16px",
                 cursor: "pointer",
                 "&:hover": { bgcolor: "rgba(0, 0, 0, 0.1)" },
               }}
