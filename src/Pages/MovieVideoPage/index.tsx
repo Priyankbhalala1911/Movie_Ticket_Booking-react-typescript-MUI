@@ -6,7 +6,6 @@ import {
   CardContent,
   CardMedia,
   Container,
-  Dialog,
   IconButton,
   Stack,
   Typography,
@@ -14,7 +13,6 @@ import {
 import { useNavigate, useParams } from "react-router";
 import { MovieNewsData } from "../../Data/MovieNewsData";
 import {
-  Close,
   Facebook,
   Instagram,
   PlayCircleOutlined,
@@ -61,71 +59,51 @@ const MovieVideo: React.FC = () => {
               {movieVideo?.date} | TIX ID
             </Typography>
           </Stack>
-          <Box sx={{ position: "relative" }}>
-            <CardMedia
-              component="img"
-              image={movieVideo?.image}
-              alt={movieVideo?.newsTitle}
-            />
-            <IconButton
-              sx={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%,-50%)",
-                color: "#FFFFFF",
-              }}
-              onClick={() => setPlay(true)}
-            >
-              <PlayCircleOutlined
-                sx={{
-                  fontSize: {
-                    lg: "150px",
-                    md: "130px",
-                    sm: "110px",
-                    xs: "90px",
-                  },
-                }}
-              />
-            </IconButton>
-            <Dialog
-              open={play}
-              onClose={() => setPlay(false)}
-              fullWidth
-              maxWidth="md"
-            >
-              <Box sx={{ position: "relative", overflow: "hidden" }}>
+          <Card sx={{ position: "relative", width: "100%" }}>
+            {play ? (
+              <Box sx={{ position: "relative", paddingTop: "56.25%" }}>
+                {" "}
+                {/* 16:9 Aspect Ratio */}
+                <ReactPlayer
+                  url={movieVideo?.video}
+                  width="100%"
+                  height="100%"
+                  controls
+                  playing
+                  style={{ position: "absolute", top: 0, left: 0 }}
+                />
+              </Box>
+            ) : (
+              <Box sx={{ position: "relative" }}>
+                <CardMedia
+                  component="img"
+                  image={movieVideo?.image}
+                  alt={movieVideo?.newsTitle}
+                />
                 <IconButton
-                  onClick={() => setPlay(false)}
                   sx={{
                     position: "absolute",
-                    top: 10,
-                    right: 10,
-                    zIndex: 2,
-                    color: "white",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%,-50%)",
+                    color: "#FFFFFF",
                   }}
+                  onClick={() => setPlay(true)}
                 >
-                  <Close />
-                </IconButton>
-                <Box
-                  sx={{
-                    position: "relative",
-                    width: "100%",
-                    paddingTop: "56.25%",
-                  }}
-                >
-                  <ReactPlayer
-                    url={movieVideo?.video}
-                    width="100%"
-                    height="100%"
-                    controls
-                    playing
-                    style={{ position: "absolute", top: 0, left: 0 }}
+                  <PlayCircleOutlined
+                    sx={{
+                      fontSize: {
+                        lg: "150px",
+                        md: "130px",
+                        sm: "110px",
+                        xs: "90px",
+                      },
+                    }}
                   />
-                </Box>
+                </IconButton>
               </Box>
-            </Dialog>
-          </Box>
+            )}
+          </Card>
           <Box>
             <Typography variant="h4" color="primary">
               Source: {movieVideo?.source} | YouTube
