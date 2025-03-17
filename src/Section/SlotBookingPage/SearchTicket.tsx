@@ -29,7 +29,7 @@ const Cinema = [
   { label: "XXI", value: <img src={XXI} alt="logo1" width={35} /> },
   { label: "CGV", value: <img src={CGV} alt="logo2" width={35} /> },
   {
-    label: "Cinemapolis",
+    label: "Cinepolis",
     value: <img src={Cinemapolis} alt="logo3" width={75} />,
   },
 ];

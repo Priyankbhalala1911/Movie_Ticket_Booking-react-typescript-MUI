@@ -16,7 +16,7 @@ import { selectShows } from "../../Store/Slices/ShowSlice";
 
 const brandColors: { [key: string]: string } = {
   CGV: customColors.CGVColor,
-  Cinemapolis: customColors.cinepolisBlue,
+  Cinepolis: customColors.cinepolisBlue,
   XXI: `linear-gradient(${customColors.xxiGradientStart}, ${customColors.xxiGradientEnd})`,
 };
 

@@ -3,7 +3,7 @@ import { Ghostbusters, HouseOfGucci, Spiderman, YowisBen } from "../assets";
 interface Brands {
   XXI: boolean;
   CGV: boolean;
-  cinemapolis: boolean;
+  Cinepolis: boolean;
 }
 
 interface Show {
@@ -37,7 +37,7 @@ export const MovieData: Movie[] = [
     id: 1,
     image: Spiderman,
     title: "Spider-Man: No Way Home",
-    brands: { XXI: true, cinemapolis: true, CGV: true },
+    brands: { XXI: true, Cinepolis: true, CGV: true },
     genre: "Action",
     duration: "2 hours 28 min",
     director: "Jon Watts",
@@ -78,7 +78,7 @@ export const MovieData: Movie[] = [
         id: 2,
         name: "MANGGO TWO SQUARE CINEMAPOLIS",
         location: "Ahmedabad",
-        brand: "Cinemapolis",
+        brand: "Cinepolis",
         shows: [
           {
             type: "2D",
@@ -106,7 +106,7 @@ export const MovieData: Movie[] = [
     id: 2,
     image: YowisBen,
     title: "Yowis Ben Finale",
-    brands: { XXI: true, cinemapolis: true, CGV: true },
+    brands: { XXI: true, Cinepolis: true, CGV: true },
     genre: "Comedy, Drama",
     duration: "1 hour 53 min",
     director: "Fajar Nugros",
@@ -147,7 +147,7 @@ export const MovieData: Movie[] = [
         id: 2,
         name: "MANGGO TWO SQUARE CINEMAPOLIS",
         location: "Surat",
-        brand: "Cinemapolis",
+        brand: "Cinepolis",
         shows: [
           {
             type: "2D",
@@ -175,7 +175,7 @@ export const MovieData: Movie[] = [
     id: 3,
     image: Ghostbusters,
     title: "Ghostbusters: Afterlife",
-    brands: { XXI: true, cinemapolis: false, CGV: true },
+    brands: { XXI: true, Cinepolis: false, CGV: true },
     genre: "Action, Adventure, Comedy",
     duration: "2 hours 4 min",
     director: "Jason Reitman",
@@ -231,7 +231,7 @@ export const MovieData: Movie[] = [
     id: 4,
     image: HouseOfGucci,
     title: "House of Gucci",
-    brands: { XXI: true, cinemapolis: true, CGV: true },
+    brands: { XXI: true, Cinepolis: true, CGV: true },
     genre: "Biography, Crime, Drama",
     duration: "2 hours 38 min",
     director: "Ridley Scott",
@@ -272,7 +272,7 @@ export const MovieData: Movie[] = [
         id: 2,
         name: "MANGGO TWO SQUARE CINEMAPOLIS",
         location: "Ahemadabad",
-        brand: "Cinemapolis",
+        brand: "Cinepolis",
         shows: [
           {
             type: "2D",

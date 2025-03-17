@@ -204,12 +204,12 @@ const CarsoulMovie: React.FC<Movie> = ({ loading }) => {
                 )}
 
                 {loading ? (
-                  item.brands.cinemapolis && (
+                  item.brands.Cinepolis && (
                     <Button
                       variant="contained"
                       sx={{ background: `${customColors.cinepolisBlue}` }}
                     >
-                      CINEMAPOLIS
+                      Cinepolis
                     </Button>
                   )
                 ) : (
