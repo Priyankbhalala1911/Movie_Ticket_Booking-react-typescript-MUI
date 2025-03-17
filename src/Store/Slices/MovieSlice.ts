@@ -9,7 +9,7 @@ interface Brands {
   XXI: boolean;
   CGV: boolean;
   Cinepolis: boolean;
-}
+} 
 
 interface Show {
   type: string;
