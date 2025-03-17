@@ -8,7 +8,7 @@ const today = new Date();
 interface Brands {
   XXI: boolean;
   CGV: boolean;
-  cinemapolis: boolean;
+  Cinepolis: boolean;
 }
 
 interface Show {
