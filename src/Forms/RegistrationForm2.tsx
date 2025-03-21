@@ -1,24 +1,31 @@
-import { Button, Card, Stack, TextField, Typography } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import {
+  Button,
+  Card,
+  IconButton,
+  InputAdornment,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
 interface IState {
-  id: number;
-  phoneNumber: string;
   password: string;
 }
 
 const RegistrationForm2: React.FC = () => {
   const navigate = useNavigate();
-  const [loginUser, setLoginUser] = useState<IState>({
-    id: 0,
-    phoneNumber: "",
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [registerUser, setRegisterUser] = useState<IState>({
     password: "",
   });
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = event.target;
-    setLoginUser({ ...loginUser, [name]: value });
+    setRegisterUser({ ...registerUser, [name]: value });
   };
   return (
     <Card
@@ -43,16 +50,47 @@ const RegistrationForm2: React.FC = () => {
               color="primary"
               textTransform="uppercase"
             >
-              Email Address
+              Password
             </Typography>
             <TextField
-              type="text"
-              placeholder="Enter Email Address"
+              type={showPassword ? "text" : "password"}
+              placeholder="Enter a Password"
               variant="standard"
-              name="phoneNumber"
-              color="primary"
-              value={loginUser.phoneNumber}
+              name="password"
+              value={registerUser.password}
               onChange={handleChange}
+              color="primary"
+              fullWidth
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="start"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Stack>
+          <Stack gap="9px">
+            <Typography
+              variant="subtitle1"
+              color="primary"
+              textTransform="uppercase"
+            >
+              Confirm Password
+            </Typography>
+            <TextField
+              type={showPassword ? "text" : "password"}
+              placeholder="Enter Confirm Password"
+              variant="standard"
+              name="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              color="primary"
               fullWidth
             />
           </Stack>
