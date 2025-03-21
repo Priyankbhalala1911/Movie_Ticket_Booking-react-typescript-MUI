@@ -1,11 +1,4 @@
-import {
-  Button,
-  Card,
-  InputAdornment,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, Card, Stack, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -15,14 +8,14 @@ interface PageProps {
 
 interface IState {
   name: string;
-  phoneNumber: string;
+  email: string;
 }
 const RegistrationForm1: React.FC<PageProps> = ({ setDirection }) => {
   const navigate = useNavigate();
 
   const [registerUser, setRegisterUser] = useState<IState>({
     name: "",
-    phoneNumber: "",
+    email: "",
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -78,21 +71,16 @@ const RegistrationForm1: React.FC<PageProps> = ({ setDirection }) => {
               color="primary"
               textTransform="uppercase"
             >
-              Mobile Number
+              Email Address
             </Typography>
             <TextField
               type="text"
-              placeholder="Enter Mobile Number"
+              placeholder="Enter Email Address"
               variant="standard"
-              name="phoneNumber"
+              name="email"
               color="primary"
-              value={registerUser.phoneNumber}
+              value={registerUser.email}
               onChange={handleChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">+91</InputAdornment>
-                ),
-              }}
               fullWidth
             />
           </Stack>
