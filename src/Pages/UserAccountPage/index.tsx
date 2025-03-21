@@ -19,7 +19,7 @@ const Account: React.FC = () => {
     },
   };
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       <motion.div
         key={location.pathname}
         initial="initial"
