@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface AuthData {
   isAuthenticated: boolean;
-  user: { phone: string; password: string } | null;
+  user: { email: string; password: string } | null;
 }
 
 const storesAuth = localStorage.getItem("authState");
@@ -19,12 +19,12 @@ const AuthSlice = createSlice({
   reducers: {
     login: (
       state,
-      action: PayloadAction<{ phone: string; password: string }>
+      action: PayloadAction<{ email: string; password: string }>
     ) => {
-      const { phone, password } = action.payload;
-      if (phone === "123456789" && password === "Password") {
+      const { email, password } = action.payload;
+      if (email === "admin@gmail.com" && password === "Password") {
         state.isAuthenticated = true;
-        state.user = { phone, password };
+        state.user = { email, password };
 
         localStorage.setItem("authState", JSON.stringify(state));
       } else {
