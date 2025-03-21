@@ -17,7 +17,7 @@ interface PageProps {
   setDirection: (dir: number) => void;
 }
 interface IState {
-  phoneNumber: string;
+  email: string;
   password: string;
 }
 
@@ -27,7 +27,7 @@ const LoginForm: React.FC<PageProps> = ({ setDirection }) => {
   const location = useLocation();
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loginUser, setLoginUser] = useState<IState>({
-    phoneNumber: "",
+    email: "",
     password: "",
   });
   // const [disable, setDisable] = useState<boolean>(true);
@@ -40,10 +40,8 @@ const LoginForm: React.FC<PageProps> = ({ setDirection }) => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    dispatch(
-      login({ phone: loginUser.phoneNumber, password: loginUser.password })
-    );
-    const from = location.state.from || "/slot-booking";
+    dispatch(login({ email: loginUser.email, password: loginUser.password }));
+    const from = location.state?.from || "/";
     navigate(from, { replace: true });
   };
   return (
@@ -70,21 +68,16 @@ const LoginForm: React.FC<PageProps> = ({ setDirection }) => {
                 color="primary"
                 textTransform="uppercase"
               >
-                Mobile Number
+                Email Address
               </Typography>
               <TextField
                 type="text"
-                placeholder="Enter Mobile Number"
+                placeholder="Enter Email Address"
                 variant="standard"
-                name="phoneNumber"
+                name="email"
                 color="primary"
-                value={loginUser.phoneNumber}
+                value={loginUser.email}
                 onChange={handleChange}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">+91</InputAdornment>
-                  ),
-                }}
                 fullWidth
               />
             </Stack>
