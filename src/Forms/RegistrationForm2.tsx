@@ -38,15 +38,18 @@ const RegistrationForm2: React.FC = () => {
 
     if (register.name && register.email) {
       try {
-        const response = await fetch("http://localhost:8000/register", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name: register.name,
-            email: register.email,
-            password: password,
-          }),
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_BACKEND_API_BASE_URL}/register`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: register.name,
+              email: register.email,
+              password: password,
+            }),
+          }
+        );
 
         const data = await response.json();
         console.log(data);
