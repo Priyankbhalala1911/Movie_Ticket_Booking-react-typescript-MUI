@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Button,
@@ -8,25 +9,61 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
-import { useNavigate } from "react-router";
-
-interface IState {
-  password: string;
-}
+import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router";
 
 const RegistrationForm2: React.FC = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [registerUser, setRegisterUser] = useState<IState>({
-    password: "",
-  });
+  const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [error, setError] = useState<{ field: string; message: string }[]>([]);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    const { name, value } = event.target;
-    setRegisterUser({ ...registerUser, [name]: value });
+  // const register = useSelector((state: RootState) => state.register);
+  const location = useLocation();
+  const register = location.state || {};
+  console.log(register);
+
+  const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    setError([]);
+
+    if (password !== confirmPassword) {
+      setError([
+        { field: "confirmPassword", message: "Passwords do not match" },
+      ]);
+      return;
+    }
+
+    if (register.name && register.email) {
+      try {
+        const response = await fetch("http://localhost:8000/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: register.name,
+            email: register.email,
+            password: password,
+          }),
+        });
+
+        const data = await response.json();
+        console.log(data);
+
+        if (!response.ok) {
+          setError(data.errors || []);
+        } else {
+          navigate("/account/login");
+        }
+      } catch (err: any) {
+        console.log(err);
+      }
+    } else {
+      alert("Email or Name is missing.");
+    }
   };
+
   return (
     <Card
       elevation={3}
@@ -57,8 +94,12 @@ const RegistrationForm2: React.FC = () => {
               placeholder="Enter a Password"
               variant="standard"
               name="password"
-              value={registerUser.password}
-              onChange={handleChange}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              error={!!error.find((err) => err.field === "password")}
+              helperText={
+                error.find((err) => err.field === "password")?.message || ""
+              }
               color="primary"
               fullWidth
               InputProps={{
@@ -87,9 +128,14 @@ const RegistrationForm2: React.FC = () => {
               type={showPassword ? "text" : "password"}
               placeholder="Enter Confirm Password"
               variant="standard"
-              name="password"
+              name="confirmPassword"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
+              error={!!error.find((err) => err.field === "confirmPassword")}
+              helperText={
+                error.find((err) => err.field === "confirmPassword")?.message ||
+                ""
+              }
               color="primary"
               fullWidth
             />
@@ -100,7 +146,7 @@ const RegistrationForm2: React.FC = () => {
             variant="contained"
             color="primary"
             sx={{ py: "12px" }}
-            onClick={() => navigate("/")}
+            onClick={handleSubmit}
           >
             <Typography variant="h5" textTransform="capitalize">
               Register Now
@@ -114,4 +160,5 @@ const RegistrationForm2: React.FC = () => {
     </Card>
   );
 };
+
 export default RegistrationForm2;

@@ -10,6 +10,7 @@ interface IState {
   name: string;
   email: string;
 }
+
 const RegistrationForm1: React.FC<PageProps> = ({ setDirection }) => {
   const navigate = useNavigate();
 
@@ -18,15 +19,41 @@ const RegistrationForm1: React.FC<PageProps> = ({ setDirection }) => {
     email: "",
   });
 
+  const [error, setError] = useState<{ field: string; message: string }[]>([]);
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = event.target;
     setRegisterUser({ ...registerUser, [name]: value });
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    console.log("registerUser:", registerUser);
+
+    const errors: { field: string; message: string }[] = [];
+
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (registerUser.name.trim() === "") {
+      errors.push({ field: "name", message: "Name is Required!" });
+    }
+
+    if (registerUser.email.trim() === "") {
+      errors.push({ field: "email", message: "Email is Required!" });
+    } else if (!emailPattern.test(registerUser.email)) {
+      errors.push({ field: "email", message: "Invalid email format!" });
+    }
+
+    if (errors.length > 0) {
+      setError(errors);
+      return;
+    } else {
+      navigate("/account/registration-2", {
+        state: { name: registerUser.name, email: registerUser.email },
+      });
+      setDirection(1);
+    }
   };
+
   return (
     <Card
       elevation={3}
@@ -37,8 +64,6 @@ const RegistrationForm1: React.FC<PageProps> = ({ setDirection }) => {
         justifySelf: "center",
         p: { lg: "60px", md: "50px", sm: "40px", xs: "30px" },
       }}
-      component="form"
-      onSubmit={handleSubmit}
     >
       <Stack gap={"64px"}>
         <Typography variant="h1" color="primary">
@@ -51,7 +76,7 @@ const RegistrationForm1: React.FC<PageProps> = ({ setDirection }) => {
               color="primary"
               textTransform="uppercase"
             >
-              FUll Name
+              Full Name
             </Typography>
             <TextField
               type="text"
@@ -61,6 +86,10 @@ const RegistrationForm1: React.FC<PageProps> = ({ setDirection }) => {
               color="primary"
               value={registerUser.name}
               onChange={handleChange}
+              error={!!error.find((err) => err.field === "name")}
+              helperText={
+                error.find((err) => err.field === "name")?.message || ""
+              }
               fullWidth
             />
           </Stack>
@@ -74,13 +103,17 @@ const RegistrationForm1: React.FC<PageProps> = ({ setDirection }) => {
               Email Address
             </Typography>
             <TextField
-              type="text"
+              type="email"
               placeholder="Enter Email Address"
               variant="standard"
               name="email"
               color="primary"
               value={registerUser.email}
               onChange={handleChange}
+              error={!!error.find((err) => err.field === "email")}
+              helperText={
+                error.find((err) => err.field === "email")?.message || ""
+              }
               fullWidth
             />
           </Stack>
@@ -90,14 +123,10 @@ const RegistrationForm1: React.FC<PageProps> = ({ setDirection }) => {
             variant="contained"
             color="primary"
             sx={{ py: "12px" }}
-            onClick={() => {
-              navigate("/account/registration-2");
-              setDirection(1);
-            }}
-            type="submit"
+            onClick={handleSubmit}
           >
             <Typography variant="h5" textTransform="capitalize">
-              Register Now
+              Continue Register...
             </Typography>
           </Button>
           <Typography variant="body1" color="primary" pt={"90px"}>
@@ -108,4 +137,5 @@ const RegistrationForm1: React.FC<PageProps> = ({ setDirection }) => {
     </Card>
   );
 };
+
 export default RegistrationForm1;
