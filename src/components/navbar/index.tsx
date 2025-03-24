@@ -31,19 +31,22 @@ import React, { useState } from "react";
 import { NavLink } from "react-router";
 import { Logo } from "../../assets";
 import PopUpBox from "../PopupBox";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { logOut } from "../../Store/Slices/AuthSlice";
-import { RootState } from "../../Store";
+import cookie from "js-cookie";
 
 const Navbar: React.FC = () => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
-  const token = localStorage.getItem("token");
+  const token = cookie.get("token");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const Name = useSelector((state: RootState) => state.auth.name);
-  console.log(Name);
+  let Name = "";
+  if (token) {
+    Name = JSON.parse(token).name;
+    console.log(Name);
+  }
   const navigationMenu = [
     {
       title: "Home",
@@ -247,7 +250,10 @@ const Navbar: React.FC = () => {
           content="Are you sure you want to log out?"
           action1="Cancel"
           action2="Logout"
-          click_action1={() => dispatch(logOut())}
+          click_action1={() => {
+            dispatch(logOut());
+            navigate("/account/login");
+          }}
         />
       )}
     </>
