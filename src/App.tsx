@@ -20,12 +20,14 @@ import { routes } from "./Config/routes";
 import ScrollToTop from "./components/ScrollTop";
 import AuthWrapper from "./Layout/AuthWrapper";
 import TicketPage from "./Pages/TicketPage";
+import { Toaster } from "react-hot-toast";
 
 const App: React.FC = () => {
   return (
     <>
       <BrowserRouter>
         <ScrollToTop />
+        <Toaster position="top-center" reverseOrder={false} />
         <Routes>
           <Route path={`${routes.Account}/*`} element={<Account />}>
             <Route path="*" element={<Navigate to={routes.Login} />} />
