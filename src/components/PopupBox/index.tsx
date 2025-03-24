@@ -9,17 +9,28 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import { useNavigate } from "react-router";
 
 interface PopupBoxProps {
   open: boolean;
   onClose: () => void;
+  title: string;
+  content: string;
+  action1: string;
+  action2: string;
+  click_action1: () => void;
 }
-const PopUpBox: React.FC<PopupBoxProps> = ({ open, onClose }) => {
-  const navigate = useNavigate();
+const PopUpBox: React.FC<PopupBoxProps> = ({
+  open,
+  onClose,
+  title,
+  content,
+  action1,
+  action2,
+  click_action1,
+}) => {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md">
-      <DialogTitle>Want to go back?</DialogTitle>
+      <DialogTitle>{title}</DialogTitle>
       <IconButton
         aria-label="close"
         onClick={onClose}
@@ -33,23 +44,21 @@ const PopUpBox: React.FC<PopupBoxProps> = ({ open, onClose }) => {
         <Close />
       </IconButton>
       <DialogContent>
-        <DialogContentText>
-          The seat you previously selected will be cancelled and you will have
-          to re-select.
-        </DialogContentText>
+        <DialogContentText>{content}</DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button variant="outlined" color="primary" onClick={onClose}>
-          Return
+          {action1}
         </Button>
         <Button
           variant="contained"
           onClick={() => {
-            navigate("/choose-seat");
+            click_action1();
+            onClose();
             window.scrollTo(0, 0);
           }}
         >
-          <Typography color="warning">Cancelled</Typography>
+          <Typography color="warning">{action2}</Typography>
         </Button>
       </DialogActions>
     </Dialog>
