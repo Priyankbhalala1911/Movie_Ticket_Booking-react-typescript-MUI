@@ -4,9 +4,11 @@ import { useState } from "react";
 import PopUpBox from "../../components/PopupBox";
 import { useSelector } from "react-redux";
 import { RootState } from "../../Store";
+import { useNavigate } from "react-router";
 
 const Details: React.FC = () => {
   const [error, setError] = useState(false);
+  const navigate = useNavigate();
   const SelectedSeat = useSelector(
     (state: RootState) => state.seats.selectedSeat
   );
@@ -90,7 +92,18 @@ const Details: React.FC = () => {
             Return
           </Button>
         </Box>
-        {error && <PopUpBox open={error} onClose={() => setError(false)} />}
+        {error && (
+          <PopUpBox
+            open={error}
+            onClose={() => setError(false)}
+            title="Want to go back?"
+            content="The seat you previously selected will be cancelled and you will have
+          to re-select."
+            action1="Return"
+            action2="Cancelled"
+            click_action1={() => navigate("/slot-booking")}
+          />
+        )}
       </Stack>
     </>
   );
