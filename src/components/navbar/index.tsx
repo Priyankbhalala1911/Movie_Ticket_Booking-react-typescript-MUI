@@ -31,8 +31,9 @@ import React, { useState } from "react";
 import { NavLink } from "react-router";
 import { Logo } from "../../assets";
 import PopUpBox from "../PopupBox";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "../../Store/Slices/AuthSlice";
+import { RootState } from "../../Store";
 
 const Navbar: React.FC = () => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
@@ -41,6 +42,8 @@ const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const Name = useSelector((state: RootState) => state.auth.name);
+  console.log(Name);
   const navigationMenu = [
     {
       title: "Home",
@@ -163,10 +166,11 @@ const Navbar: React.FC = () => {
                 sx={{
                   background: "linear-gradient(#F2C46F,#C6943F)",
                   fontFamily: "Poppins",
+                  cursor: "pointer",
                 }}
                 onClick={() => setOpen(!open)}
               >
-                A
+                {Name.charAt(0).toUpperCase()}
               </Avatar>
             ) : (
               <Tooltip title="Account Login">

@@ -50,7 +50,7 @@ const LoginForm: React.FC<PageProps> = ({ setDirection }) => {
       if (!response.ok) {
         toast.error(data.message);
       } else {
-        dispatch(loginSuccess(data.token));
+        dispatch(loginSuccess({ token: data.token, name: data.name }));
         toast.success(data.message);
         const from = location.state?.from || "/";
         navigate(from, { replace: true });
