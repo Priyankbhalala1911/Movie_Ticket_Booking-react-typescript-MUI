@@ -30,15 +30,16 @@ import { useNavigate } from "react-router";
 import React, { useState } from "react";
 import { NavLink } from "react-router";
 import { Logo } from "../../assets";
-import { useSelector } from "react-redux";
-import { RootState } from "../../Store";
+import PopUpBox from "../PopupBox";
+import { useDispatch } from "react-redux";
+import { logOut } from "../../Store/Slices/AuthSlice";
 
 const Navbar: React.FC = () => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.auth.isAuthenticated
-  );
+  const [open, setOpen] = useState<boolean>(false);
+  const token = localStorage.getItem("token");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const navigationMenu = [
     {
@@ -157,13 +158,14 @@ const Navbar: React.FC = () => {
                 <NotificationsNone />
               </Badge>
             </IconButton>
-            {isAuthenticated ? (
+            {token ? (
               <Avatar
                 sx={{
                   background: "linear-gradient(#F2C46F,#C6943F)",
                   fontFamily: "Poppins",
                 }}
-                >
+                onClick={() => setOpen(!open)}
+              >
                 A
               </Avatar>
             ) : (
@@ -233,6 +235,17 @@ const Navbar: React.FC = () => {
           ))}
         </List>
       </Drawer>
+      {open && (
+        <PopUpBox
+          open={open}
+          onClose={() => setOpen(false)}
+          title="Confirm Logout"
+          content="Are you sure you want to log out?"
+          action1="Cancel"
+          action2="Logout"
+          click_action1={() => dispatch(logOut())}
+        />
+      )}
     </>
   );
 };
