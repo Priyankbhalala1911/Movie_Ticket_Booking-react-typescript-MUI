@@ -10,8 +10,9 @@ import {
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
-import { login } from "../Store/Slices/AuthSlice";
+import { loginSuccess } from "../Store/Slices/AuthSlice";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import toast from "react-hot-toast";
 
 interface PageProps {
   setDirection: (dir: number) => void;
@@ -30,19 +31,34 @@ const LoginForm: React.FC<PageProps> = ({ setDirection }) => {
     email: "",
     password: "",
   });
-  // const [disable, setDisable] = useState<boolean>(true);
-  // const [error, serError] = useState<string>("");
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = event.target;
     setLoginUser({ ...loginUser, [name]: value });
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    dispatch(login({ email: loginUser.email, password: loginUser.password }));
-    const from = location.state?.from || "/";
-    navigate(from, { replace: true });
+    try {
+      const response = await fetch("http://localhost:8000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(loginUser),
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        toast.error(data.message);
+      } else {
+        dispatch(loginSuccess(data.token));
+        toast.success(data.message);
+        const from = location.state?.from || "/";
+        navigate(from, { replace: true });
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      console.log("Login failed", err);
+    }
   };
   return (
     <>
@@ -54,8 +70,6 @@ const LoginForm: React.FC<PageProps> = ({ setDirection }) => {
           background: "white",
           p: { lg: "60px", md: "50px", sm: "40px", xs: "30px" },
         }}
-        component="form"
-        onSubmit={handleSubmit}
       >
         <Stack gap={"64px"}>
           <Typography variant="h1" color="primary">
@@ -119,6 +133,7 @@ const LoginForm: React.FC<PageProps> = ({ setDirection }) => {
               color="primary"
               sx={{ py: "12px" }}
               type="submit"
+              onClick={handleSubmit}
             >
               <Typography variant="h5" textTransform="capitalize">
                 Sign In Now
