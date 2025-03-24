@@ -10,6 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router";
 
 const RegistrationForm2: React.FC = () => {
@@ -19,7 +20,6 @@ const RegistrationForm2: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [error, setError] = useState<{ field: string; message: string }[]>([]);
 
-  // const register = useSelector((state: RootState) => state.register);
   const location = useLocation();
   const register = location.state || {};
   console.log(register);
@@ -52,15 +52,24 @@ const RegistrationForm2: React.FC = () => {
         console.log(data);
 
         if (!response.ok) {
-          setError(data.errors || []);
+          if (data.errors) {
+            setError(data.errors);
+            data.errors.forEach((err: { message: string }) =>
+              toast.error(err.message)
+            );
+          } else {
+            toast.error(data.message || "Something went wrong!");
+          }
         } else {
+          toast.success(data.message);
           navigate("/account/login");
         }
       } catch (err: any) {
         console.log(err);
+        toast.error("Network error! Please try again.");
       }
     } else {
-      alert("Email or Name is missing.");
+      toast.error("Email or Name is missing.");
     }
   };
 
