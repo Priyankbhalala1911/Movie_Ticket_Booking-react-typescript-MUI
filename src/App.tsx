@@ -21,11 +21,13 @@ import ScrollToTop from "./components/ScrollTop";
 import AuthWrapper from "./Layout/AuthWrapper";
 import TicketPage from "./Pages/TicketPage";
 import { Toaster } from "react-hot-toast";
+import { AuthHandler } from "./AuthHandler";
 
 const App: React.FC = () => {
   return (
     <>
       <BrowserRouter>
+        <AuthHandler />
         <ScrollToTop />
         <Toaster position="top-center" reverseOrder={false} />
         <Routes>
