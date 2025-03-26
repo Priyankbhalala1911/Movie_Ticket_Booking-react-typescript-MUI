@@ -10,9 +10,9 @@ import {
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
-import { loginSuccess } from "../Store/Slices/AuthSlice";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import toast from "react-hot-toast";
+import { loginSuccess } from "../Store/Slices/AuthSlice";
 
 interface PageProps {
   setDirection: (dir: number) => void;
@@ -44,16 +44,19 @@ const LoginForm: React.FC<PageProps> = ({ setDirection }) => {
         `${import.meta.env.VITE_BACKEND_API_BASE_URL}/login`,
         {
           method: "POST",
+          credentials: "include",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(loginUser),
         }
       );
       const data = await response.json();
+      const userData = { name: data.name };
 
       if (!response.ok) {
         toast.error(data.message);
       } else {
-        dispatch(loginSuccess({ token: data.token, name: data.name }));
+        localStorage.setItem("user", JSON.stringify(userData));
+        dispatch(loginSuccess(userData));
         toast.success(data.message);
         const from = location.state?.from || "/";
         navigate(from, { replace: true });
