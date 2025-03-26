@@ -1,37 +1,30 @@
-import { createSlice } from "@reduxjs/toolkit";
-import cookie from "js-cookie";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface AuthData {
-  token: string | null;
-  name: string;
+interface AuthState {
+  isAuthenticated: boolean;
+  user: { name: string } | null;
 }
 
-const initialState: AuthData = {
-  token: cookie.get("token") || null,
-  name: "",
+const initialState: AuthState = {
+  isAuthenticated: false,
+  user: null,
 };
-const AuthSlice = createSlice({
+
+const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    loginSuccess: (state, action) => {
-      state.token = action.payload.token;
-      state.name = action.payload.name;
-      cookie.set(
-        "token",
-        JSON.stringify({
-          token: action.payload.token,
-          name: action.payload.name,
-        })
-      );
+    loginSuccess: (state, action: PayloadAction<{ name: string } | null>) => {
+      state.isAuthenticated = !!action.payload;
+      state.user = action.payload;
     },
-    logOut: (state) => {
-      state.token = null;
-      state.name = "";
-      cookie.remove("token");
+    logoutUser: (state) => {
+      state.isAuthenticated = false;
+      state.user = null;
+      localStorage.removeItem("user");
     },
   },
 });
 
-export const { loginSuccess, logOut } = AuthSlice.actions;
-export default AuthSlice.reducer;
+export const { loginSuccess, logoutUser } = authSlice.actions;
+export default authSlice.reducer;
