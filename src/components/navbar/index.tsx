@@ -31,22 +31,33 @@ import React, { useState } from "react";
 import { NavLink } from "react-router";
 import { Logo } from "../../assets";
 import PopUpBox from "../PopupBox";
-import { useDispatch } from "react-redux";
-import { logOut } from "../../Store/Slices/AuthSlice";
-import cookie from "js-cookie";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../Store";
+import { logoutUser } from "../../Store/Slices/AuthSlice";
 
 const Navbar: React.FC = () => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
-  const token = cookie.get("token");
+  const { isAuthenticated, user } = useSelector(
+    (state: RootState) => state.auth
+  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  let Name = "";
-  if (token) {
-    Name = JSON.parse(token).name;
-    console.log(Name);
-  }
+  const handleLogOut = async () => {
+    try {
+      await fetch(`${import.meta.env.VITE_BACKEND_API_BASE_URL}/logout`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-type": "application/json" },
+      });
+      dispatch(logoutUser());
+      navigate("/account/login");
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+  };
+
   const navigationMenu = [
     {
       title: "Home",
@@ -164,7 +175,7 @@ const Navbar: React.FC = () => {
                 <NotificationsNone />
               </Badge>
             </IconButton>
-            {token ? (
+            {isAuthenticated ? (
               <Avatar
                 sx={{
                   background: "linear-gradient(#F2C46F,#C6943F)",
@@ -173,7 +184,7 @@ const Navbar: React.FC = () => {
                 }}
                 onClick={() => setOpen(!open)}
               >
-                {Name.charAt(0).toUpperCase()}
+                {user?.name.charAt(0).toUpperCase()}
               </Avatar>
             ) : (
               <Tooltip title="Account Login">
@@ -250,10 +261,7 @@ const Navbar: React.FC = () => {
           content="Are you sure you want to log out?"
           action1="Cancel"
           action2="Logout"
-          click_action1={() => {
-            dispatch(logOut());
-            navigate("/account/login");
-          }}
+          click_action1={handleLogOut}
         />
       )}
     </>
