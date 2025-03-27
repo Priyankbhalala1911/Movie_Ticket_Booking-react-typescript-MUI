@@ -2,6 +2,7 @@ import {
   Card,
   CardContent,
   CardMedia,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -11,8 +12,8 @@ import {
 } from "@mui/material";
 
 interface Movie {
-  id: number;
-  image: string;
+  id: string;
+  movie_poster: string;
   title: string;
   genre: string;
   duration: string;
@@ -21,48 +22,59 @@ interface Movie {
 }
 interface MovieProps {
   movie: Movie;
+  loading: boolean;
 }
 
-const MovieDetails: React.FC<MovieProps> = ({ movie }) => {
+const MovieDetails: React.FC<MovieProps> = ({ movie, loading }) => {
   const movieDetails = [
     { label: "Genre", value: movie.genre },
     { label: "Duration", value: movie.duration },
     { label: "Director", value: movie.director },
     { label: "Rating", value: movie.rating },
   ];
+
   return (
     <Card sx={{ borderRadius: "10px" }}>
-      <CardMedia
-        component="img"
-        image={movie.image}
-        alt="image"
-        sx={{ objectFit: "cover", width: "100%", height: "364px" }}
-      ></CardMedia>
+      {loading ? (
+        <Skeleton variant="rectangular" width="100%" height="364px" />
+      ) : (
+        <CardMedia
+          component="img"
+          image={movie.movie_poster}
+          alt="movie poster"
+          sx={{ objectFit: "cover", width: "100%", height: "364px" }}
+        />
+      )}
       <CardContent>
-        <Typography variant="h3" color="primary">
-          {movie.title}
-          <TableContainer sx={{ py: "20px" }}>
-            <Table sx={{ maxWidth: "350px" }}>
-              <TableBody>
-                {movieDetails.map((movie, index) => (
-                  <TableRow key={index}>
-                    <TableCell sx={{ p: 0, py: "11px", borderBottom: "none" }}>
-                      <Typography>{movie.label}</Typography>
-                    </TableCell>
-                    <TableCell
-                      sx={{ p: 0, py: "11px", borderBottom: "none" }}
-                      colSpan={2}
-                    >
-                      <Typography>{movie.value}</Typography>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+        <Typography variant="h3" color="primary" gutterBottom>
+          {loading ? <Skeleton width="60%" /> : movie.title}
         </Typography>
+        <TableContainer sx={{ py: "20px" }}>
+          <Table sx={{ maxWidth: "350px" }}>
+            <TableBody>
+              {movieDetails.map((detail, index) => (
+                <TableRow key={index}>
+                  <TableCell sx={{ p: 0, py: "11px", borderBottom: "none" }}>
+                    <Typography variant="body1" fontWeight="bold">
+                      {loading ? <Skeleton width="80px" /> : detail.label}
+                    </Typography>
+                  </TableCell>
+                  <TableCell
+                    sx={{ p: 0, py: "11px", borderBottom: "none" }}
+                    colSpan={2}
+                  >
+                    <Typography variant="body1">
+                      {loading ? <Skeleton width="100px" /> : detail.value}
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </CardContent>
     </Card>
   );
 };
+
 export default MovieDetails;
