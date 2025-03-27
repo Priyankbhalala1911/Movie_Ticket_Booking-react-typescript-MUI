@@ -22,51 +22,61 @@ import AuthWrapper from "./Layout/AuthWrapper";
 import TicketPage from "./Pages/TicketPage";
 import { Toaster } from "react-hot-toast";
 import { AuthHandler } from "./AuthHandler";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+const queryClient = new QueryClient();
 const App: React.FC = () => {
   return (
     <>
       <BrowserRouter>
         <AuthHandler />
         <ScrollToTop />
-        <Toaster position="top-center" reverseOrder={false} />
-        <Routes>
-          <Route path={`${routes.Account}/*`} element={<Account />}>
-            <Route path="*" element={<Navigate to={routes.Login} />} />
-          </Route>
-          <Route path={routes.default} element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route element={<AuthWrapper />}>
-              <Route path={routes.slotBooking} element={<SlotBooking />} />
-              <Route path={routes.chooseSeat} element={<ChooseSeat />} />
-              <Route path={routes.ticketDetails} element={<TicketDetails />} />
-              <Route
-                path={routes.paymentSuccess}
-                element={<PaymentSuccess />}
-              />
-              <Route path={routes.myTicket} element={<MyTicket />}>
-                <Route
-                  index
-                  element={<Navigate to={routes.activeTicket} replace />}
-                />
-                <Route path={routes.activeTicket} element={<ActiveTicket />} />
-                <Route
-                  path={routes.transactionList}
-                  element={<TransactionList />}
-                />
-              </Route>
-              <Route path={routes.TIXNews} element={<TIXIDNews />} />
-              <Route
-                path={routes.TIXNewsArticles}
-                element={<TIXIDNews_Articles />}
-              />
-              <Route path={routes.TIXNewsVideo} element={<MovieVideo />} />
-              <Route path={routes.ComingMovies} element={<ComingMovies />} />
-
-              <Route path={routes.ticket} element={<TicketPage />} />
+        <QueryClientProvider client={queryClient}>
+          <Toaster position="top-center" reverseOrder={false} />
+          <Routes>
+            <Route path={`${routes.Account}/*`} element={<Account />}>
+              <Route path="*" element={<Navigate to={routes.Login} />} />
             </Route>
-          </Route>
-        </Routes>
+            <Route path={routes.default} element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route element={<AuthWrapper />}>
+                <Route path={routes.slotBooking} element={<SlotBooking />} />
+                <Route path={routes.chooseSeat} element={<ChooseSeat />} />
+                <Route
+                  path={routes.ticketDetails}
+                  element={<TicketDetails />}
+                />
+                <Route
+                  path={routes.paymentSuccess}
+                  element={<PaymentSuccess />}
+                />
+                <Route path={routes.myTicket} element={<MyTicket />}>
+                  <Route
+                    index
+                    element={<Navigate to={routes.activeTicket} replace />}
+                  />
+                  <Route
+                    path={routes.activeTicket}
+                    element={<ActiveTicket />}
+                  />
+                  <Route
+                    path={routes.transactionList}
+                    element={<TransactionList />}
+                  />
+                </Route>
+                <Route path={routes.TIXNews} element={<TIXIDNews />} />
+                <Route
+                  path={routes.TIXNewsArticles}
+                  element={<TIXIDNews_Articles />}
+                />
+                <Route path={routes.TIXNewsVideo} element={<MovieVideo />} />
+                <Route path={routes.ComingMovies} element={<ComingMovies />} />
+
+                <Route path={routes.ticket} element={<TicketPage />} />
+              </Route>
+            </Route>
+          </Routes>
+        </QueryClientProvider>
       </BrowserRouter>
     </>
   );
