@@ -20,7 +20,7 @@ const Home: React.FC = () => {
         }}
         maxWidth="xl"
       >
-        <CarsoulMovie loading={loading} />
+        <CarsoulMovie />
         <CarsoualAdv />
         <MovieNews loading={loading} />
         <MoviePoster loading={loading} />
