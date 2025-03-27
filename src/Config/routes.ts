@@ -1,7 +1,7 @@
 export const routes = {
   default: "/",
 
-  slotBooking: "slot-booking",
+  slotBooking: "slot-booking/:id",
   chooseSeat: "choose-seat",
   ticketDetails: "ticket-details",
   paymentSuccess: "payment-success",
