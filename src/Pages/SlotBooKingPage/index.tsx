@@ -5,15 +5,21 @@ import BuyBooking from "../../Section/SlotBookingPage/BuyBooking";
 import CityLocation from "../../Section/SlotBookingPage/CityLocation";
 import SearchTicket from "../../Section/SlotBookingPage/SearchTicket";
 import CategoryTicket from "../../Section/SlotBookingPage/CategoryTicket";
-import { useSelector } from "react-redux";
-import { RootState } from "../../Store";
-import { selectSelectedMovie } from "../../Store/Slices/MovieSlice";
+import { useParams } from "react-router";
+import toast from "react-hot-toast";
+import { handelMovieById } from "../../services/movie";
+import { useQuery } from "@tanstack/react-query";
 
 const SlotBooking: React.FC = () => {
-  const selectedMovie = useSelector((state: RootState) =>
-    selectSelectedMovie(state)
-  );
+  const { id } = useParams();
 
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["Movies"],
+    queryFn: () =>
+      id ? handelMovieById(id) : Promise.reject("Movie ID is undefined"),
+  });
+
+  if (isError) return "An error has occurred: ";
   return (
     <>
       <Stack
@@ -41,15 +47,16 @@ const SlotBooking: React.FC = () => {
               <DateSelection />
               <CityLocation />
               <SearchTicket />
-              <CategoryTicket theaters={selectedMovie?.theaters || []} />
+              <CategoryTicket
+                loading={isLoading}
+                theaters={data?.cities.flatMap(
+                  (city: any) => city?.theatres || []
+                )}
+              />
             </Grid>
 
             <Grid item xs={12} md={4} sm={5}>
-              {selectedMovie ? (
-                <MovieDetails movie={selectedMovie} />
-              ) : (
-                <Typography color="error">Movie not found</Typography>
-              )}
+              {data && <MovieDetails movie={data} loading={isLoading} />}
               <BuyBooking />
             </Grid>
           </Grid>
