@@ -55,8 +55,8 @@ const LoginForm: React.FC<PageProps> = ({ setDirection }) => {
       if (!response.ok) {
         toast.error(data.message);
       } else {
-        localStorage.setItem("user", JSON.stringify(userData));
         dispatch(loginSuccess(userData));
+        localStorage.setItem("user", JSON.stringify(userData));
         toast.success(data.message);
         const from = location.state?.from || "/";
         navigate(from, { replace: true });
