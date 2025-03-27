@@ -38,9 +38,8 @@ import { logoutUser } from "../../Store/Slices/AuthSlice";
 const Navbar: React.FC = () => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
-  const { isAuthenticated, user } = useSelector(
-    (state: RootState) => state.auth
-  );
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const user = JSON.parse(localStorage.getItem("user") || "{}").name;
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -52,6 +51,7 @@ const Navbar: React.FC = () => {
         headers: { "Content-type": "application/json" },
       });
       dispatch(logoutUser());
+
       navigate("/account/login");
     } catch (err) {
       console.error("Logout failed:", err);
@@ -184,7 +184,7 @@ const Navbar: React.FC = () => {
                 }}
                 onClick={() => setOpen(!open)}
               >
-                {user?.name.charAt(0).toUpperCase()}
+                {user.charAt(0).toUpperCase()}
               </Avatar>
             ) : (
               <Tooltip title="Account Login">
