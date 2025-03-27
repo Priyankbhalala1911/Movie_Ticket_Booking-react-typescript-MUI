@@ -6,8 +6,10 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  isAuthenticated: false,
-  user: null,
+  isAuthenticated: !!localStorage.getItem("user"),
+  user: localStorage.getItem("user")
+    ? JSON.parse(localStorage.getItem("user") as string)
+    : null,
 };
 
 const authSlice = createSlice({
@@ -15,7 +17,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     loginSuccess: (state, action: PayloadAction<{ name: string } | null>) => {
-      state.isAuthenticated = !!action.payload;
+      state.isAuthenticated = true;
       state.user = action.payload;
     },
     logoutUser: (state) => {
