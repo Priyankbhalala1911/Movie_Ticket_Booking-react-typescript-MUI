@@ -18,14 +18,19 @@ import "react-multi-carousel/lib/styles.css";
 import { customColors } from "../../Theme";
 import { ArrowBackIosNew, ArrowForwardIos } from "@mui/icons-material";
 import { useNavigate } from "react-router";
-import { MovieData } from "../../Data/MovieData";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../Store";
 import { selectMovie } from "../../Store/Slices/MovieSlice";
+import toast from "react-hot-toast";
+import { useQuery } from "@tanstack/react-query";
+import { handelMovieApi } from "../../services/movie";
 
-interface Movie {
-  loading: boolean;
-}
+const chainColors: Record<string, string> = {
+  INOX: `linear-gradient(${customColors.xxiGradientStart}, ${customColors.xxiGradientEnd})`,
+  CGV: customColors.CGVColor,
+  Cinepolis: customColors.cinepolisBlue,
+  PVR: `linear-gradient(${customColors.pastelYellow},${customColors.CGVColor}, ${customColors.cinepolisBlue})`,
+};
 
 const responsive = {
   superLargeDesktop: {
@@ -46,11 +51,21 @@ const responsive = {
   mobile: { breakpoint: { max: 600, min: 0 }, items: 1 },
 };
 
-const CarsoulMovie: React.FC<Movie> = ({ loading }) => {
+const CarsoulMovie: React.FC = () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const carouselRef = useRef<any>(null);
   const navigate = useNavigate();
 
   const dispatch = useDispatch<AppDispatch>();
+
+  const {
+    data = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["MovieData"],
+    queryFn: () => handelMovieApi(),
+  });
 
   return (
     <Box
@@ -61,6 +76,7 @@ const CarsoulMovie: React.FC<Movie> = ({ loading }) => {
         position: "relative",
       }}
     >
+      {isError && toast.error("Network error")}
       <IconButton
         onClick={() => carouselRef.current?.previous()}
         sx={{
@@ -103,7 +119,7 @@ const CarsoulMovie: React.FC<Movie> = ({ loading }) => {
           infinite
           arrows={false}
         >
-          {MovieData.map((item, index) => (
+          {data?.map((item: any, index: number) => (
             <Card
               sx={{
                 width: { lg: "500px", md: "391px", sm: "301px", xs: "100%" },
@@ -115,30 +131,11 @@ const CarsoulMovie: React.FC<Movie> = ({ loading }) => {
               elevation={0}
               key={index}
               onClick={() => {
-                dispatch(selectMovie(item.id));
-                navigate(`/slot-booking`);
+                dispatch(selectMovie(item.movie_id));
+                navigate(`/slot-booking/${item.movie_id}`);
               }}
             >
-              {loading ? (
-                <CardMedia
-                  sx={{
-                    width: "100%",
-                    height: {
-                      lg: "707px",
-                      md: "607px",
-                      xs: "407px",
-                    },
-                  }}
-                >
-                  <img
-                    src={item.image}
-                    width="100%"
-                    height="100%"
-                    style={{ borderRadius: "25px", objectFit: "cover" }}
-                    alt={item.title}
-                  />
-                </CardMedia>
-              ) : (
+              {isLoading && isError ? (
                 <Skeleton
                   variant="rounded"
                   sx={{
@@ -151,6 +148,25 @@ const CarsoulMovie: React.FC<Movie> = ({ loading }) => {
                     borderRadius: "25px",
                   }}
                 />
+              ) : (
+                <CardMedia
+                  sx={{
+                    width: "100%",
+                    height: {
+                      lg: "707px",
+                      md: "607px",
+                      xs: "407px",
+                    },
+                  }}
+                >
+                  <img
+                    src={item.movie_poster}
+                    width="100%"
+                    height="100%"
+                    style={{ borderRadius: "25px", objectFit: "cover" }}
+                    alt={item.title}
+                  />
+                </CardMedia>
               )}
 
               <CardContent>
@@ -178,43 +194,32 @@ const CarsoulMovie: React.FC<Movie> = ({ loading }) => {
                   gap: 1,
                 }}
               >
-                {loading ? (
-                  item.brands.XXI && (
-                    <Button
-                      variant="contained"
-                      sx={{
-                        background: `linear-gradient(${customColors.xxiGradientStart},${customColors.xxiGradientEnd})`,
-                      }}
-                    >
-                      XXI
-                    </Button>
-                  )
-                ) : (
-                  <Skeleton variant="rounded" width={80} height={36} />
-                )}
-
-                {loading ? (
-                  item.brands.CGV && (
-                    <Button variant="contained" color="secondary">
-                      CGV
-                    </Button>
-                  )
-                ) : (
-                  <Skeleton variant="rounded" width={80} height={36} />
-                )}
-
-                {loading ? (
-                  item.brands.Cinepolis && (
-                    <Button
-                      variant="contained"
-                      sx={{ background: `${customColors.cinepolisBlue}` }}
-                    >
-                      Cinepolis
-                    </Button>
-                  )
-                ) : (
-                  <Skeleton variant="rounded" width={100} height={36} />
-                )}
+                {isLoading
+                  ? Array.from({ length: 3 }).map((_, index) => (
+                      <Skeleton
+                        key={index}
+                        variant="rounded"
+                        width={80}
+                        height={36}
+                      />
+                    ))
+                  : [
+                      ...new Set(
+                        item.cities.flatMap((city: any) =>
+                          city.theatres.map((theatre: any) => theatre.chain)
+                        )
+                      ),
+                    ].map((chain: any) => (
+                      <Button
+                        key={chain}
+                        variant="contained"
+                        sx={{
+                          background: chainColors[chain] || "#ccc",
+                        }}
+                      >
+                        {chain}
+                      </Button>
+                    ))}
               </CardActions>
             </Card>
           ))}
