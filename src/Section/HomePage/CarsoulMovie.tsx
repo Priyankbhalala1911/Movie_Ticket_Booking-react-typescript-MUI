@@ -77,33 +77,47 @@ const CarsoulMovie: React.FC = () => {
       }}
     >
       {isError && toast.error("Network error")}
-      <IconButton
-        onClick={() => carouselRef.current?.previous()}
-        sx={{
-          position: "absolute",
-          left: 0,
-          top: "50%",
-          transform: "translateY(-50%)",
-          zIndex: 10,
-          p: 0,
-        }}
-      >
-        <Paper
-          elevation={3}
+      {isLoading ? (
+        <Skeleton
+          variant="circular"
           sx={{
             width: { lg: "62px", md: "52px", sm: "32px", xs: "22px" },
             height: { lg: "62px", md: "52px", sm: "32px", xs: "22px" },
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: "50%",
+            position: "absolute",
+            left: 0,
+            top: "50%",
+            transform: "translateY(-50%)",
+          }}
+        />
+      ) : (
+        <IconButton
+          onClick={() => carouselRef.current?.previous()}
+          sx={{
+            position: "absolute",
+            left: 0,
+            top: "50%",
+            transform: "translateY(-50%)",
+            zIndex: 10,
+            p: 0,
           }}
         >
-          <ArrowBackIosNew
-            sx={{ fontSize: { lg: "22px", sm: "18px", xs: "12px" } }}
-          />
-        </Paper>
-      </IconButton>
+          <Paper
+            elevation={3}
+            sx={{
+              width: { lg: "62px", md: "52px", sm: "32px", xs: "22px" },
+              height: { lg: "62px", md: "52px", sm: "32px", xs: "22px" },
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: "50%",
+            }}
+          >
+            <ArrowBackIosNew
+              sx={{ fontSize: { lg: "22px", sm: "18px", xs: "12px" } }}
+            />
+          </Paper>
+        </IconButton>
+      )}
 
       <Container
         sx={{
@@ -119,36 +133,23 @@ const CarsoulMovie: React.FC = () => {
           infinite
           arrows={false}
         >
-          {data?.map((item: any, index: number) => (
-            <Card
-              sx={{
-                width: { lg: "500px", md: "391px", sm: "301px", xs: "100%" },
-                textAlign: "center",
-                transition: "all 0.5s ease-in-out",
-                mx: { lg: "19.5px", md: "17px", sm: "12px", xs: "0" },
-                "&:hover": { cursor: "pointer" },
-              }}
-              elevation={0}
-              key={index}
-              onClick={() => {
-                dispatch(selectMovie(item.movie_id));
-                navigate(`/slot-booking/${item.movie_id}`);
-              }}
-            >
-              {isLoading && isError ? (
-                <Skeleton
-                  variant="rounded"
-                  sx={{
-                    width: "100%",
-                    height: {
-                      lg: "707px",
-                      md: "607px",
-                      xs: "407px",
-                    },
-                    borderRadius: "25px",
-                  }}
-                />
-              ) : (
+          {(isLoading ? Array.from(new Array(4)) : data)?.map(
+            (item: any, index: number) => (
+              <Card
+                sx={{
+                  width: { lg: "500px", md: "391px", sm: "301px", xs: "100%" },
+                  textAlign: "center",
+                  transition: "all 0.5s ease-in-out",
+                  mx: { lg: "19.5px", md: "17px", sm: "12px", xs: "0" },
+                  "&:hover": { cursor: "pointer" },
+                }}
+                elevation={0}
+                key={index}
+                onClick={() => {
+                  dispatch(selectMovie(item.movie_id));
+                  navigate(`/slot-booking/${item.movie_id}`);
+                }}
+              >
                 <CardMedia
                   sx={{
                     width: "100%",
@@ -159,100 +160,132 @@ const CarsoulMovie: React.FC = () => {
                     },
                   }}
                 >
-                  <img
-                    src={item.movie_poster}
-                    width="100%"
-                    height="100%"
-                    style={{ borderRadius: "25px", objectFit: "cover" }}
-                    alt={item.title}
-                  />
+                  {isLoading ? (
+                    <Skeleton
+                      variant="rounded"
+                      width="100%"
+                      sx={{
+                        height: { lg: "707px", md: "607px", xs: "407px" },
+                        borderRadius: "25px",
+                        objectFit: "cover",
+                      }}
+                    />
+                  ) : (
+                    <img
+                      src={item?.movie_poster}
+                      width="100%"
+                      height="100%"
+                      style={{ borderRadius: "25px", objectFit: "cover" }}
+                      alt={item?.title}
+                    />
+                  )}
                 </CardMedia>
-              )}
 
-              <CardContent>
-                <Typography
-                  color="primary"
+                <CardContent>
+                  {isLoading ? (
+                    <Skeleton variant="rounded" height="48px" width="100%" />
+                  ) : (
+                    <Typography
+                      color="primary"
+                      sx={{
+                        fontSize: {
+                          lg: "36px",
+                          md: "32px",
+                          sm: "28px",
+                          xs: "24px",
+                        },
+                        fontWeight: { md: "700", xs: "500" },
+                      }}
+                    >
+                      {item?.title}
+                    </Typography>
+                  )}
+                </CardContent>
+
+                <CardActions
                   sx={{
-                    fontSize: {
-                      lg: "36px",
-                      md: "32px",
-                      sm: "28px",
-                      xs: "24px",
-                    },
-                    fontWeight: { md: "700", xs: "500" },
+                    display: "flex",
+                    justifyContent: "center",
+                    px: 0,
+                    gap: 1,
                   }}
                 >
-                  {item.title}
-                </Typography>
-              </CardContent>
-
-              <CardActions
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  px: 0,
-                  gap: 1,
-                }}
-              >
-                {isLoading
-                  ? Array.from({ length: 3 }).map((_, index) => (
-                      <Skeleton
-                        key={index}
-                        variant="rounded"
-                        width={80}
-                        height={36}
-                      />
-                    ))
-                  : [
-                      ...new Set(
-                        item.cities.flatMap((city: any) =>
-                          city.theatres.map((theatre: any) => theatre.chain)
-                        )
-                      ),
-                    ].map((chain: any) => (
-                      <Button
-                        key={chain}
-                        variant="contained"
-                        sx={{
-                          background: chainColors[chain] || "#ccc",
-                        }}
-                      >
-                        {chain}
-                      </Button>
-                    ))}
-              </CardActions>
-            </Card>
-          ))}
+                  {isLoading
+                    ? Array.from({ length: 3 }).map((_, index) => (
+                        <Skeleton
+                          key={index}
+                          variant="rounded"
+                          width={80}
+                          height={36}
+                        />
+                      ))
+                    : [
+                        ...new Set(
+                          item.cities.flatMap((city: any) =>
+                            city.days.flatMap((day: any) =>
+                              day.theatres.map((theatre: any) => theatre.chain)
+                            )
+                          )
+                        ),
+                      ].map((chain: any) => (
+                        <Button
+                          key={chain}
+                          variant="contained"
+                          sx={{
+                            background: chainColors[chain] || "#ccc",
+                          }}
+                        >
+                          {chain}
+                        </Button>
+                      ))}
+                </CardActions>
+              </Card>
+            )
+          )}
         </Carousel>
       </Container>
 
-      <IconButton
-        onClick={() => carouselRef.current?.next()}
-        sx={{
-          position: "absolute",
-          right: 0,
-          top: "50%",
-          transform: "translateY(-50%)",
-          zIndex: 10,
-          p: 0,
-        }}
-      >
-        <Paper
-          elevation={3}
+      {isLoading ? (
+        <Skeleton
+          variant="circular"
           sx={{
             width: { lg: "62px", md: "52px", sm: "32px", xs: "22px" },
             height: { lg: "62px", md: "52px", sm: "32px", xs: "22px" },
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: "50%",
+            position: "absolute",
+            right: 0,
+            top: "50%",
+            transform: "translateY(-50%)",
+          }}
+        />
+      ) : (
+        <IconButton
+          onClick={() => carouselRef.current?.next()}
+          sx={{
+            position: "absolute",
+            right: 0,
+            top: "50%",
+            transform: "translateY(-50%)",
+            zIndex: 10,
+            p: 0,
           }}
         >
-          <ArrowForwardIos
-            sx={{ fontSize: { lg: "22px", sm: "18px", xs: "12px" } }}
-          />
-        </Paper>
-      </IconButton>
+          <Paper
+            elevation={3}
+            sx={{
+              width: { lg: "62px", md: "52px", sm: "32px", xs: "22px" },
+              height: { lg: "62px", md: "52px", sm: "32px", xs: "22px" },
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: "50%",
+            }}
+          >
+            <ArrowForwardIos
+              sx={{ fontSize: { lg: "22px", sm: "18px", xs: "12px" } }}
+            />
+          </Paper>
+        </IconButton>
+      )}
     </Box>
   );
 };
