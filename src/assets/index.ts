@@ -39,7 +39,8 @@ import Indomaret from "./Svgs/PaymentLogo/Indomaret Logo.svg";
 
 import CGV from "./Svgs/Studio/CGV.svg";
 import Cinemapolis from "./Svgs/Studio/cinemapolis.svg";
-import XXI from "./Svgs/Studio/xxi.svg";
+import INOX from "./Svgs/Studio/xxi.svg";
+import PVR from "./Svgs/Studio/pvr.avif";
 
 import Cinema1 from "./Images/PaymentSuccess/image1.png";
 import Cinema2 from "./Images/PaymentSuccess/image.png";
@@ -78,7 +79,8 @@ export {
   Indomaret,
   CGV,
   Cinemapolis,
-  XXI,
+  INOX,
+  PVR,
   Cinema1,
   Cinema2,
 };
