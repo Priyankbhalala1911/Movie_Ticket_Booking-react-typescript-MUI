@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "..";
 
-
 interface showState {
   showTimes: string | null;
   showPrice: string | null;
   showType: string | null;
   theaterName: string | null;
   location: string | null;
+  date: string | null;
 }
 
 const initialState: showState = {
@@ -16,6 +16,7 @@ const initialState: showState = {
   showType: null,
   theaterName: null,
   location: null,
+  date: null,
 };
 
 const ShowSlice = createSlice({
@@ -30,6 +31,7 @@ const ShowSlice = createSlice({
         time: string;
         theaterName: string;
         location: string;
+        date: string;
       }>
     ) => {
       state.showTimes = action.payload.time;
@@ -37,6 +39,7 @@ const ShowSlice = createSlice({
       state.showType = action.payload.type;
       state.theaterName = action.payload.theaterName;
       state.location = action.payload.location;
+      state.date = action.payload.date;
     },
   },
 });
