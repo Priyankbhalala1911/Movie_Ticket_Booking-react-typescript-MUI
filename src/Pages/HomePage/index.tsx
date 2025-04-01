@@ -22,7 +22,7 @@ const Home: React.FC = () => {
       >
         <CarsoulMovie />
         <CarsoualAdv />
-        <MovieNews loading={loading} />
+        <MovieNews />
         <MoviePoster loading={loading} />
       </Container>
     </>
