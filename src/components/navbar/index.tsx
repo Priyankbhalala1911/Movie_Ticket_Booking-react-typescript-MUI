@@ -109,7 +109,13 @@ const Navbar: React.FC = () => {
             }}
             px="0px"
           >
-            <img src={Logo} alt="navbarLogo" width={"64px"} />
+            <img
+              src={Logo}
+              alt="navbarLogo"
+              width={"64px"}
+              style={{ cursor: "pointer" }}
+              onClick={() => navigate("/")}
+            />
           </Box>
           <Container
             component={"div"}
@@ -184,7 +190,7 @@ const Navbar: React.FC = () => {
                 }}
                 onClick={() => setOpen(!open)}
               >
-                {user.charAt(0).toUpperCase()}
+                {user && user.charAt(0).toUpperCase()}
               </Avatar>
             ) : (
               <Tooltip title="Account Login">
