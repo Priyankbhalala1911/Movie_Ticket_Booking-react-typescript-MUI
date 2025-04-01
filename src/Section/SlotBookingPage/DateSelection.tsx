@@ -105,7 +105,9 @@ const DateSelection: React.FC = () => {
               <Button
                 key={item.date}
                 variant={selectedDate === item.date ? "contained" : "outlined"}
-                onClick={() => dispatch(selectDate(item.futuredate))}
+                onClick={() => {
+                  dispatch(selectDate(item.futuredate));
+                }}
                 sx={{
                   p: { lg: "18px", md: "16px", sm: "14px", xs: "12px" },
                   display: "flex",
