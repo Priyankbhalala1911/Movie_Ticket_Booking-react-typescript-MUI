@@ -9,16 +9,20 @@ import {
   Skeleton,
   Typography,
 } from "@mui/material";
-import { MovieNewsData } from "../../Data/MovieNewsData";
 import { Link, useNavigate } from "react-router";
+import { useQuery } from "@tanstack/react-query";
+import { MovieAllNews } from "../../services/movieNews";
 
-interface MovieProps {
-  loading: boolean;
-}
-
-const MovieNews: React.FC<MovieProps> = (props) => {
+const MovieNews: React.FC = () => {
   const navigate = useNavigate();
-  const { loading } = props;
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["news"],
+    queryFn: () => MovieAllNews(),
+    staleTime: Infinity,
+    gcTime: 0,
+  });
+
   return (
     <>
       <Box
@@ -51,7 +55,7 @@ const MovieNews: React.FC<MovieProps> = (props) => {
               <Typography
                 variant="h4"
                 sx={{
-                  display: `${loading ? "block" : "none"}`,
+                  display: `${isLoading ? "none" : "block"}`,
                 }}
               >
                 <Link
@@ -76,63 +80,90 @@ const MovieNews: React.FC<MovieProps> = (props) => {
             gap: "20px",
           }}
         >
-          {MovieNewsData.slice(0, 3).map((news, index) => (
-            <Card
-              key={index}
-              sx={{
-                cursor: "pointer",
-                "&:hover": {
-                  transform: "scale(1.05)",
-                  boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.2)",
-                },
-              }}
-            >
-              {loading ? (
-                <CardMedia
-                  onClick={() => {
-                    window.scrollTo(0, 0);
-                    navigate(`/news/video/${news.id}`);
+          {isLoading || !data
+            ? Array.from({ length: 3 }).map((_, index) => (
+                <Card
+                  key={index}
+                  sx={{
+                    cursor: "pointer",
+                    borderRadius: "15px",
+                    "&:hover": {
+                      transform: "scale(1.05)",
+                      boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.2)",
+                    },
                   }}
                 >
-                  <img
-                    src={news.image}
-                    alt={news.newsTitle}
-                    style={{ objectFit: "cover", width: "100%" }}
+                  <Skeleton
+                    variant="rectangular"
+                    sx={{ width: "100%", height: "214px" }}
                   />
-                </CardMedia>
-              ) : (
-                <Skeleton
-                  variant="rounded"
-                  component={CardMedia}
-                  sx={{ width: "100%", height: "214px" }}
-                />
-              )}
-              <CardActions sx={{ pt: "25px" }}>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  sx={{ textTransform: "capitalize" }}
-                  onClick={() => {
-                    window.scrollTo(0, 0);
-                    navigate(`/news/${news.id}`);
+                  <CardActions sx={{ pt: "25px" }}>
+                    <Skeleton variant="rectangular" width={100} height={36} />
+                  </CardActions>
+                  <CardContent sx={{ px: "8px" }}>
+                    <Skeleton variant="text" width="100%" height={80} />
+                    <Skeleton
+                      variant="text"
+                      width="50%"
+                      height={20}
+                      sx={{ mt: 1 }}
+                    />
+                  </CardContent>
+                </Card>
+              ))
+            : data?.slice(0, 3).map((news: any, index: number) => (
+                <Card
+                  key={index}
+                  sx={{
+                    cursor: "pointer",
+                    "&:hover": {
+                      transform: "scale(1.05)",
+                      boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.2)",
+                    },
+                    borderRadius: "15px",
                   }}
                 >
-                  {news.buttonName}
-                </Button>
-              </CardActions>
-              <CardContent sx={{ px: "8px" }}>
-                <Typography variant="h4" color="primary">
-                  {news.newsTitle}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  sx={{ color: "#5A637A", pt: "18px" }}
-                >
-                  {news.date} | TIX ID
-                </Typography>
-              </CardContent>
-            </Card>
-          ))}
+                  <CardMedia
+                    onClick={() => {
+                      navigate(`/news/video/${news.news_id}`);
+                    }}
+                  >
+                    <img
+                      src={news.image}
+                      alt={news.title}
+                      style={{
+                        objectFit: "cover",
+                        width: "100%",
+                        height: "237px",
+                        borderRadius: "15px",
+                      }}
+                    />
+                  </CardMedia>
+                  <CardActions sx={{ pt: "25px" }}>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      sx={{ textTransform: "capitalize" }}
+                      onClick={() => {
+                        navigate(`/news/${news.news_id}`);
+                      }}
+                    >
+                      {news.buttonName}
+                    </Button>
+                  </CardActions>
+                  <CardContent sx={{ px: "8px" }}>
+                    <Typography variant="h4" color="primary">
+                      {news.title}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{ color: "#5A637A", pt: "18px" }}
+                    >
+                      {news.date} | TIX ID
+                    </Typography>
+                  </CardContent>
+                </Card>
+              ))}
         </Box>
       </Box>
     </>
