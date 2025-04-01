@@ -37,3 +37,15 @@ export const generateShowtimes = (startTime: string, Duration: number) => {
 
   return showtimes;
 };
+
+export const getCurrentDay = (date: string) => {
+  const getDate = new Date(date);
+  const currentDate = new Date();
+
+  getDate.setHours(0, 0, 0, 0);
+  currentDate.setHours(0, 0, 0, 0);
+
+  const diffrenceDays =
+    (getDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24);
+  return diffrenceDays + 1;
+};
