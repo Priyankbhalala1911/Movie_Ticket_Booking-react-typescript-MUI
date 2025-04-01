@@ -6,20 +6,31 @@ import CityLocation from "../../Section/SlotBookingPage/CityLocation";
 import SearchTicket from "../../Section/SlotBookingPage/SearchTicket";
 import CategoryTicket from "../../Section/SlotBookingPage/CategoryTicket";
 import { useParams } from "react-router";
-import toast from "react-hot-toast";
 import { handelMovieById } from "../../services/movie";
 import { useQuery } from "@tanstack/react-query";
-
+import { useSelector } from "react-redux";
+import { RootState } from "../../Store";
+import { getCurrentDay } from "../../Utils";
 const SlotBooking: React.FC = () => {
   const { id } = useParams();
+  const city = useSelector((state: RootState) => state.filterTheater.location);
+  const chain = useSelector((state: RootState) => state.filterTheater.brand);
+  const selectDate = useSelector(
+    (state: RootState) => state.movies.selectedDate
+  );
+  const day = getCurrentDay(selectDate);
 
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["Movies"],
+  const { data, isLoading } = useQuery({
+    queryKey: ["Movies", city, day, chain],
     queryFn: () =>
-      id ? handelMovieById(id) : Promise.reject("Movie ID is undefined"),
+      id
+        ? handelMovieById(id, city, day, chain)
+        : Promise.reject("Movie ID is undefined"),
+    staleTime: 0,
+    gcTime: 0,
+    retry: true,
   });
 
-  if (isError) return "An error has occurred: ";
   return (
     <>
       <Stack
@@ -47,16 +58,22 @@ const SlotBooking: React.FC = () => {
               <DateSelection />
               <CityLocation />
               <SearchTicket />
-              <CategoryTicket
-                loading={isLoading}
-                theaters={data?.cities.flatMap(
-                  (city: any) => city?.theatres || []
-                )}
-              />
+              {!data?.response?.data?.message ? (
+                <CategoryTicket
+                  loading={isLoading}
+                  theaters={data?.cities.flatMap((city: any) =>
+                    city.days
+                      .filter((days: any) => days.day === day)
+                      .flatMap((day: any) => day.theatres || [])
+                  )}
+                />
+              ) : (
+                data?.response?.data?.message
+              )}
             </Grid>
 
             <Grid item xs={12} md={4} sm={5}>
-              {data && <MovieDetails movie={data} loading={isLoading} />}
+              <MovieDetails movie={data ? data : []} loading={isLoading} />
               <BuyBooking />
             </Grid>
           </Grid>
