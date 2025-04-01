@@ -7,7 +7,7 @@ import {
   TextField,
 } from "@mui/material";
 import React from "react";
-import { CGV, Cinemapolis, XXI } from "../../assets";
+import { CGV, Cinemapolis, INOX, PVR, XXI } from "../../assets";
 import MenuItemSelect from "../../components/MenuItem";
 import { useDispatch, useSelector } from "react-redux";
 import { UpdatedCinema } from "../../Store/Slices/FilterSlice";
@@ -26,11 +26,12 @@ const Sort = [
 ];
 const Cinema = [
   { label: "", value: "Select" },
-  { label: "XXI", value: <img src={XXI} alt="logo1" width={35} /> },
-  { label: "CGV", value: <img src={CGV} alt="logo2" width={35} /> },
+  { label: "INOX", value: <img src={INOX} alt="logo1" width={35} /> },
+  { label: "PVR", value: <img src={PVR} alt="logo2" width={35} /> },
+  { label: "CGV", value: <img src={CGV} alt="logo3" width={35} /> },
   {
     label: "Cinepolis",
-    value: <img src={Cinemapolis} alt="logo3" width={75} />,
+    value: <img src={Cinemapolis} alt="logo4" width={75} />,
   },
 ];
 const SearchTicket: React.FC = () => {
