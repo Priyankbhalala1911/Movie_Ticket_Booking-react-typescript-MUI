@@ -20,23 +20,30 @@ interface Movie {
   director: string;
   rating: string;
 }
+
 interface MovieProps {
   movie: Movie;
-  loading: boolean;
+  loading: boolean; // This will now only control image loading
 }
 
 const MovieDetails: React.FC<MovieProps> = ({ movie, loading }) => {
   const movieDetails = [
-    { label: "Genre", value: movie.genre },
-    { label: "Duration", value: movie.duration },
-    { label: "Director", value: movie.director },
-    { label: "Rating", value: movie.rating },
+    { label: "Genre", value: movie?.genre },
+    { label: "Duration", value: movie?.duration },
+    { label: "Director", value: movie?.director },
+    { label: "Rating", value: movie?.rating },
   ];
 
+  console.log(loading);
   return (
     <Card sx={{ borderRadius: "10px" }}>
       {loading ? (
-        <Skeleton variant="rectangular" width="100%" height="364px" />
+        <Skeleton
+          variant="rectangular"
+          width="100%"
+          height="364px"
+          animation="wave"
+        />
       ) : (
         <CardMedia
           component="img"
@@ -47,7 +54,7 @@ const MovieDetails: React.FC<MovieProps> = ({ movie, loading }) => {
       )}
       <CardContent>
         <Typography variant="h3" color="primary" gutterBottom>
-          {loading ? <Skeleton width="60%" /> : movie.title}
+          {movie?.title}
         </Typography>
         <TableContainer sx={{ py: "20px" }}>
           <Table sx={{ maxWidth: "350px" }}>
@@ -56,16 +63,14 @@ const MovieDetails: React.FC<MovieProps> = ({ movie, loading }) => {
                 <TableRow key={index}>
                   <TableCell sx={{ p: 0, py: "11px", borderBottom: "none" }}>
                     <Typography variant="body1" fontWeight="bold">
-                      {loading ? <Skeleton width="80px" /> : detail.label}
+                      {detail?.label}
                     </Typography>
                   </TableCell>
                   <TableCell
                     sx={{ p: 0, py: "11px", borderBottom: "none" }}
                     colSpan={2}
                   >
-                    <Typography variant="body1">
-                      {loading ? <Skeleton width="100px" /> : detail.value}
-                    </Typography>
+                    <Typography variant="body1">{detail?.value}</Typography>
                   </TableCell>
                 </TableRow>
               ))}
