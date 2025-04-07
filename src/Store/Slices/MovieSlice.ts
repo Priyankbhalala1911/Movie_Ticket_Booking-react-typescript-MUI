@@ -1,58 +1,29 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../index";
 import { FormattedDate } from "../../Utils";
-import { MovieData } from "../../Data/MovieData";
 
 const today = new Date();
 
-interface Brands {
-  XXI: boolean;
-  CGV: boolean;
-  Cinepolis: boolean;
-}
-
-interface Show {
-  type: string;
-  price: string;
-  times: string[];
-}
-
-interface Theater {
-  id: number;
-  name: string;
-  location: string;
-  brand: string;
-  shows: Show[];
-}
-
-interface Movie {
-  id: number;
-  image: string;
-  title: string;
-  genre: string;
-  brands: Brands;
-  duration: string;
-  director: string;
-  rating: string;
-  theaters: Theater[];
-}
-
 interface MovieState {
-  selectedMovie: Movie | null;
+  selectedMovie: string | null;
   selectedDate: string;
+  selectedMovieId: string | null;
 }
 
 const initialState: MovieState = {
-  selectedMovie: null,
+  selectedMovie: "",
   selectedDate: FormattedDate(today),
+  selectedMovieId: null,
 };
 const MovieSlice = createSlice({
   name: "Movies",
   initialState,
   reducers: {
-    selectMovie: (state, action: PayloadAction<number>) => {
-      state.selectedMovie =
-        MovieData.find((movie) => movie.id === action.payload) || null;
+    selectMovie: (state, action: PayloadAction<string>) => {
+      state.selectedMovie = action.payload;
+    },
+    selecteMovieId: (state, action: PayloadAction<string>) => {
+      state.selectedMovieId = action.payload;
     },
 
     selectDate: (state, action: PayloadAction<string>) => {
@@ -61,7 +32,7 @@ const MovieSlice = createSlice({
   },
 });
 
-export const { selectMovie, selectDate } = MovieSlice.actions;
+export const { selectMovie, selectDate, selecteMovieId } = MovieSlice.actions;
 export const selectSelectedMovie = (state: RootState) =>
   state.movies.selectedMovie;
 
