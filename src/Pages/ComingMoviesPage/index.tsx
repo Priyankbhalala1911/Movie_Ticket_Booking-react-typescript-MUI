@@ -9,128 +9,115 @@ import {
   Skeleton,
   Typography,
 } from "@mui/material";
-import { MoviePosterData } from "../../Data/MoviePosterData";
+import { useQuery } from "@tanstack/react-query";
+import { handleComingMovies } from "../../services/ComingMovies";
 import { customColors } from "../../Theme";
 
+const chainColors: Record<string, string> = {
+  INOX: `linear-gradient(${customColors.xxiGradientStart}, ${customColors.xxiGradientEnd})`,
+  CGV: customColors.CGVColor,
+  Cinepolis: customColors.cinepolisBlue,
+  PVR: `linear-gradient(${customColors.pastelYellow},${customColors.CGVColor}, ${customColors.cinepolisBlue})`,
+};
+
 const ComingMovies: React.FC = () => {
-  const loading: boolean = true;
+  const { data, isLoading } = useQuery({
+    queryKey: ["comingMovies"],
+    queryFn: () => handleComingMovies(),
+    staleTime: 0,
+    gcTime: 0,
+  });
+
+  const skeletonArray = Array.from({ length: 6 });
 
   return (
-    <>
+    <Box
+      sx={{
+        mt: "50px",
+        mb: "160px",
+        px: { lg: "72px", md: "52px", sm: "32px", xs: "12px" },
+        display: "flex",
+        gap: "48px",
+        flexDirection: "column",
+      }}
+    >
+      <Box sx={{ display: "flex", flexDirection: "column", gap: "18px" }}>
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Container maxWidth="xl" sx={{ px: { xs: 0 } }}>
+            <Typography variant="h4" color="primary">
+              Coming Soon
+            </Typography>
+          </Container>
+          <Container sx={{ textAlign: "end", px: { xs: 0 } }}></Container>
+        </Box>
+        <Typography variant="body1" color="primary">
+          Wait for its presence in your favorite cinema!
+        </Typography>
+      </Box>
+
       <Box
         sx={{
-          mt: "50px",
-          mb: "160px",
-          px: { lg: "72px", md: "52px", sm: "32px", xs: "12px" },
-          display: "flex",
-          gap: "48px",
-          flexDirection: "column",
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))",
+          gap: "80px",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "18px",
-          }}
-        >
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Container
-              maxWidth="xl"
-              sx={{
-                px: { xs: 0 },
-              }}
-            >
-              <Typography variant="h4" color="primary">
-                Coming Soon
-              </Typography>
-            </Container>
-            <Container sx={{ textAlign: "end", px: { xs: 0 } }}></Container>
-          </Box>
-          <Typography variant="body1" color="primary">
-            Wait for its presence in your favorite cinema!
-          </Typography>
-        </Box>
-
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))",
-            gap: "80px",
-          }}
-        >
-          {MoviePosterData.map((news, index) => (
-            <Card key={index} sx={{ cursor: "pointer", borderRadius: "12px" }}>
-              {loading ? (
-                <CardMedia sx={{ height: "607px" }}>
-                  <img
-                    src={news.image}
-                    alt="nathi"
-                    style={{
-                      objectFit: "cover",
-                      width: "100%",
-                      height: "100%",
-                    }}
-                  />
-                </CardMedia>
+        {(isLoading ? skeletonArray : data)?.map((item: any, index: number) => (
+          <Card key={index} sx={{ cursor: "pointer", borderRadius: "12px" }}>
+            <CardMedia sx={{ height: "607px" }}>
+              {isLoading ? (
+                <Skeleton variant="rectangular" width="100%" height="100%" />
               ) : (
-                <Skeleton
-                  width="100%"
-                  height="607px"
-                  variant="rectangular"
-                  component={CardMedia}
+                <img
+                  src={item.movie_poster}
+                  alt={item.movie_title}
+                  style={{ objectFit: "cover", width: "100%", height: "100%" }}
                 />
               )}
-              <CardContent sx={{ px: "8px" }}>
+            </CardMedia>
+            <CardContent sx={{ px: "8px" }}>
+              {isLoading ? (
+                <Skeleton variant="text" width="80%" height={32} />
+              ) : (
                 <Typography variant="h4" color="primary">
-                  {news.title}
+                  {item.movie_title}
                 </Typography>
-              </CardContent>
-              <CardActions sx={{ display: "flex", mb: "20px" }}>
-                {loading ? (
+              )}
+            </CardContent>
+            <CardActions
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 1,
+                px: 1,
+                mb: "20px",
+              }}
+            >
+              {isLoading ? (
+                <>
+                  <Skeleton variant="rounded" width={80} height={36} />
+                  <Skeleton variant="rounded" width={100} height={36} />
+                </>
+              ) : (
+                item.chain.map((chain: string, i: number) => (
                   <Button
+                    key={i}
                     variant="contained"
                     sx={{
-                      background: `linear-gradient(${customColors.xxiGradientStart},${customColors.xxiGradientEnd})`,
-                      display: `${news.brands.xxi ? "block" : "none"}`,
+                      background: chainColors[chain],
+                      fontSize: "0.875rem",
                     }}
                   >
-                    XXI
+                    {chain}
                   </Button>
-                ) : (
-                  <Skeleton variant="rounded" component={Button} />
-                )}
-
-                {loading ? (
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    sx={{ display: `${news.brands.cgv ? "block" : "none"}` }}
-                  >
-                    CGV
-                  </Button>
-                ) : (
-                  <Skeleton variant="rounded" component={Button} />
-                )}
-                {loading ? (
-                  <Button
-                    variant="contained"
-                    sx={{
-                      background: `${customColors.cinepolisBlue}`,
-                      display: `${news.brands.cinemapolis ? "block" : "none"}`,
-                    }}
-                  >
-                    CINEMAPOLIS
-                  </Button>
-                ) : (
-                  <Skeleton variant="rounded" component={Button} />
-                )}
-              </CardActions>
-            </Card>
-          ))}
-        </Box>
+                ))
+              )}
+            </CardActions>
+          </Card>
+        ))}
       </Box>
-    </>
+    </Box>
   );
 };
+
 export default ComingMovies;
