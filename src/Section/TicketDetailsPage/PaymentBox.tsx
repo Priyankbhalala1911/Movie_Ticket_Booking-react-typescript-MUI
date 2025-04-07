@@ -65,7 +65,7 @@ const PaymentBox: React.FC = () => {
                 REGULAR SEAT
               </Typography>
               <Typography>
-                Rp. {Regularprice.toFixed(2)}{" "}
+                ₹ {(selectedslot.showPrice ?? 0).toFixed(2)}{" "}
                 <b style={{ color: "#414A63" }}> X{selectedSeat.length}</b>
               </Typography>
             </Stack>
@@ -79,7 +79,7 @@ const PaymentBox: React.FC = () => {
                 SERVICE FEE
               </Typography>
               <Typography>
-                Rp. {ServiceFees.toFixed(2)}{" "}
+                ₹ {ServiceFees.toFixed(2)}{" "}
                 <b style={{ color: "#414A63" }}> X{selectedSeat.length}</b>
               </Typography>
             </Stack>
@@ -98,7 +98,7 @@ const PaymentBox: React.FC = () => {
               <Typography variant="body1" color="primary" flex={1}>
                 PROMO TIX ID
               </Typography>
-              <Typography>- Rp. {PromoVoucher.toFixed(2)}</Typography>
+              <Typography>- ₹ {PromoVoucher.toFixed(2)}</Typography>
             </Stack>
             <Divider sx={{ mt: "27px" }} />
           </Box>
@@ -118,7 +118,7 @@ const PaymentBox: React.FC = () => {
                 Total Payment
               </Typography>
               <Typography fontWeight={700} color="primary">
-                Rp. {TotalPrice.toFixed(2)}
+                ₹ {TotalPrice.toFixed(2)}
               </Typography>
             </Stack>
           </Box>

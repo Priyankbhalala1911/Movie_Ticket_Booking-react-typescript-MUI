@@ -54,8 +54,8 @@ export const handlePaymentVerify = async (data: any, selectedMovie: any) => {
         );
         console.log(verify.data);
         if (verify.data.message) {
-          toast.success(verify.data.message);
           window.location.href = "/payment-success";
+          toast.success(verify.data.message);
         }
       } catch (error) {
         console.log(error);

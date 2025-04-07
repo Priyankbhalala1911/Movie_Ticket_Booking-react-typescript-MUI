@@ -29,7 +29,7 @@ const SeatBookingBill: React.FC = () => {
             Total
           </Typography>
           <Typography variant="h1" color="primary">
-            RP. {totalPrice.toFixed(2)}
+            ₹ {totalPrice.toFixed(2)}
           </Typography>
         </Grid>
         <Grid item md={3} sm={6} xs={12}>
