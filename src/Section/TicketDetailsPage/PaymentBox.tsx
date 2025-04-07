@@ -8,40 +8,34 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { useNavigate } from "react-router";
-
-import { useState } from "react";
-import { Dana } from "../../assets";
-import PaymentMethodDialog from "../../components/PaymentMethod";
 import { useSelector } from "react-redux";
 import { RootState } from "../../Store";
-
-interface method {
-  name: string;
-  logo: string;
-}
-
+import { handlePaymentOrder } from "../../services/payment";
 const PaymentBox: React.FC = () => {
-  const [open, setOpen] = useState(false);
   const selectedSeat = useSelector(
     (state: RootState) => state.seats.selectedSeat
   );
-  const selectedPrice = useSelector(
-    (state: RootState) => state.shows.showPrice
-  );
-  const [selectMethod, setSelectMethod] = useState<method | null>({
-    name: "DANA",
-    logo: Dana,
-  });
-  const navigate = useNavigate();
+  const selectMovie = useSelector((state: RootState) => state.movies);
+  console.log(selectMovie.selectedMovieId);
+  const selectedslot = useSelector((state: RootState) => state.shows);
 
-  const Regularprice = Number(selectedPrice) * selectedSeat.length;
+  const Regularprice = Number(selectedslot.showPrice) * selectedSeat.length;
 
   const ServiceFees = 1.0 * selectedSeat.length;
   const PromoVoucher = 10.0;
 
   const TotalPrice = Regularprice + ServiceFees - PromoVoucher;
 
+  const selectedMovie = {
+    movie_id: selectMovie.selectedMovieId,
+    location: selectedslot.location,
+    type: selectedslot.showType,
+    date: selectedslot.date,
+    price: selectedslot.showPrice,
+    time: selectedslot.showTimes,
+    seat_number: selectedSeat,
+    total_amount: TotalPrice,
+  };
   return (
     <>
       <Card
@@ -127,43 +121,8 @@ const PaymentBox: React.FC = () => {
                 Rp. {TotalPrice.toFixed(2)}
               </Typography>
             </Stack>
-            <Divider sx={{ mt: "18px" }} />
           </Box>
-          <Box mt="32px">
-            <Stack
-              direction="row"
-              justifyContent="center"
-              alignItems="center"
-              mt="12px"
-            >
-              <Typography
-                variant="body1"
-                color="primary"
-                fontWeight={700}
-                flex={1}
-              >
-                Payment Methods
-              </Typography>
 
-              <Typography
-                fontSize="12px"
-                fontWeight={700}
-                color="info"
-                sx={{ textDecoration: "none", cursor: "pointer" }}
-                onClick={() => setOpen(true)}
-              >
-                See All
-              </Typography>
-            </Stack>
-          </Box>
-          <Box mt="24px">
-            <Stack direction="row" alignItems="center" gap="16px">
-              <img src={selectMethod?.logo} alt="Dana Logo" width="40px" />
-              <Typography variant="h6" color="primary">
-                {selectMethod?.name}
-              </Typography>
-            </Stack>
-          </Box>
           <Box mt="25px">
             <Typography color="error" variant="caption">
               *Ticket purchases cannot be cancelled.
@@ -175,8 +134,7 @@ const PaymentBox: React.FC = () => {
             variant="contained"
             fullWidth
             onClick={() => {
-              navigate("/payment-success");
-              window.scrollTo(0, 0);
+              handlePaymentOrder(TotalPrice, selectedMovie);
             }}
           >
             <Typography variant="h5" color="warning">
@@ -185,13 +143,6 @@ const PaymentBox: React.FC = () => {
           </Button>
         </CardActions>
       </Card>
-      {open && (
-        <PaymentMethodDialog
-          open={open}
-          onClose={() => setOpen(false)}
-          setSelectMethod={setSelectMethod}
-        />
-      )}
     </>
   );
 };
