@@ -1,9 +1,25 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Skeleton, Stack, Typography } from "@mui/material";
 import ChooseTimeSlot from "../../Section/ChooseSeatPage/ChooseTimeSlot";
 import ChooseSeatBlock from "../../Section/ChooseSeatPage/ChooseSeatBlock";
 import SeatBookingBill from "../../Section/ChooseSeatPage/SeatBookingBill";
+import { useQuery } from "@tanstack/react-query";
+import { useSelector } from "react-redux";
+import { RootState } from "../../Store";
+import { handleScreen } from "../../services/seat";
 
 const ChooseSeat: React.FC = () => {
+  const selectedScreenID = useSelector((state: RootState) => state.shows.id);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["screen", selectedScreenID],
+    queryFn: () =>
+      selectedScreenID
+        ? handleScreen(selectedScreenID)
+        : Promise.reject("Screen ID is null"),
+    gcTime: 0,
+    staleTime: 0,
+  });
+
   return (
     <>
       <Stack
@@ -27,24 +43,38 @@ const ChooseSeat: React.FC = () => {
           </Box>
           <Stack flexDirection="row" gap="24px">
             <Stack flexDirection="row" gap="12px">
-              <Box bgcolor="#1A2C50" width="16px" height="16px"></Box>
+              {isLoading ? (
+                <Skeleton width="16px" height="16px" variant="rectangular" />
+              ) : (
+                <Box bgcolor="#1A2C50" width="16px" height="16px"></Box>
+              )}
               <Typography fontSize="12px" fontWeight="700" color="primary">
                 Filled
               </Typography>
             </Stack>
             <Stack flexDirection="row" gap="12px">
-              <Box
-                bgcolor="white"
-                width="16px"
-                height="16px"
-                border="1px solid #9DA8BE"
-              ></Box>
+              {isLoading ? (
+                <Skeleton width="16px" height="16px" variant="rectangular" />
+              ) : (
+                <Box
+                  bgcolor="white"
+                  width="16px"
+                  height="16px"
+                  border="1px solid #9DA8BE"
+                ></Box>
+              )}
+
               <Typography fontSize="12px" fontWeight="700" color="primary">
                 Empty Chair
               </Typography>
             </Stack>
             <Stack flexDirection="row" gap="12px">
-              <Box bgcolor="#118EEA" width="16px" height="16px"></Box>
+              {isLoading ? (
+                <Skeleton width="16px" height="16px" variant="rectangular" />
+              ) : (
+                <Box bgcolor="#118EEA" width="16px" height="16px"></Box>
+              )}
+
               <Typography fontSize="12px" fontWeight="700" color="primary">
                 Choosen
               </Typography>
@@ -59,7 +89,7 @@ const ChooseSeat: React.FC = () => {
               width: "100%",
             }}
           >
-            <ChooseSeatBlock />
+            <ChooseSeatBlock seats={data?.seats} loading={isLoading} />
           </Box>
 
           <Box width="100%" mt="64px">
