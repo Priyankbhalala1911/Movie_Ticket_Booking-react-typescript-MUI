@@ -12,14 +12,6 @@ const Details: React.FC = () => {
   const SelectedSeat = useSelector(
     (state: RootState) => state.seats.selectedSeat
   );
-  const selectedDate = useSelector(
-    (state: RootState) => state.movies.selectedDate
-  );
-
-  const selectedMovie = useSelector(
-    (state: RootState) => state.movies.selectedMovie
-  );
-
   const SelectedSlot = useSelector((state: RootState) => state.shows);
 
   return (
@@ -40,7 +32,7 @@ const Details: React.FC = () => {
               Movie title
             </Typography>
             <Typography variant="h4" color="primary">
-              {selectedMovie?.title}
+              {SelectedSlot.movie_title}
             </Typography>
             <Divider />
           </Stack>
@@ -49,7 +41,7 @@ const Details: React.FC = () => {
               Date
             </Typography>
             <Typography variant="h4" color="primary">
-              {selectedDate}
+              {SelectedSlot.date}
             </Typography>
             <Divider />
           </Stack>
@@ -77,7 +69,7 @@ const Details: React.FC = () => {
               Tickets ({SelectedSeat.length})
             </Typography>
             <Typography variant="h4" color="primary">
-              {SelectedSeat.join(", ")}
+              {SelectedSeat.map((item) => item.seat_number).join(", ")}
             </Typography>
             <Divider />
           </Stack>
