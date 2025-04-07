@@ -61,7 +61,7 @@ const SlotBooking: React.FC = () => {
               {!data?.response?.data?.message ? (
                 <CategoryTicket
                   loading={isLoading}
-                  theaters={data?.cities.flatMap((city: any) =>
+                  theatres={data?.cities.flatMap((city: any) =>
                     city.days
                       .filter((days: any) => days.day === day)
                       .flatMap((day: any) => day.theatres || [])
