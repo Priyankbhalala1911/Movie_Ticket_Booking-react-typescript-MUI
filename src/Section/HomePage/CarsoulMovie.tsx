@@ -20,10 +20,11 @@ import { ArrowBackIosNew, ArrowForwardIos } from "@mui/icons-material";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../Store";
-import { selectMovie } from "../../Store/Slices/MovieSlice";
+import { selecteMovieId, selectMovie } from "../../Store/Slices/MovieSlice";
 import toast from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
 import { handelMovieApi } from "../../services/movie";
+import { clearSlot } from "../../Store/Slices/ShowSlice";
 
 const chainColors: Record<string, string> = {
   INOX: `linear-gradient(${customColors.xxiGradientStart}, ${customColors.xxiGradientEnd})`,
@@ -146,8 +147,10 @@ const CarsoulMovie: React.FC = () => {
                 elevation={0}
                 key={index}
                 onClick={() => {
-                  dispatch(selectMovie(item.movie_id));
+                  dispatch(selectMovie(item.title));
+                  dispatch(selecteMovieId(item.movie_id));
                   navigate(`/slot-booking/${item.movie_id}`);
+                  dispatch(clearSlot());
                 }}
               >
                 <CardMedia
