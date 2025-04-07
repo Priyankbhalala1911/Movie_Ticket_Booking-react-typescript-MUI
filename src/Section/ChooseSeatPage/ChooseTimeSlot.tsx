@@ -1,39 +1,27 @@
-import {
-  AccessTime,
-  KeyboardArrowDown,
-  KeyboardArrowUp,
-} from "@mui/icons-material";
-import { Button, Grid, Menu } from "@mui/material";
-import React, { useState } from "react";
+import { AccessTime } from "@mui/icons-material";
+import { Button } from "@mui/material";
+import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../Store";
-import { convertDurationToMinutes, generateShowtimes } from "../../Utils";
+
+// interface Time {
+//   id: string;
+//   Time: string;
+//   Price: number;
+// }
+// interface ShowTime {
+//   showTime: Time[];
+// }
 
 const ChooseTimeSlot: React.FC = () => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const selectedSlot = useSelector((state: RootState) => state.shows.showTimes);
 
-  const selectedTime = useSelector((state: RootState) => state.shows.showTimes);
-
-  const ShowTime = generateShowtimes(
-    selectedTime ?? "00:00",
-    convertDurationToMinutes("2 hours")
-  );
-
-  const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
   return (
     <>
       <Button
-        onClick={handleOpen}
         variant="text"
         color="primary"
         startIcon={<AccessTime />}
-        endIcon={<KeyboardArrowDown />}
         disableTouchRipple
         sx={{
           fontWeight: "bold",
@@ -42,9 +30,10 @@ const ChooseTimeSlot: React.FC = () => {
           bgcolor: "transparent",
         }}
       >
-        {selectedTime}
+        {selectedSlot}
       </Button>
-      <Menu
+
+      {/* <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={handleClose}
@@ -63,39 +52,55 @@ const ChooseTimeSlot: React.FC = () => {
             bgcolor: "transparent",
           }}
         >
-          {selectedTime}
+          {selectedSlot}
         </Button>
         <Grid container spacing={2} lg={12}>
-          {ShowTime.map((time, index) => {
-            return (
-              <Grid item lg={3} key={index}>
-                <Button
-                  variant={selectedSlot === time ? "contained" : "text"}
-                  color="primary"
-                  sx={{
-                    border:
-                      selectedSlot === time ? "none" : "1px solid #9DA8BE",
-                    bgcolor:
-                      selectedSlot === time ? "primary.main" : "transparent",
-                    color: selectedSlot === time ? "white" : "black",
-                    "&:hover": {
-                      bgcolor: "#282764",
-                      color: "white",
-                    },
-                    "&:disabled": {
-                      color: "#9DA8BE",
-                      border: "1px solid #ddd",
-                      bgcolor: "#DADFE8",
-                    },
-                  }}
-                >
-                  {time}
-                </Button>
-              </Grid>
-            );
-          })}
+          {Array.isArray(showTime) && showTime.length > 0 ? (
+            showTime?.map((time, index) => {
+              const showtime = dayjs()
+                .hour(Number(time.Time.split(":")[0]))
+                .minute(Number(time.Time.split(":")[1]));
+
+              const isPastTime = showtime.isBefore(now);
+              console.log(time);
+              return (
+                <Grid item lg={3} key={index}>
+                  <Button
+                    variant={selectedSlot === time.Time ? "contained" : "text"}
+                    onClick={() => dispatch(selectTime(time.Time))}
+                    color="primary"
+                    sx={{
+                      display: !isPastTime ? "block" : "none",
+                      border:
+                        selectedSlot === time.Time
+                          ? "none"
+                          : "1px solid #9DA8BE",
+                      bgcolor:
+                        selectedSlot === time.Time
+                          ? "primary.main"
+                          : "transparent",
+                      color: selectedSlot === time.Time ? "white" : "black",
+                      "&:hover": {
+                        bgcolor: "#282764",
+                        color: "white",
+                      },
+                      "&:disabled": {
+                        color: "#9DA8BE",
+                        border: "1px solid #ddd",
+                        bgcolor: "#DADFE8",
+                      },
+                    }}
+                  >
+                    {time.Time}
+                  </Button>
+                </Grid>
+              );
+            })
+          ) : (
+            <p>No available showtimes</p>
+          )}
         </Grid>
-      </Menu>
+      </Menu> */}
     </>
   );
 };
