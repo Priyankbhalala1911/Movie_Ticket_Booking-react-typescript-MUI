@@ -1,15 +1,20 @@
 import { Button, Grid, Typography } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { RootState } from "../../Store";
+import { clearSeat } from "../../Store/Slices/SeatSlice";
 
 const SeatBookingBill: React.FC = () => {
   const selectedSeats = useSelector(
     (state: RootState) => state.seats.selectedSeat
   );
+  const selectMovie = useSelector(
+    (state: RootState) => state.movies.selectedMovie
+  );
   const selectSlot = useSelector((state: RootState) => state.shows);
   const totalPrice = selectedSeats.length * Number(selectSlot.showPrice);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   return (
     <>
       <Grid
@@ -34,7 +39,7 @@ const SeatBookingBill: React.FC = () => {
 
           {selectedSeats.length > 0 ? (
             <Typography variant="h1" color="primary">
-              {[...selectedSeats].join(", ")}{" "}
+              {selectedSeats.map((seat) => seat.seat_number).join(", ")}
             </Typography>
           ) : (
             <Typography variant="h5" color="primary">
@@ -56,8 +61,8 @@ const SeatBookingBill: React.FC = () => {
               }}
               fullWidth
               onClick={() => {
-                navigate("/slot-booking");
-                window.scrollTo(0, 0);
+                navigate(`/slot-booking/${selectMovie}`);
+                dispatch(clearSeat());
               }}
             >
               RETURN
