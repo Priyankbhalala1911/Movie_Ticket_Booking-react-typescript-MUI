@@ -13,9 +13,6 @@ import { useNavigate } from "react-router";
 import { RootState } from "../../Store";
 
 const BuyBooking: React.FC = () => {
-  const selectedDate = useSelector(
-    (state: RootState) => state.movies.selectedDate
-  );
   const SelectedSlot = useSelector((state: RootState) => state.shows);
   const navigate = useNavigate();
   return (
@@ -31,19 +28,24 @@ const BuyBooking: React.FC = () => {
           elevation={0}
         >
           <CardContent>
-            <Typography variant="h3" color="primary">
-              {SelectedSlot.theaterName}
-            </Typography>
+            <Box component="span" display="flex">
+              <Typography flex={1} variant="h3" color="primary">
+                {SelectedSlot.theaterName}
+              </Typography>
+              <Typography variant="h4" color="primary">
+                {SelectedSlot.showTimes}
+              </Typography>
+            </Box>
             <Stack my="24px" gap="12px">
               <Typography variant="h6" sx={{ color: "#5A637A" }}>
-                {selectedDate}
+                {SelectedSlot.date}
               </Typography>
               <Box component="span" display="flex">
                 <Typography flex={1} variant="h4" color="primary">
                   {SelectedSlot.showType}
                 </Typography>
                 <Typography variant="h4" color="primary">
-                  {SelectedSlot.showTimes}
+                  ₹ {SelectedSlot.showPrice}
                 </Typography>
               </Box>
               <Typography sx={{ fontSize: "12px", color: "#9DA8BE" }}>
