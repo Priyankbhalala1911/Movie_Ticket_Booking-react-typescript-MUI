@@ -5,16 +5,26 @@ import {
   Button,
   useTheme,
   useMediaQuery,
+  Skeleton,
 } from "@mui/material";
 import { KeyboardBackspace } from "@mui/icons-material";
 import TicketDetails from "../../Section/TicketPage/TicketDetails";
 import PaymentDetails from "../../Section/TicketPage/PaymentDetails";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
+import { useQuery } from "@tanstack/react-query";
+import { Ticket } from "../../services/ticket";
 
 const TicketPage: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const navigate = useNavigate();
+  const { id } = useParams();
+  const { data, isLoading } = useQuery({
+    queryKey: ["ticket"],
+    queryFn: () => (id ? Ticket(id) : Promise.reject("Ticket ID is undefined")),
+    staleTime: 0,
+    gcTime: 0,
+  });
   return (
     <Stack
       sx={{
@@ -33,8 +43,12 @@ const TicketPage: React.FC = () => {
         Transaction Details
       </Typography>
 
-      <TicketDetails />
-      <PaymentDetails />
+      {isLoading ? (
+        <Skeleton variant="rounded" width="638px" height="575px" />
+      ) : (
+        <TicketDetails data={data} />
+      )}
+      {!isLoading && <PaymentDetails data={data} />}
       <Box mt={4}>
         <Button
           variant="text"
