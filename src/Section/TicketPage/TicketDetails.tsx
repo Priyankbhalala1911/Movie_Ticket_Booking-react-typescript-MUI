@@ -1,16 +1,41 @@
-import { Box, Divider, Grid, IconButton, Table, TableBody, TableCell, TableContainer, TableRow, Typography, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  Divider,
+  Grid,
+  IconButton,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { customColors } from "../../Theme";
 import { FileDownloadOutlined } from "@mui/icons-material";
-
-const movieDetails = [
-  { label: "Code Booking ", value: "037491740184392" },
-  { label: "Password Key ", value: "147294" },
-  { label: "Chair", value: "C8, C9, 10" },
-];
+import { useQuery } from "@tanstack/react-query";
+import { Ticket } from "../../services/ticket";
+import { useParams } from "react-router";
 
 const TicketDetails: React.FC = () => {
-    const theme = useTheme();
-      const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const { id } = useParams();
+  const { data, isLoading } = useQuery({
+    queryKey: ["ticket"],
+    queryFn: () => (id ? Ticket(id) : Promise.reject("Ticket ID is undefined")),
+    staleTime: 0,
+    gcTime: 0,
+  });
+
+  const movieDetails = [
+    { label: "Code Booking ", value: data?.id },
+    { label: "Password Key ", value: data?.password_key },
+    { label: "Chair", value: data?.seat_number.join(", ") },
+  ];
+
+  if (isLoading) return <p>Loading....</p>;
   return (
     <Box position="relative">
       <Box
@@ -26,7 +51,7 @@ const TicketDetails: React.FC = () => {
           color={customColors.pastelYellow}
           pb="20px"
         >
-          Spiderman: No Way Home
+          {data?.movie_title}
         </Typography>
 
         <Grid container spacing={2} alignItems="center">
@@ -35,7 +60,7 @@ const TicketDetails: React.FC = () => {
               Location
             </Typography>
             <Typography variant="h5" color="white">
-              Grand Indonesia CGV
+              {data?.location}
             </Typography>
             <Grid container sx={{ mt: 2 }}>
               <Grid item xs={10}>
@@ -43,15 +68,7 @@ const TicketDetails: React.FC = () => {
                   Date
                 </Typography>
                 <Typography variant="h5" color="white">
-                  16 December 2021
-                </Typography>
-              </Grid>
-              <Grid item xs={2}>
-                <Typography variant="h6" color="#9DA8BE">
-                  Time
-                </Typography>
-                <Typography variant="h5" color="white">
-                  14:40
+                  {data?.show_date}
                 </Typography>
               </Grid>
             </Grid>
@@ -76,14 +93,14 @@ const TicketDetails: React.FC = () => {
               Class
             </Typography>
             <Typography variant="h5" color="white">
-              Regular 2D
+              {data?.show_type}
             </Typography>
 
             <Typography variant="h6" color="#9DA8BE" sx={{ mt: 2 }}>
-              Studio
+              Time
             </Typography>
             <Typography variant="h5" color="white">
-              Studio 1
+              {data?.show_time}
             </Typography>
           </Grid>
         </Grid>
@@ -101,7 +118,7 @@ const TicketDetails: React.FC = () => {
         }}
       >
         <TableContainer sx={{ py: "10px" }}>
-          <Table sx={{ maxWidth: "350px" }}>
+          <Table sx={{ maxWidth: "500px" }}>
             <TableBody>
               {movieDetails.map((movie, index) => (
                 <TableRow key={index}>
@@ -111,7 +128,7 @@ const TicketDetails: React.FC = () => {
                     </Typography>
                   </TableCell>
                   <TableCell sx={{ p: 0, py: "11px", borderBottom: "none" }}>
-                    <Typography variant="h5" color="primary">
+                    <Typography variant="h6" color="primary">
                       {movie.value}
                     </Typography>
                   </TableCell>
@@ -129,7 +146,7 @@ const TicketDetails: React.FC = () => {
           justifyContent="center"
           alignItems="center"
         >
-          <IconButton   
+          <IconButton
             disableTouchRipple
             sx={{ "&:hover": { background: "none" } }}
           >
