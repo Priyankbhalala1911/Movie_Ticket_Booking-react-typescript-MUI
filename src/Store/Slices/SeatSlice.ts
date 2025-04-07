@@ -1,21 +1,30 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-interface MovieState {
-  selectedSeat: string[];
+
+interface SelectedSeat {
+  id: string;
+  seat_number: string;
 }
 
-const initialState: MovieState = {
+interface SeatState {
+  selectedSeat: SelectedSeat[];
+}
+
+const initialState: SeatState = {
   selectedSeat: [],
 };
-const SeatSlice = createSlice({
+
+const seatSlice = createSlice({
   name: "seats",
   initialState,
   reducers: {
-    selectSeat: (state, action: PayloadAction<string[]>) => {
+    selectSeat: (state, action: PayloadAction<SelectedSeat[]>) => {
       state.selectedSeat = action.payload;
+    },
+    clearSeat: (state) => {
+      state.selectedSeat = [];
     },
   },
 });
 
-export const { selectSeat } = SeatSlice.actions;
-
-export default SeatSlice.reducer;
+export const { selectSeat, clearSeat } = seatSlice.actions;
+export default seatSlice.reducer;
