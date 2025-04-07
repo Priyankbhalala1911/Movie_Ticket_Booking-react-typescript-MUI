@@ -1,27 +1,34 @@
 import { configureStore } from "@reduxjs/toolkit";
 import movieSlice from "./Slices/MovieSlice";
-import SeatSlice from "./Slices/SeatSlice";
-import ShowSlice from "./Slices/ShowSlice";
-import FilterSlice from "./Slices/FilterSlice";
-import AuthSlice from "./Slices/AuthSlice";
+import seatSlice from "./Slices/SeatSlice";
+import showSlice from "./Slices/ShowSlice";
+import filterSlice from "./Slices/FilterSlice";
+import authSlice from "./Slices/AuthSlice";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import { combineReducers } from "redux";
 
 const persistConfig = {
   key: "root",
   storage,
+  whitelist: ["shows", "seats", "movies"],
 };
 
-const persistedReducer = persistReducer(persistConfig, ShowSlice);
-export const store = configureStore({
-  reducer: {
-    movies: movieSlice,
-    seats: SeatSlice,
-    shows: persistedReducer,
-    filterTheater: FilterSlice,
-    auth: AuthSlice,
-  },
+const rootReducer = combineReducers({
+  movies: movieSlice,
+  seats: seatSlice,
+  shows: showSlice,
+  filterTheater: filterSlice,
+  auth: authSlice,
 });
-export const persiste = persistStore(store);
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export const store = configureStore({
+  reducer: persistedReducer,
+});
+
+export const persistor = persistStore(store);
+
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
