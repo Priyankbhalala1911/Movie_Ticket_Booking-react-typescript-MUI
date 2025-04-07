@@ -26,7 +26,6 @@ const ActiveTicket: React.FC = () => {
     gcTime: 0,
   });
 
-  // Dummy skeleton card count
   const skeletonCount = 2;
 
   return (
