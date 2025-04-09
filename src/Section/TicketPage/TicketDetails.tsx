@@ -14,20 +14,27 @@ import {
 } from "@mui/material";
 import { customColors } from "../../Theme";
 import { FileDownloadOutlined } from "@mui/icons-material";
-import { useQuery } from "@tanstack/react-query";
-import { Ticket } from "../../services/ticket";
-import { useParams } from "react-router";
+import { useRef } from "react";
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
 
-const TicketDetails: React.FC = () => {
+interface TicketDetailsProps {
+  data: {
+    id: string;
+    password_key: string;
+    seat_number: string[];
+    movie_title: string;
+    location: string;
+    show_date: string;
+    show_type: string;
+    show_time: string;
+  };
+}
+
+const TicketDetails: React.FC<TicketDetailsProps> = ({ data }) => {
+  const contentRef = useRef<HTMLDivElement>(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const { id } = useParams();
-  const { data, isLoading } = useQuery({
-    queryKey: ["ticket"],
-    queryFn: () => (id ? Ticket(id) : Promise.reject("Ticket ID is undefined")),
-    staleTime: 0,
-    gcTime: 0,
-  });
 
   const movieDetails = [
     { label: "Code Booking ", value: data?.id },
@@ -35,9 +42,38 @@ const TicketDetails: React.FC = () => {
     { label: "Chair", value: data?.seat_number.join(", ") },
   ];
 
-  if (isLoading) return <p>Loading....</p>;
+  const handelDowanload = async () => {
+    if (!contentRef.current) return;
+
+    const canva = await html2canvas(contentRef.current, { useCORS: true });
+    const imageData = canva.toDataURL("image/png");
+
+    const pdfWidth = 595.28;
+    const pdfHeight = 841.89;
+
+    const imgWidth = canva.width;
+    const imgHeight = canva.height;
+
+    const scale = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight) * 0.9;
+
+    const finalWidth = imgWidth * scale;
+    const finalHeight = imgHeight * scale;
+
+    const marginX = (pdfWidth - finalWidth) / 2;
+    const marginY = (pdfHeight - finalHeight) / 2;
+
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "pt",
+      format: "a4",
+    });
+
+    pdf.addImage(imageData, "PNG", marginX, marginY, finalWidth, finalHeight);
+    pdf.save(`${new Date().getTime()}.pdf`);
+  };
+
   return (
-    <Box position="relative">
+    <Box position="relative" ref={contentRef}>
       <Box
         bgcolor="primary.main"
         sx={{
@@ -149,6 +185,7 @@ const TicketDetails: React.FC = () => {
           <IconButton
             disableTouchRipple
             sx={{ "&:hover": { background: "none" } }}
+            onClick={handelDowanload}
           >
             <FileDownloadOutlined sx={{ fontSize: "60px", color: "black" }} />
           </IconButton>
