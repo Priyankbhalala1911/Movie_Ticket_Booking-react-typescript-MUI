@@ -141,12 +141,16 @@ const CGVTicket: React.FC<TheaterProps> = ({ theatres = [], loading }) => {
                           );
                         }
 
-                        const showtime = dayjs()
+                        const isToday = dayjs(selectedDate).isSame(
+                          dayjs(),
+                          "day"
+                        );
+
+                        const showtime = dayjs(selectedDate)
                           .hour(Number(show.Time.split(":")[0]))
                           .minute(Number(show.Time.split(":")[1]));
 
-                        const isPastTime = showtime.isBefore(now);
-                        const isDisabled = isPastTime;
+                        const isDisabled = isToday && showtime.isBefore(now);
 
                         return (
                           <Grid item lg={3} key={show.id}>
