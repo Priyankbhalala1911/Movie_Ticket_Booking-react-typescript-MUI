@@ -17,6 +17,7 @@ export const routes = {
 
   Account: "/account",
   Login: "/account/login",
+  Profile: "/profile",
 
   ticket: "/ticket/:id",
 };
