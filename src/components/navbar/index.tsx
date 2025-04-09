@@ -188,7 +188,7 @@ const Navbar: React.FC = () => {
                   fontFamily: "Poppins",
                   cursor: "pointer",
                 }}
-                onClick={() => setOpen(!open)}
+                onClick={() => navigate("/profile")}
               >
                 {user && user.charAt(0).toUpperCase()}
               </Avatar>
