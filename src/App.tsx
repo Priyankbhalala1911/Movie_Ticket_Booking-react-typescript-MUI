@@ -23,6 +23,7 @@ import TicketPage from "./Pages/TicketPage";
 import { Toaster } from "react-hot-toast";
 import { AuthHandler } from "./AuthHandler";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import ProfilePage from "./Pages/ProfilePage";
 
 const queryClient = new QueryClient();
 const App: React.FC = () => {
@@ -40,6 +41,7 @@ const App: React.FC = () => {
             <Route path={routes.default} element={<Layout />}>
               <Route index element={<Home />} />
               <Route element={<AuthWrapper />}>
+                <Route path={routes.Profile} element={<ProfilePage />} />
                 <Route path={routes.slotBooking} element={<SlotBooking />} />
                 <Route path={routes.chooseSeat} element={<ChooseSeat />} />
                 <Route
