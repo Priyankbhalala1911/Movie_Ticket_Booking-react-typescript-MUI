@@ -15,13 +15,15 @@ export const handelMovieById = async (
   id: string,
   city: string,
   day: number,
-  chain: string
+  chain: string,
+  cinema: string,
+  type: string
 ) => {
   try {
     const response = await axios.get(
       `${
         import.meta.env.VITE_BACKEND_API_BASE_URL
-      }/movie/slot-booking/${id}?city=${city}&day=${day}&chain=${chain}`
+      }/movie/slot-booking/${id}?city=${city}&day=${day}&chain=${chain}&theater=${cinema}&screenType=${type}`
     );
     return await response.data;
   } catch (error) {
