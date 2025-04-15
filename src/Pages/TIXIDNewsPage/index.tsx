@@ -14,15 +14,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { UpdatedPostName } from "../../Store/Slices/FilterSlice";
 import { RootState } from "../../Store";
 
-const Movies: string[] = [
-  "Spiderman",
-  "Peter Parker",
-  "Yowis Ben",
-  "Ghostbusters",
-  "Indonesian movie",
-  "Action",
-];
-
 interface Category {
   label: string;
   value: string;
@@ -97,33 +88,7 @@ const TIXIDNews: React.FC = () => {
           </Box>
           <MenuItemSelect record={record} fontSize="14px" filterKey="news" />
         </Box>
-        <Box
-          display="flex"
-          alignItems="center"
-          gap="10px"
-          pt="24px"
-          flexWrap="wrap"
-        >
-          {Movies.map((movie, index) => (
-            <Box
-              key={index}
-              sx={{
-                border: "1px solid #BDC5D4",
-                borderRadius: "23px",
-                p: "12px 20px",
-              }}
-            >
-              <Typography
-                sx={{
-                  color: "#8F98AA",
-                  "&:hover": { color: "#1A2C50", cursor: "pointer" },
-                }}
-              >
-                {movie}
-              </Typography>
-            </Box>
-          ))}
-        </Box>
+
         <Box pt="68px" display="flex" flexDirection="column" gap="80px">
           <FilterNews />
           <MovieNews />
