@@ -2,13 +2,15 @@ import { KeyboardBackspace } from "@mui/icons-material";
 import { Box, Button, Divider, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import PopUpBox from "../../components/PopupBox";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Store";
 import { useNavigate } from "react-router";
+import { clearSeat } from "../../Store/Slices/SeatSlice";
 
 const Details: React.FC = () => {
   const [error, setError] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const SelectedSeat = useSelector(
     (state: RootState) => state.seats.selectedSeat
   );
@@ -91,9 +93,12 @@ const Details: React.FC = () => {
             title="Want to go back?"
             content="The seat you previously selected will be cancelled and you will have
           to re-select."
-            action1="Return"
+            action1="Back"
             action2="Cancelled"
-            click_action1={() => navigate("/slot-booking")}
+            click_action1={() => {
+              dispatch(clearSeat());
+              navigate("/choose-seat");
+            }}
           />
         )}
       </Stack>
