@@ -50,12 +50,12 @@ const LoginForm: React.FC<PageProps> = ({ setDirection }) => {
         }
       );
       const data = await response.json();
-      const userData = { name: data.name };
+      const userData = { image: data.name };
 
       if (!response.ok) {
         toast.error(data.message);
       } else {
-        dispatch(loginSuccess(userData));
+        dispatch(loginSuccess());
         localStorage.setItem("user", JSON.stringify(userData));
         toast.success(data.message);
         const from = location.state?.from || "/";
