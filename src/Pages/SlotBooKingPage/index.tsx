@@ -15,21 +15,25 @@ const SlotBooking: React.FC = () => {
   const { id } = useParams();
   const city = useSelector((state: RootState) => state.filterTheater.location);
   const chain = useSelector((state: RootState) => state.filterTheater.brand);
+  const cinema = useSelector((state: RootState) => state.filterTheater.cinema);
+  const type = useSelector((state: RootState) => state.filterTheater.type);
   const selectDate = useSelector(
     (state: RootState) => state.movies.selectedDate
   );
   const day = getCurrentDay(selectDate);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["Movies", city, day, chain],
+    queryKey: ["Movies", city, day, chain, cinema, type],
     queryFn: () =>
       id
-        ? handelMovieById(id, city, day, chain)
+        ? handelMovieById(id, city, day, chain, cinema, type)
         : Promise.reject("Movie ID is undefined"),
     staleTime: 0,
     gcTime: 0,
     retry: true,
   });
+
+  console.log(day);
 
   return (
     <>
