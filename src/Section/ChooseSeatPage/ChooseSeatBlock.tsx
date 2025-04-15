@@ -1,4 +1,4 @@
-import { Box, Button, Typography, Skeleton } from "@mui/material";
+import { Box, Button, Skeleton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Store";
 import { clearSeat, selectSeat } from "../../Store/Slices/SeatSlice";
@@ -82,50 +82,54 @@ const ChooseSeatBlock: React.FC<SeatsProps> = ({ seats, loading }) => {
                 key={row}
                 sx={{ display: "flex", gap: 1, justifyContent: "center" }}
               >
-                {rowSeats.map((seat) => {
+                {rowSeats.map((seat, i) => {
                   const isSelected = selectedSeats.some(
                     (s) => s.id === seat.id
                   );
+                  const isGap = (i + 1) % 10 === 0;
+
                   return (
-                    <Button
-                      key={seat.id}
-                      variant="outlined"
-                      color="primary"
-                      onClick={() => toggleSeatSelection(seat)}
-                      disabled={seat.status === "confirmed"}
-                      sx={{
-                        minWidth: 45,
-                        height: 45,
-                        p: 0,
-                        borderRadius: 1,
-                        fontSize: "0.875rem",
-                        bgcolor:
-                          seat.status === "confirmed"
-                            ? "#1A2C50"
-                            : isSelected
-                            ? "#118EEA"
-                            : "transparent",
-                        color:
-                          seat.status === "confirmed" || isSelected
-                            ? "white"
-                            : "#1A2C50",
-                        borderColor:
-                          seat.status === "confirmed"
-                            ? "#1A2C50"
-                            : isSelected
-                            ? "#118EEA"
-                            : "#9DA8BE",
-                        "&:hover": {
-                          bgcolor: isSelected ? "#118EEA" : "#282764",
-                          color: "white",
-                        },
-                        "&.Mui-disabled": {
-                          color: "white",
-                        },
-                      }}
-                    >
-                      {seat.seat_number}
-                    </Button>
+                    <Box key={seat.id} sx={{ display: "flex", gap: 1 }}>
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={() => toggleSeatSelection(seat)}
+                        disabled={seat.status === "confirmed"}
+                        sx={{
+                          minWidth: 45,
+                          height: 45,
+                          p: 0,
+                          borderRadius: 1,
+                          fontSize: "0.875rem",
+                          bgcolor:
+                            seat.status === "confirmed"
+                              ? "#1A2C50"
+                              : isSelected
+                              ? "#118EEA"
+                              : "transparent",
+                          color:
+                            seat.status === "confirmed" || isSelected
+                              ? "white"
+                              : "#1A2C50",
+                          borderColor:
+                            seat.status === "confirmed"
+                              ? "#1A2C50"
+                              : isSelected
+                              ? "#118EEA"
+                              : "#9DA8BE",
+                          "&:hover": {
+                            bgcolor: isSelected ? "#118EEA" : "#282764",
+                            color: "white",
+                          },
+                          "&.Mui-disabled": {
+                            color: "white",
+                          },
+                          mr: isGap ? 5 : 0,
+                        }}
+                      >
+                        {seat.seat_number}
+                      </Button>
+                    </Box>
                   );
                 })}
               </Box>
@@ -133,17 +137,27 @@ const ChooseSeatBlock: React.FC<SeatsProps> = ({ seats, loading }) => {
       </Box>
       <Box
         sx={{
-          bgcolor: "info.main",
           width: "100%",
-          minWidth: { xs: "1000px", md: "1350px" },
+          minWidth: { xs: "1000px", md: "1000px" },
           maxWidth: "100%",
           mt: "100px",
           borderRadius: "8px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          py: 2,
         }}
       >
-        <Typography variant="h4" color="#DADFE8" textAlign="center" py="16px">
-          Cinema Screen Here
-        </Typography>
+        <Box
+          component="img"
+          src="https://assets-in.bmscdn.com/m6/images/seat-layout/cinema-screen.png"
+          alt="Cinema Screen"
+          sx={{
+            width: { xs: "80%", md: "60%" },
+            maxHeight: "150px",
+            objectFit: "contain",
+          }}
+        />
       </Box>
     </Box>
   );
