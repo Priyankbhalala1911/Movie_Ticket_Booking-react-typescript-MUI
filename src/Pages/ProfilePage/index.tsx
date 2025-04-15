@@ -18,7 +18,7 @@ import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
-import { logoutUser } from "../../Store/Slices/AuthSlice";
+import { loginSuccess, logoutUser } from "../../Store/Slices/AuthSlice";
 import PopUpBox from "../../components/PopupBox";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
@@ -65,6 +65,11 @@ const ProfilePage = () => {
         formData,
         { withCredentials: true }
       );
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ image: res.data.imageurl })
+      );
+      dispatch(loginSuccess());
       setProfileImage(res.data.imageurl);
     } catch (err) {
       console.error("Image upload failed", err);
