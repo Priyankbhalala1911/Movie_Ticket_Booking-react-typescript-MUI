@@ -19,7 +19,6 @@ export const handlePaymentOrder = async (
         amount: amount,
       }
     );
-    console.log(response.data);
     handlePaymentVerify(response.data.data, selectedMovie);
   } catch (error) {
     console.log(error);
@@ -38,7 +37,6 @@ export const handlePaymentVerify = async (data: any, selectedMovie: any) => {
       "https://res.cloudinary.com/dhd86c3ax/image/upload/v1743759308/logo_zbvbty.jpg",
     order_id: data.id,
     handler: async (response: any) => {
-      console.log(response);
       try {
         const verify = await axios.post(
           `${import.meta.env.VITE_BACKEND_API_BASE_URL}/payment/verify`,
@@ -52,10 +50,9 @@ export const handlePaymentVerify = async (data: any, selectedMovie: any) => {
             withCredentials: true,
           }
         );
-        console.log(verify.data);
-        if (verify.data.message) {
-          window.location.href = "/payment-success";
+        if (verify.data.id) {
           toast.success(verify.data.message);
+          window.location.href = `/payment-success/${verify.data.id}`;
         }
       } catch (error) {
         console.log(error);
