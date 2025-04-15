@@ -7,25 +7,23 @@ import {
   TextField,
 } from "@mui/material";
 import React from "react";
-import { CGV, Cinemapolis, INOX, PVR, XXI } from "../../assets";
+import { CGV, Cinemapolis, INOX, PVR } from "../../assets";
 import MenuItemSelect from "../../components/MenuItem";
 import { useDispatch, useSelector } from "react-redux";
 import { UpdatedCinema } from "../../Store/Slices/FilterSlice";
 import { RootState } from "../../Store";
 
 const Studio = [
-  { label: "2D", value: "2D" },
-  { label: "Gold Class 2D", value: "Gold Class 2D" },
-  { label: "Velvet 2D", value: "Velvet 2D" },
+  { label: "All Type", value: "All Type" },
   { label: "Regular 2D", value: "Regular 2D" },
+  { label: "Premium 2D", value: "Premium 2D" },
+  { label: "IMAX 3D", value: "IMAX 3D" },
+  { label: "4DX", value: "4DX" },
+  { label: "Gold Class", value: "Gold Class" },
 ];
 
-const Sort = [
-  { label: "Nearest", value: "Nearest" },
-  { label: "Cheapest Price", value: "Cheapest Price" },
-];
 const Cinema = [
-  { label: "", value: "Select" },
+  { label: "", value: "All Category" },
   { label: "INOX", value: <img src={INOX} alt="logo1" width={35} /> },
   { label: "PVR", value: <img src={PVR} alt="logo2" width={35} /> },
   { label: "CGV", value: <img src={CGV} alt="logo3" width={35} /> },
@@ -71,12 +69,10 @@ const SearchTicket: React.FC = () => {
         </Grid>
         <Grid item container xs={12} md={6} alignItems="center">
           <Grid item xs={4} textAlign="center">
-            <MenuItemSelect record={Studio} fontSize="14px" />
+            <MenuItemSelect record={Studio} fontSize="14px" filterKey="type" />
           </Grid>
-          <Grid item xs={4} textAlign="center">
-            <MenuItemSelect record={Sort} fontSize="14px" />
-          </Grid>
-          <Grid item xs={4} textAlign="center">
+
+          <Grid item xs={6} textAlign="center">
             <MenuItemSelect record={Cinema} fontSize="14px" filterKey="brand" />
           </Grid>
         </Grid>
