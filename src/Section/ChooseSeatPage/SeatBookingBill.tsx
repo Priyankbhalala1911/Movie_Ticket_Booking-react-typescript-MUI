@@ -9,7 +9,7 @@ const SeatBookingBill: React.FC = () => {
     (state: RootState) => state.seats.selectedSeat
   );
   const selectMovie = useSelector(
-    (state: RootState) => state.movies.selectedMovie
+    (state: RootState) => state.movies.selectedMovieId
   );
   const selectSlot = useSelector((state: RootState) => state.shows);
   const totalPrice = selectedSeats.length * Number(selectSlot.showPrice);
