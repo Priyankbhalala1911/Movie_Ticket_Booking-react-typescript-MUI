@@ -1,8 +1,9 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Cinema1, Cinema2 } from "../../assets";
 
 const PaymentSuccess: React.FC = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
   return (
     <>
@@ -63,10 +64,10 @@ const PaymentSuccess: React.FC = () => {
           }}
           onClick={() => {
             window.scrollTo(0, 0);
-            navigate("/my-ticket/active-ticket");
+            navigate(`/ticket/${id}`);
           }}
         >
-          My Ticket
+          Ticket
         </Button>
       </Stack>
     </>
