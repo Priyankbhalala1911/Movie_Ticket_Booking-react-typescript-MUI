@@ -27,36 +27,33 @@ import {
 } from "@mui/icons-material";
 import { useNavigate } from "react-router";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router";
 import { Logo } from "../../assets";
-import PopUpBox from "../PopupBox";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../Store";
-import { logoutUser } from "../../Store/Slices/AuthSlice";
+import { useQuery } from "@tanstack/react-query";
+import { getUser } from "../../services/getUser";
 
 const Navbar: React.FC = () => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
-  const [open, setOpen] = useState<boolean>(false);
-  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
-  const user = JSON.parse(localStorage.getItem("user") || "{}").name;
+  const { isAuthenticated, profilePicture } = useSelector(
+    (state: RootState) => state.auth
+  );
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+
+  const { data } = useQuery({
+    queryKey: ["profile"],
+    queryFn: () => getUser(),
+    enabled: isAuthenticated,
+    staleTime: 0,
+  });
+
+  useEffect(() => {
+    setProfileImage(profilePicture);
+    console.log(profilePicture);
+  });
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const handleLogOut = async () => {
-    try {
-      await fetch(`${import.meta.env.VITE_BACKEND_API_BASE_URL}/logout`, {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-type": "application/json" },
-      });
-      dispatch(logoutUser());
-
-      navigate("/account/login");
-    } catch (err) {
-      console.error("Logout failed:", err);
-    }
-  };
 
   const navigationMenu = [
     {
@@ -183,15 +180,14 @@ const Navbar: React.FC = () => {
             </IconButton>
             {isAuthenticated ? (
               <Avatar
+                src={profileImage || data?.user.profile_image}
                 sx={{
                   background: "linear-gradient(#F2C46F,#C6943F)",
                   fontFamily: "Poppins",
                   cursor: "pointer",
                 }}
                 onClick={() => navigate("/profile")}
-              >
-                {user && user.charAt(0).toUpperCase()}
-              </Avatar>
+              />
             ) : (
               <Tooltip title="Account Login">
                 <Button
@@ -259,17 +255,6 @@ const Navbar: React.FC = () => {
           ))}
         </List>
       </Drawer>
-      {open && (
-        <PopUpBox
-          open={open}
-          onClose={() => setOpen(false)}
-          title="Confirm Logout"
-          content="Are you sure you want to log out?"
-          action1="Cancel"
-          action2="Logout"
-          click_action1={handleLogOut}
-        />
-      )}
     </>
   );
 };
