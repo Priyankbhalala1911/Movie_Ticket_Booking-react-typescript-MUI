@@ -18,7 +18,7 @@ interface MenuItemSelectProps {
   startIcon?: ReactNode;
   fontSize?: string;
   searchField?: boolean;
-  filterKey?: "location" | "brand" | "news";
+  filterKey?: "location" | "brand" | "news" | "type";
 }
 
 const MenuItemSelect: React.FC<MenuItemSelectProps> = ({
