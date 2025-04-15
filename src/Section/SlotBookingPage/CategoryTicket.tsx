@@ -67,38 +67,51 @@ const CGVTicket: React.FC<TheaterProps> = ({ theatres = [], loading }) => {
           sx={{ borderBottom: "1px solid #ddd", pb: 3 }}
         >
           <Stack gap="18px">
-            <Box display="flex" alignItems="center">
-              <Avatar
-                sx={{ bgcolor: "#1A2C50", width: "32px", height: "32px" }}
-              >
-                <Grade sx={{ color: `${customColors.pastelYellow}` }} />
-              </Avatar>
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+              width="100%"
+            >
+              <Box display="flex" width="90%" alignItems="center">
+                <Avatar
+                  sx={{ bgcolor: "#1A2C50", width: "32px", height: "32px" }}
+                >
+                  <Grade sx={{ color: `${customColors.pastelYellow}` }} />
+                </Avatar>
+                {loading ? (
+                  <Skeleton
+                    width="30%"
+                    height={40}
+                    variant="text"
+                    animation="wave"
+                    sx={{ mx: "16px" }}
+                  />
+                ) : (
+                  <Typography
+                    color="primary"
+                    flex={1}
+                    px="16px"
+                    fontSize={{
+                      lg: "24px",
+                      md: "22px",
+                      sm: "20px",
+                      xs: "18px",
+                    }}
+                    fontWeight={600}
+                  >
+                    {theatre.name}
+                  </Typography>
+                )}
+              </Box>
+
               {loading ? (
                 <Skeleton
-                  width="20%"
+                  width={60}
                   height={30}
-                  variant="text"
-                  animation="wave"
-                  sx={{ flex: 1 }}
+                  variant="rectangular"
+                  sx={{ alignItems: "flex-end" }}
                 />
-              ) : (
-                <Typography
-                  color="primary"
-                  flex={1}
-                  px="16px"
-                  fontSize={{
-                    lg: "24px",
-                    md: "22px",
-                    sm: "20px",
-                    xs: "18px",
-                  }}
-                  fontWeight={600}
-                >
-                  {theatre.name}
-                </Typography>
-              )}
-              {loading ? (
-                <Skeleton width={60} height={30} variant="rectangular" />
               ) : (
                 <Chip
                   label={theatre?.chain}
@@ -122,7 +135,11 @@ const CGVTicket: React.FC<TheaterProps> = ({ theatres = [], loading }) => {
                 <Stack key={index} gap="16px">
                   <Box display="flex" alignItems="center">
                     {loading ? (
-                      <Skeleton width="40%" height={31} sx={{ flex: 1 }} />
+                      <Skeleton
+                        width="100%"
+                        height={31}
+                        sx={{ maxWidth: "50%", flex: 1 }}
+                      />
                     ) : (
                       <Typography variant="h4" color="#5A637A" flex={1}>
                         {screen.type}
