@@ -4,7 +4,7 @@ export const routes = {
   slotBooking: "slot-booking/:id",
   chooseSeat: "choose-seat",
   ticketDetails: "ticket-details",
-  paymentSuccess: "payment-success",
+  paymentSuccess: "payment-success/:id",
 
   myTicket: "my-ticket",
   activeTicket: "active-ticket",
