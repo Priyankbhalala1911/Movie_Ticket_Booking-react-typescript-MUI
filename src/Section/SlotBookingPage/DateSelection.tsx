@@ -1,6 +1,6 @@
 import { ArrowBackIosNew, ArrowForwardIos } from "@mui/icons-material";
 import { Box, Button, Divider, IconButton, Typography } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -55,6 +55,13 @@ const DateSelection: React.FC = () => {
   );
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  useEffect(() => {
+    if (!selectedDate) {
+      dispatch(selectDate(dates[0].futuredate));
+    }
+  }, [dispatch, selectedDate, dates]);
+
+  console.log(selectedDate);
   const handleNext = () => {
     if (currentIndex < dates.length - 5) {
       setCurrentIndex((prev) => prev + 1);
@@ -104,7 +111,9 @@ const DateSelection: React.FC = () => {
             {dates.map((item, index) => (
               <Button
                 key={item.date}
-                variant={selectedDate === item.date ? "contained" : "outlined"}
+                variant={
+                  selectedDate === item.futuredate ? "contained" : "outlined"
+                }
                 onClick={() => {
                   dispatch(selectDate(item.futuredate));
                 }}
