@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface FilterState {
   location: string;
   brand: string;
+  type: string;
   cinema: string;
   news: string;
   postName: string;
@@ -11,6 +12,7 @@ interface FilterState {
 const initialState: FilterState = {
   location: "",
   brand: "",
+  type: "",
   cinema: "",
   news: "spotlight",
   postName: "",
