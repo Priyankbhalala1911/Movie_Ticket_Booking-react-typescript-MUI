@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import CarsoulMovie from "../../Section/HomePage/CarsoulMovie";
 import { Container } from "@mui/material";
 import CarsoualAdv from "../../Section/HomePage/CarsoulAdv";
@@ -6,11 +5,6 @@ import MovieNews from "../../Section/HomePage/MovieNews";
 import MoviePoster from "../../Section/HomePage/MoviePoster";
 
 const Home: React.FC = () => {
-  const [loading, setLoading] = useState<boolean>(false);
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(true), 3000);
-    return () => clearTimeout(timer);
-  }, []);
   return (
     <>
       <Container
@@ -23,7 +17,7 @@ const Home: React.FC = () => {
         <CarsoulMovie />
         <CarsoualAdv />
         <MovieNews />
-        <MoviePoster loading={loading} />
+        <MoviePoster />
       </Container>
     </>
   );
