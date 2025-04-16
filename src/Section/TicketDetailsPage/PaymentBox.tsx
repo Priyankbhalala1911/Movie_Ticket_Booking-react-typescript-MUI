@@ -27,10 +27,10 @@ const PaymentBox: React.FC = () => {
   const TotalPrice = Regularprice + ServiceFees - PromoVoucher;
 
   const selectedMovie = {
-    movie_id: selectMovie.selectedMovieId,
-    location: selectedslot.location,
-    type: selectedslot.showType,
-    date: selectedslot.date,
+    id: selectMovie.selectedMovieId ?? "",
+    title: selectedslot.location ?? "Unknown Location",
+    genre: selectedslot.showType ?? "Unknown Type",
+    releaseDate: selectedslot.date ?? "Unknown Date",
     price: selectedslot.showPrice,
     time: selectedslot.showTimes,
     seat_number: selectedSeat,
