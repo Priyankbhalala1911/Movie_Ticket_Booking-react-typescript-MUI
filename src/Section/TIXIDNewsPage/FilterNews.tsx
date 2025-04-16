@@ -81,70 +81,82 @@ const FilterNews: React.FC = () => {
         </Typography>
       )}
       {!isLoading && !isError && data?.filterNews?.length > 0 ? (
-        data?.filterNews.map((news: any, index: number) => (
-          <Card
-            key={index}
-            elevation={0}
-            sx={{
-              cursor: "pointer",
-              display: "flex",
-              gap: { lg: "63px", md: "53px", sm: "35px" },
-              alignItems: "center",
-              borderRadius: "20px",
-              flexDirection: {
-                md: `${index % 2 !== 0 ? "row-reverse" : "row"}`,
-                xs: "column",
-              },
-              "&:hover": {
-                background: "rgba(232, 233, 235, 0.61)",
-              },
-            }}
-          >
-            <CardMedia
-              component="img"
-              image={news.image}
-              alt={news.title}
-              sx={{ borderRadius: "15px" }}
-              onClick={() => {
-                window.scrollTo(0, 0);
-                navigate(`/news/video/${news.news_id}`);
+        data?.filterNews.map(
+          (
+            news: {
+              image: string;
+              title: string;
+              news_id: string;
+              buttonName: string;
+              description: string;
+              date: string;
+            },
+            index: number
+          ) => (
+            <Card
+              key={index}
+              elevation={0}
+              sx={{
+                cursor: "pointer",
+                display: "flex",
+                gap: { lg: "63px", md: "53px", sm: "35px" },
+                alignItems: "center",
+                borderRadius: "20px",
+                flexDirection: {
+                  md: `${index % 2 !== 0 ? "row-reverse" : "row"}`,
+                  xs: "column",
+                },
+                "&:hover": {
+                  background: "rgba(232, 233, 235, 0.61)",
+                },
               }}
-            />
-
-            <Box p={{ sm: "8px 25px", xs: "20px 8px" }} maxWidth={"712px"}>
-              <Button
-                variant="outlined"
-                color="primary"
-                sx={{ textTransform: "capitalize", mb: "24px" }}
+            >
+              <CardMedia
+                component="img"
+                image={news.image}
+                alt={news.title}
+                sx={{ borderRadius: "15px" }}
                 onClick={() => {
                   window.scrollTo(0, 0);
-                  navigate(`/news/${news.news_id}`);
+                  navigate(`/news/video/${news.news_id}`);
                 }}
-              >
-                {news.buttonName}
-              </Button>
-              <Box display="flex" flexDirection="column" gap="24px">
-                <Typography variant="h4" color="primary">
-                  {news.title}
-                </Typography>
-                <Typography
+              />
+
+              <Box p={{ sm: "8px 25px", xs: "20px 8px" }} maxWidth={"712px"}>
+                <Button
+                  variant="outlined"
                   color="primary"
-                  sx={{
-                    display: "-webkit-box",
-                    WebkitBoxOrient: "vertical",
-                    WebkitLineClamp: 2,
-                    overflow: "hidden",
+                  sx={{ textTransform: "capitalize", mb: "24px" }}
+                  onClick={() => {
+                    window.scrollTo(0, 0);
+                    navigate(`/news/${news.news_id}`);
                   }}
                 >
-                  {news.description}
-                </Typography>
-                <Typography variant="body2" sx={{ color: "#5A637A" }}>
-                  {news.date} | TIX ID
-                </Typography>
+                  {news.buttonName}
+                </Button>
+                <Box display="flex" flexDirection="column" gap="24px">
+                  <Typography variant="h4" color="primary">
+                    {news.title}
+                  </Typography>
+                  <Typography
+                    color="primary"
+                    sx={{
+                      display: "-webkit-box",
+                      WebkitBoxOrient: "vertical",
+                      WebkitLineClamp: 2,
+                      overflow: "hidden",
+                    }}
+                  >
+                    {news.description}
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: "#5A637A" }}>
+                    {news.date} | TIX ID
+                  </Typography>
+                </Box>
               </Box>
-            </Box>
-          </Card>
-        ))
+            </Card>
+          )
+        )
       ) : (
         <Typography variant="h5" color="error">
           {data?.response?.data?.message}

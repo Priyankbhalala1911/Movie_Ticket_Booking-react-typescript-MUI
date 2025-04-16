@@ -61,8 +61,7 @@ const LoginForm: React.FC<PageProps> = ({ setDirection }) => {
         const from = location.state?.from || "/";
         navigate(from, { replace: true });
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
+    } catch (err) {
       console.log("Login failed", err);
     }
   };

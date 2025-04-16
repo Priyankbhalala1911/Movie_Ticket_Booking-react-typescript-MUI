@@ -106,49 +106,60 @@ const MoviePoster: React.FC = () => {
               ))}
             </Box>
           ) : (
-            data?.slice(0, 3).map((news: any, index: number) => (
-              <Card
-                key={index}
-                sx={{
-                  cursor: "pointer",
-                  borderRadius: "12px",
-                  "&:hover": {
-                    transform: "scale(1.01)",
-                    boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.2)",
+            data
+              ?.slice(0, 3)
+              .map(
+                (
+                  news: {
+                    movie_poster: string;
+                    movie_title: string;
+                    chain: string[];
                   },
-                }}
-              >
-                <CardMedia sx={{ height: "607px" }}>
-                  <img
-                    src={news.movie_poster}
-                    alt={news.movie_title}
-                    style={{
-                      objectFit: "cover",
-                      width: "100%",
-                      height: "100%",
+                  index: number
+                ) => (
+                  <Card
+                    key={index}
+                    sx={{
+                      cursor: "pointer",
+                      borderRadius: "12px",
+                      "&:hover": {
+                        transform: "scale(1.01)",
+                        boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.2)",
+                      },
                     }}
-                  />
-                </CardMedia>
+                  >
+                    <CardMedia sx={{ height: "607px" }}>
+                      <img
+                        src={news.movie_poster}
+                        alt={news.movie_title}
+                        style={{
+                          objectFit: "cover",
+                          width: "100%",
+                          height: "100%",
+                        }}
+                      />
+                    </CardMedia>
 
-                <CardContent sx={{ px: "8px" }}>
-                  <Typography variant="h4" color="primary">
-                    {news.movie_title}
-                  </Typography>
-                </CardContent>
-                <CardActions sx={{ display: "flex", mb: "20px" }}>
-                  {news.chain.map((chain: any) => (
-                    <Button
-                      variant="contained"
-                      sx={{
-                        background: chainColors[chain],
-                      }}
-                    >
-                      {chain}
-                    </Button>
-                  ))}
-                </CardActions>
-              </Card>
-            ))
+                    <CardContent sx={{ px: "8px" }}>
+                      <Typography variant="h4" color="primary">
+                        {news.movie_title}
+                      </Typography>
+                    </CardContent>
+                    <CardActions sx={{ display: "flex", mb: "20px" }}>
+                      {news.chain.map((chain: string) => (
+                        <Button
+                          variant="contained"
+                          sx={{
+                            background: chainColors[chain],
+                          }}
+                        >
+                          {chain}
+                        </Button>
+                      ))}
+                    </CardActions>
+                  </Card>
+                )
+              )
           )}
         </Box>
       </Box>

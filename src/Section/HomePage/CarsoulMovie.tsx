@@ -53,8 +53,7 @@ const responsive = {
 };
 
 const CarsoulMovie: React.FC = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const carouselRef = useRef<any>(null);
+  const carouselRef = useRef<Carousel | null>(null);
   const navigate = useNavigate();
 
   const dispatch = useDispatch<AppDispatch>();
@@ -92,7 +91,7 @@ const CarsoulMovie: React.FC = () => {
         />
       ) : (
         <IconButton
-          onClick={() => carouselRef.current?.previous()}
+          onClick={() => carouselRef.current?.previous(1)}
           sx={{
             position: "absolute",
             left: 0,
@@ -135,7 +134,15 @@ const CarsoulMovie: React.FC = () => {
           arrows={false}
         >
           {(isLoading ? Array.from(new Array(4)) : data)?.map(
-            (item: any, index: number) => (
+            (
+              item: {
+                title: string;
+                movie_id: string;
+                movie_poster: string;
+                cities: { days: { theatres: { chain: string }[] }[] }[];
+              },
+              index: number
+            ) => (
               <Card
                 sx={{
                   width: { lg: "500px", md: "391px", sm: "301px", xs: "100%" },
@@ -224,13 +231,20 @@ const CarsoulMovie: React.FC = () => {
                       ))
                     : [
                         ...new Set(
-                          item.cities.flatMap((city: any) =>
-                            city.days.flatMap((day: any) =>
-                              day.theatres.map((theatre: any) => theatre.chain)
-                            )
+                          item.cities.flatMap(
+                            (city: {
+                              days: { theatres: { chain: string }[] }[];
+                            }) =>
+                              city.days.flatMap(
+                                (day: { theatres: { chain: string }[] }) =>
+                                  day.theatres.map(
+                                    (theatre: { chain: string }) =>
+                                      theatre.chain
+                                  )
+                              )
                           )
                         ),
-                      ].map((chain: any) => (
+                      ].map((chain: string) => (
                         <Button
                           key={chain}
                           variant="contained"
@@ -262,7 +276,7 @@ const CarsoulMovie: React.FC = () => {
         />
       ) : (
         <IconButton
-          onClick={() => carouselRef.current?.next()}
+          onClick={() => carouselRef.current?.next(1)}
           sx={{
             position: "absolute",
             right: 0,

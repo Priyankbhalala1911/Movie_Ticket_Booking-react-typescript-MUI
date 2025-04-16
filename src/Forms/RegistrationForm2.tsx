@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Button,
@@ -67,7 +66,7 @@ const RegistrationForm2: React.FC = () => {
           toast.success(data.message);
           navigate("/account/login");
         }
-      } catch (err: any) {
+      } catch (err) {
         console.log(err);
         toast.error("Network error! Please try again.");
       }

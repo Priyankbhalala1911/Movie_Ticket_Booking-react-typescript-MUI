@@ -62,59 +62,72 @@ const ComingMovies: React.FC = () => {
           gap: "80px",
         }}
       >
-        {(isLoading ? skeletonArray : data)?.map((item: any, index: number) => (
-          <Card key={index} sx={{ cursor: "pointer", borderRadius: "12px" }}>
-            <CardMedia sx={{ height: "607px" }}>
-              {isLoading ? (
-                <Skeleton variant="rectangular" width="100%" height="100%" />
-              ) : (
-                <img
-                  src={item.movie_poster}
-                  alt={item.movie_title}
-                  style={{ objectFit: "cover", width: "100%", height: "100%" }}
-                />
-              )}
-            </CardMedia>
-            <CardContent sx={{ px: "8px" }}>
-              {isLoading ? (
-                <Skeleton variant="text" width="80%" height={32} />
-              ) : (
-                <Typography variant="h4" color="primary">
-                  {item.movie_title}
-                </Typography>
-              )}
-            </CardContent>
-            <CardActions
-              sx={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: 1,
-                px: 1,
-                mb: "20px",
-              }}
-            >
-              {isLoading ? (
-                <>
-                  <Skeleton variant="rounded" width={80} height={36} />
-                  <Skeleton variant="rounded" width={100} height={36} />
-                </>
-              ) : (
-                item.chain.map((chain: string, i: number) => (
-                  <Button
-                    key={i}
-                    variant="contained"
-                    sx={{
-                      background: chainColors[chain],
-                      fontSize: "0.875rem",
+        {(isLoading ? skeletonArray : data)?.map(
+          (
+            item: {
+              movie_poster: string;
+              movie_title: string;
+              chain: string[];
+            },
+            index: number
+          ) => (
+            <Card key={index} sx={{ cursor: "pointer", borderRadius: "12px" }}>
+              <CardMedia sx={{ height: "607px" }}>
+                {isLoading ? (
+                  <Skeleton variant="rectangular" width="100%" height="100%" />
+                ) : (
+                  <img
+                    src={item.movie_poster}
+                    alt={item.movie_title}
+                    style={{
+                      objectFit: "cover",
+                      width: "100%",
+                      height: "100%",
                     }}
-                  >
-                    {chain}
-                  </Button>
-                ))
-              )}
-            </CardActions>
-          </Card>
-        ))}
+                  />
+                )}
+              </CardMedia>
+              <CardContent sx={{ px: "8px" }}>
+                {isLoading ? (
+                  <Skeleton variant="text" width="80%" height={32} />
+                ) : (
+                  <Typography variant="h4" color="primary">
+                    {item.movie_title}
+                  </Typography>
+                )}
+              </CardContent>
+              <CardActions
+                sx={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: 1,
+                  px: 1,
+                  mb: "20px",
+                }}
+              >
+                {isLoading ? (
+                  <>
+                    <Skeleton variant="rounded" width={80} height={36} />
+                    <Skeleton variant="rounded" width={100} height={36} />
+                  </>
+                ) : (
+                  item.chain.map((chain: string, i: number) => (
+                    <Button
+                      key={i}
+                      variant="contained"
+                      sx={{
+                        background: chainColors[chain],
+                        fontSize: "0.875rem",
+                      }}
+                    >
+                      {chain}
+                    </Button>
+                  ))
+                )}
+              </CardActions>
+            </Card>
+          )
+        )}
       </Box>
     </Box>
   );

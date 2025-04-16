@@ -111,59 +111,72 @@ const MovieNews: React.FC = () => {
                   </CardContent>
                 </Card>
               ))
-            : data?.slice(0, 3).map((news: any, index: number) => (
-                <Card
-                  key={index}
-                  sx={{
-                    cursor: "pointer",
-                    "&:hover": {
-                      transform: "scale(1.05)",
-                      boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.2)",
+            : data
+                ?.slice(0, 3)
+                .map(
+                  (
+                    news: {
+                      news_id: string;
+                      image: string;
+                      title: string;
+                      buttonName: string;
+                      date: string;
                     },
-                    borderRadius: "15px",
-                  }}
-                >
-                  <CardMedia
-                    onClick={() => {
-                      navigate(`/news/video/${news.news_id}`);
-                    }}
-                  >
-                    <img
-                      src={news.image}
-                      alt={news.title}
-                      style={{
-                        objectFit: "cover",
-                        width: "100%",
-                        height: "237px",
+                    index: number
+                  ) => (
+                    <Card
+                      key={index}
+                      sx={{
+                        cursor: "pointer",
+                        "&:hover": {
+                          transform: "scale(1.05)",
+                          boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.2)",
+                        },
                         borderRadius: "15px",
                       }}
-                    />
-                  </CardMedia>
-                  <CardActions sx={{ pt: "25px" }}>
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      sx={{ textTransform: "capitalize" }}
-                      onClick={() => {
-                        navigate(`/news/${news.news_id}`);
-                      }}
                     >
-                      {news.buttonName}
-                    </Button>
-                  </CardActions>
-                  <CardContent sx={{ px: "8px" }}>
-                    <Typography variant="h4" color="primary">
-                      {news.title}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{ color: "#5A637A", pt: "18px" }}
-                    >
-                      {news.date} | TIX ID
-                    </Typography>
-                  </CardContent>
-                </Card>
-              ))}
+                      <CardMedia
+                        onClick={() => {
+                          navigate(`/news/video/${news.news_id}`);
+                        }}
+                      >
+                        <img
+                          src={news.image}
+                          alt={news.title}
+                          style={{
+                            objectFit: "cover",
+                            width: "100%",
+                            height: "237px",
+                            borderRadius: "15px",
+                          }}
+                        />
+                      </CardMedia>
+                      <CardActions sx={{ pt: "25px" }}>
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          sx={{ textTransform: "capitalize" }}
+                          onClick={() => {
+                            navigate(`/news/${news.news_id}`);
+                          }}
+                        >
+                          {news.buttonName}
+                        </Button>
+                      </CardActions>
+                      <CardContent sx={{ px: "8px" }}>
+                        <Typography variant="h4" color="primary">
+                          {news.title}
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          sx={{ color: "#5A637A", pt: "18px" }}
+                        >
+                          {news.date} | TIX ID
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  )
+                )}
         </Box>
       </Box>
     </>

@@ -23,7 +23,7 @@ interface Movie {
 
 interface MovieProps {
   movie: Movie;
-  loading: boolean; // This will now only control image loading
+  loading: boolean;
 }
 
 const MovieDetails: React.FC<MovieProps> = ({ movie, loading }) => {

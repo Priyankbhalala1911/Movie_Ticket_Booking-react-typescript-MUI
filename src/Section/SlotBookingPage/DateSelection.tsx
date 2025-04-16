@@ -47,7 +47,7 @@ const generateDates = () => {
 };
 
 const DateSelection: React.FC = () => {
-  const carouselRef = useRef<any>(null);
+  const carouselRef = useRef<Carousel | null>(null);
   const dates = generateDates();
   const dispatch = useDispatch();
   const selectedDate = useSelector(
@@ -65,14 +65,14 @@ const DateSelection: React.FC = () => {
   const handleNext = () => {
     if (currentIndex < dates.length - 5) {
       setCurrentIndex((prev) => prev + 1);
-      carouselRef.current?.next();
+      carouselRef.current?.next(1);
     }
   };
 
   const handlePrev = () => {
     if (currentIndex > 0) {
       setCurrentIndex((prev) => prev - 1);
-      carouselRef.current?.previous();
+      carouselRef.current?.previous(1);
     }
   };
 

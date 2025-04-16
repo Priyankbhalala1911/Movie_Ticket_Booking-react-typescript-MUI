@@ -6,10 +6,27 @@ declare global {
     Razorpay: any;
   }
 }
+interface PaymentData {
+  amount: number;
+  currency: string;
+  id: string;
+}
+
+interface Movie {
+  id: string;
+  title: string;
+  genre?: string;
+  releaseDate?: string;
+}
 
 export const handlePaymentOrder = async (
   amount: number,
-  selectedMovie: any
+  selectedMovie: {
+    id: string;
+    title: string;
+    genre?: string;
+    releaseDate?: string;
+  }
 ) => {
   try {
     const response = await axios.post(
@@ -26,7 +43,10 @@ export const handlePaymentOrder = async (
   }
 };
 
-export const handlePaymentVerify = async (data: any, selectedMovie: any) => {
+export const handlePaymentVerify = async (
+  data: PaymentData,
+  selectedMovie: Movie
+) => {
   const option = {
     key: import.meta.env.VITE_RAZORPAY_KEY_ID,
     amount: data.amount,
@@ -36,7 +56,11 @@ export const handlePaymentVerify = async (data: any, selectedMovie: any) => {
     image:
       "https://res.cloudinary.com/dhd86c3ax/image/upload/v1743759308/logo_zbvbty.jpg",
     order_id: data.id,
-    handler: async (response: any) => {
+    handler: async (response: {
+      razorpay_order_id: string;
+      razorpay_payment_id: string;
+      razorpay_signature: string;
+    }) => {
       try {
         const verify = await axios.post(
           `${import.meta.env.VITE_BACKEND_API_BASE_URL}/payment/verify`,

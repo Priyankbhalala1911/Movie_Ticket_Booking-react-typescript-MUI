@@ -1,6 +1,14 @@
 import { Divider, Stack, Typography } from "@mui/material";
 
-const PaymentDetails: React.FC<any> = ({ data }) => {
+interface PaymentDetailsProps {
+  data: {
+    seat_price: number;
+    seat_number: string[];
+    total_amount: number;
+  };
+}
+
+const PaymentDetails: React.FC<PaymentDetailsProps> = ({ data }) => {
   return (
     <Stack gap="20px" mt="64px">
       <Typography variant="h4" color="primary">

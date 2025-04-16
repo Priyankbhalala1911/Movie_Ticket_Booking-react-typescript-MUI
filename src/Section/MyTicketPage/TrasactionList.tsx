@@ -94,88 +94,101 @@ const ActiveTicket: React.FC = () => {
             </Box>
           ))
         ) : !isError ? (
-          data?.map((ticket: any, index: number) => (
-            <Box key={index}>
-              <Card
-                elevation={0}
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: { lg: "48px", md: "36px", sm: "15px", xs: "5px" },
-                  py: "16px",
-                }}
-              >
-                <CardMedia
-                  component="img"
-                  image={ticket.movie_poster}
-                  alt="movie"
+          data?.map(
+            (
+              ticket: {
+                movie_poster: string;
+                movie_title: string;
+                show_date: string;
+                show_time: string;
+                location: string;
+                show_type: string;
+                payment_status: boolean;
+              },
+              index: number
+            ) => (
+              <Box key={index}>
+                <Card
+                  elevation={0}
                   sx={{
-                    width: { xs: "85px", sm: "135px" },
-                    height: { xs: "auto", sm: "202px" },
-                    borderRadius: "10px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: { lg: "48px", md: "36px", sm: "15px", xs: "5px" },
+                    py: "16px",
                   }}
-                />
-                <CardContent sx={{ width: "100%" }}>
-                  <Stack gap="12px">
-                    <Typography
-                      variant={isMobile ? "body2" : "h5"}
-                      color="primary"
-                    >
-                      {ticket.movie_title}
-                    </Typography>
-                    <Typography
-                      variant={isMobile ? "body2" : "body1"}
-                      color="primary"
-                    >
-                      {ticket.show_date}, {ticket.show_time}
-                    </Typography>
-                    <Box
-                      display="flex"
-                      alignItems="center"
-                      gap={1}
-                      flexWrap="wrap"
-                    >
-                      <Place sx={{ color: "#9DA8BE" }} />
-                      <Typography
-                        color="#9DA8BE"
-                        variant={isMobile ? "caption" : "body2"}
-                      >
-                        {ticket.location}
-                      </Typography>
-                      <Typography
-                        color="primary"
-                        variant={isMobile ? "caption" : "body2"}
-                        fontWeight={500}
-                      >
-                        ({ticket.show_type})
-                      </Typography>
-                    </Box>
-                  </Stack>
-                </CardContent>
-                <CardActions>
-                  <Box
-                    bgcolor={
-                      ticket.payment_status ? "success.main" : "error.main"
-                    }
-                    textAlign="center"
-                    color="white"
-                    p={{
-                      lg: "10px 24px",
-                      md: "8px 20px",
-                      sm: "6px 16px",
-                      xs: "4px 12px",
+                >
+                  <CardMedia
+                    component="img"
+                    image={ticket.movie_poster}
+                    alt="movie"
+                    sx={{
+                      width: { xs: "85px", sm: "135px" },
+                      height: { xs: "auto", sm: "202px" },
+                      borderRadius: "10px",
                     }}
-                    borderRadius="4px"
-                    sx={{ fontSize: { md: "16px", xs: "8px" } }}
-                    fontWeight={500}
-                  >
-                    {ticket.payment_status ? "Succeeded" : "Failed"}
-                  </Box>
-                </CardActions>
-              </Card>
-              {index !== data.length - 1 && <Divider />}
-            </Box>
-          ))
+                  />
+                  <CardContent sx={{ width: "100%" }}>
+                    <Stack gap="12px">
+                      <Typography
+                        variant={isMobile ? "body2" : "h5"}
+                        color="primary"
+                      >
+                        {ticket.movie_title}
+                      </Typography>
+                      <Typography
+                        variant={isMobile ? "body2" : "body1"}
+                        color="primary"
+                      >
+                        {ticket.show_date}, {ticket.show_time}
+                      </Typography>
+                      <Box
+                        display="flex"
+                        alignItems="center"
+                        gap={1}
+                        flexWrap="wrap"
+                      >
+                        <Place sx={{ color: "#9DA8BE" }} />
+                        <Typography
+                          color="#9DA8BE"
+                          variant={isMobile ? "caption" : "body2"}
+                        >
+                          {ticket.location}
+                        </Typography>
+                        <Typography
+                          color="primary"
+                          variant={isMobile ? "caption" : "body2"}
+                          fontWeight={500}
+                        >
+                          ({ticket.show_type})
+                        </Typography>
+                      </Box>
+                    </Stack>
+                  </CardContent>
+                  <CardActions>
+                    <Box
+                      bgcolor={
+                        ticket.payment_status ? "success.main" : "error.main"
+                      }
+                      textAlign="center"
+                      color="white"
+                      p={{
+                        lg: "10px 24px",
+                        md: "8px 20px",
+                        sm: "6px 16px",
+                        xs: "4px 12px",
+                      }}
+                      borderRadius="4px"
+                      sx={{ fontSize: { md: "16px", xs: "8px" } }}
+                      fontWeight={500}
+                    >
+                      {ticket.payment_status ? "Succeeded" : "Failed"}
+                    </Box>
+                  </CardActions>
+                </Card>
+                {index !== data.length - 1 && <Divider />}
+              </Box>
+            )
+          )
         ) : (
           <Typography variant="h5" color="error">
             {data?.response?.data?.message}

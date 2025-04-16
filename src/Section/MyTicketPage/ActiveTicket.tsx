@@ -75,72 +75,85 @@ const ActiveTicket: React.FC = () => {
             </Box>
           ))
         ) : data?.length > 0 && !isError ? (
-          data?.map((ticket: any, index: number) => (
-            <Box key={index}>
-              <Card
-                elevation={0}
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: { lg: "48px", md: "36px", sm: "15px", xs: "5px" },
-                  my: "16px",
-                  cursor: "pointer",
-                  "&:hover": { bgcolor: "rgba(0, 0, 0, 0.1)" },
-                }}
-                onClick={() => navigate(`/ticket/${ticket.id}`)}
-              >
-                <CardMedia
-                  component="img"
-                  image={ticket.movie_poster}
-                  alt="movie"
+          data?.map(
+            (
+              ticket: {
+                id: string;
+                movie_poster: string;
+                movie_title: string;
+                show_date: string;
+                show_time: string;
+                location: string;
+                show_type: string;
+              },
+              index: number
+            ) => (
+              <Box key={index}>
+                <Card
+                  elevation={0}
                   sx={{
-                    width: "135px",
-                    height: "202px",
-                    borderRadius: "10px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: { lg: "48px", md: "36px", sm: "15px", xs: "5px" },
+                    my: "16px",
+                    cursor: "pointer",
+                    "&:hover": { bgcolor: "rgba(0, 0, 0, 0.1)" },
                   }}
-                />
+                  onClick={() => navigate(`/ticket/${ticket.id}`)}
+                >
+                  <CardMedia
+                    component="img"
+                    image={ticket.movie_poster}
+                    alt="movie"
+                    sx={{
+                      width: "135px",
+                      height: "202px",
+                      borderRadius: "10px",
+                    }}
+                  />
 
-                <CardContent sx={{ width: "100%" }}>
-                  <Stack gap="12px">
-                    <Typography
-                      variant={isMobile ? "body2" : "h5"}
-                      color="primary"
-                    >
-                      {ticket.movie_title}
-                    </Typography>
-                    <Typography
-                      variant={isMobile ? "body2" : "body1"}
-                      color="primary"
-                    >
-                      {ticket.show_date}, {ticket.show_time}
-                    </Typography>
-                    <Box
-                      display="flex"
-                      alignItems="center"
-                      gap={1}
-                      flexWrap="wrap"
-                    >
-                      <Place sx={{ color: "#9DA8BE" }} />
+                  <CardContent sx={{ width: "100%" }}>
+                    <Stack gap="12px">
                       <Typography
-                        color="#9DA8BE"
-                        variant={isMobile ? "caption" : "body2"}
-                      >
-                        {ticket.location}
-                      </Typography>
-                      <Typography
+                        variant={isMobile ? "body2" : "h5"}
                         color="primary"
-                        variant={isMobile ? "caption" : "body2"}
-                        fontWeight={500}
                       >
-                        ({ticket.show_type})
+                        {ticket.movie_title}
                       </Typography>
-                    </Box>
-                  </Stack>
-                </CardContent>
-              </Card>
-              {index !== data.length - 1 && <Divider />}
-            </Box>
-          ))
+                      <Typography
+                        variant={isMobile ? "body2" : "body1"}
+                        color="primary"
+                      >
+                        {ticket.show_date}, {ticket.show_time}
+                      </Typography>
+                      <Box
+                        display="flex"
+                        alignItems="center"
+                        gap={1}
+                        flexWrap="wrap"
+                      >
+                        <Place sx={{ color: "#9DA8BE" }} />
+                        <Typography
+                          color="#9DA8BE"
+                          variant={isMobile ? "caption" : "body2"}
+                        >
+                          {ticket.location}
+                        </Typography>
+                        <Typography
+                          color="primary"
+                          variant={isMobile ? "caption" : "body2"}
+                          fontWeight={500}
+                        >
+                          ({ticket.show_type})
+                        </Typography>
+                      </Box>
+                    </Stack>
+                  </CardContent>
+                </Card>
+                {index !== data.length - 1 && <Divider />}
+              </Box>
+            )
+          )
         ) : (
           <Typography variant="h5" color="error">
             {data?.response?.data?.message}

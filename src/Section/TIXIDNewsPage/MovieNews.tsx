@@ -70,55 +70,66 @@ const MovieNews: React.FC = () => {
                 </CardContent>
               </Card>
             ))
-          : data.notFilterNews.map((news: any, index: number) => (
-              <Card
-                sx={{
-                  cursor: "pointer",
-                  "&:hover": {
-                    transform: { sm: "scale(1.01)", xs: "scale(1.02)" },
-                    boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.2)",
-                  },
-                }}
-                key={index}
-              >
-                <CardMedia
-                  onClick={() => {
-                    window.scrollTo(0, 0);
-                    navigate(`/news/video/${news.news_id}`);
+          : data.notFilterNews.map(
+              (
+                news: {
+                  news_id: string;
+                  image: string;
+                  buttonName: string;
+                  title: string;
+                  date: string;
+                },
+                index: number
+              ) => (
+                <Card
+                  sx={{
+                    cursor: "pointer",
+                    "&:hover": {
+                      transform: { sm: "scale(1.01)", xs: "scale(1.02)" },
+                      boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.2)",
+                    },
                   }}
+                  key={index}
                 >
-                  <img
-                    src={news.image}
-                    alt="nathi"
-                    style={{ objectFit: "cover", width: "100%" }}
-                  />
-                </CardMedia>
-                <CardActions sx={{ pt: "25px" }}>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    sx={{ textTransform: "capitalize" }}
+                  <CardMedia
                     onClick={() => {
                       window.scrollTo(0, 0);
-                      navigate(`/news/${news.news_id}`);
+                      navigate(`/news/video/${news.news_id}`);
                     }}
                   >
-                    {news.buttonName}
-                  </Button>
-                </CardActions>
-                <CardContent sx={{ px: "8px" }}>
-                  <Typography variant="h4" color="primary">
-                    {news.title}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{ color: "#5A637A", pt: "18px" }}
-                  >
-                    {news.date} | TIX ID
-                  </Typography>
-                </CardContent>
-              </Card>
-            ))}
+                    <img
+                      src={news.image}
+                      alt="nathi"
+                      style={{ objectFit: "cover", width: "100%" }}
+                    />
+                  </CardMedia>
+                  <CardActions sx={{ pt: "25px" }}>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      sx={{ textTransform: "capitalize" }}
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                        navigate(`/news/${news.news_id}`);
+                      }}
+                    >
+                      {news.buttonName}
+                    </Button>
+                  </CardActions>
+                  <CardContent sx={{ px: "8px" }}>
+                    <Typography variant="h4" color="primary">
+                      {news.title}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{ color: "#5A637A", pt: "18px" }}
+                    >
+                      {news.date} | TIX ID
+                    </Typography>
+                  </CardContent>
+                </Card>
+              )
+            )}
       </Box>
     </>
   );

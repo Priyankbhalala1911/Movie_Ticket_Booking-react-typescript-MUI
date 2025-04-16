@@ -11,6 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { RootState } from "../../Store";
 import { getCurrentDay } from "../../Utils";
+import { City, Day } from "../../types";
 const SlotBooking: React.FC = () => {
   const { id } = useParams();
   const city = useSelector((state: RootState) => state.filterTheater.location);
@@ -65,10 +66,10 @@ const SlotBooking: React.FC = () => {
               {!data?.response?.data?.message ? (
                 <CategoryTicket
                   loading={isLoading}
-                  theatres={data?.cities.flatMap((city: any) =>
+                  theatres={data?.cities.flatMap((city: City) =>
                     city.days
-                      .filter((days: any) => days.day === day)
-                      .flatMap((day: any) => day.theatres || [])
+                      .filter((days: Day) => days.day === day)
+                      .flatMap((day: Day) => day.theatres || [])
                   )}
                 />
               ) : (

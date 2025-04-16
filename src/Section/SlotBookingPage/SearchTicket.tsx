@@ -14,7 +14,7 @@ import { UpdatedCinema } from "../../Store/Slices/FilterSlice";
 import { RootState } from "../../Store";
 
 const Studio = [
-  { label: "All Type", value: "All Type" },
+  { label: "", value: "All Type" },
   { label: "Regular 2D", value: "Regular 2D" },
   { label: "Premium 2D", value: "Premium 2D" },
   { label: "IMAX 3D", value: "IMAX 3D" },
