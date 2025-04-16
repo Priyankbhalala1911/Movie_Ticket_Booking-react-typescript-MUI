@@ -9,12 +9,11 @@ export const AuthHandler = () => {
   useEffect(() => {
     const checkAuthState = async () => {
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_API_BASE_URL}/me`,
-          { withCredentials: true }
-        );
+        await axios.get(`${import.meta.env.VITE_BACKEND_API_BASE_URL}/me`, {
+          withCredentials: true,
+        });
 
-        dispatch(loginSuccess({ name: response.data }));
+        dispatch(loginSuccess());
       } catch (err) {
         dispatch(logoutUser());
         console.log(err);
