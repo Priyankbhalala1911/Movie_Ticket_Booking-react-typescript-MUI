@@ -33,7 +33,7 @@ const PaymentBox: React.FC = () => {
     date: selectedslot.date,
     price: selectedslot.showPrice,
     time: selectedslot.showTimes,
-    seat_number: selectedSeat.map((seat) => seat.toString()),
+    seat_number: selectedSeat,
     total_amount: TotalPrice,
   };
   return (
