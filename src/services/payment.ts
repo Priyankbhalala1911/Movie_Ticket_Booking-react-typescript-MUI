@@ -13,20 +13,19 @@ interface PaymentData {
 }
 
 interface Movie {
-  id: string;
-  title: string;
-  genre?: string;
-  releaseDate?: string;
+  movie_id: string | null;
+  location: string | null;
+  type: string | null;
+  date: string | null;
+  price: number | null;
+  time: string | null;
+  seat_number: string[] | null;
+  total_amount: number | null;
 }
 
 export const handlePaymentOrder = async (
   amount: number,
-  selectedMovie: {
-    id: string;
-    title: string;
-    genre?: string;
-    releaseDate?: string;
-  }
+  selectedMovie: Movie
 ) => {
   try {
     const response = await axios.post(
