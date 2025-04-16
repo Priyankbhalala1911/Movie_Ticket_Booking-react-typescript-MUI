@@ -12,6 +12,11 @@ interface PaymentData {
   id: string;
 }
 
+interface Seat {
+  id: string;
+  seat_number: string;
+}
+
 interface Movie {
   movie_id: string | null;
   location: string | null;
@@ -19,7 +24,7 @@ interface Movie {
   date: string | null;
   price: number | null;
   time: string | null;
-  seat_number: string[] | null;
+  seat_number: Seat[] | null;
   total_amount: number | null;
 }
 
