@@ -10,34 +10,31 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import { getMovieApi } from "../../services/movie";
 
-interface Movie {
+interface MovieDetailsProps {
   id: string;
-  movie_poster: string;
-  title: string;
-  genre: string;
-  duration: string;
-  director: string;
-  rating: string;
 }
 
-interface MovieProps {
-  movie: Movie;
-  loading: boolean;
-}
-
-const MovieDetails: React.FC<MovieProps> = ({ movie, loading }) => {
+const MovieDetails: React.FC<MovieDetailsProps> = ({ id }) => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["MovieDetails"],
+    queryFn: () => getMovieApi(id),
+    staleTime: 0,
+    gcTime: 0,
+    retry: true,
+    enabled: !!id,
+  });
   const movieDetails = [
-    { label: "Genre", value: movie?.genre },
-    { label: "Duration", value: movie?.duration },
-    { label: "Director", value: movie?.director },
-    { label: "Rating", value: movie?.rating },
+    { label: "Genre", value: data?.genre },
+    { label: "Duration", value: data?.duration },
+    { label: "Director", value: data?.director },
+    { label: "Rating", value: data?.rating },
   ];
-
-  console.log(loading);
   return (
     <Card sx={{ borderRadius: "10px" }}>
-      {loading ? (
+      {isLoading ? (
         <Skeleton
           variant="rectangular"
           width="100%"
@@ -47,14 +44,14 @@ const MovieDetails: React.FC<MovieProps> = ({ movie, loading }) => {
       ) : (
         <CardMedia
           component="img"
-          image={movie.movie_poster}
+          image={data.movie_poster}
           alt="movie poster"
           sx={{ objectFit: "cover", width: "100%", height: "364px" }}
         />
       )}
       <CardContent>
         <Typography variant="h3" color="primary" gutterBottom>
-          {movie?.title}
+          {data?.title}
         </Typography>
         <TableContainer sx={{ py: "20px" }}>
           <Table sx={{ maxWidth: "350px" }}>

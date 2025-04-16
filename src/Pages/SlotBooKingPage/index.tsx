@@ -78,7 +78,7 @@ const SlotBooking: React.FC = () => {
             </Grid>
 
             <Grid item xs={12} md={4} sm={5}>
-              <MovieDetails movie={data ? data : []} loading={isLoading} />
+              {id && <MovieDetails id={id} />}
               <BuyBooking />
             </Grid>
           </Grid>
