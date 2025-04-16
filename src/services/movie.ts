@@ -14,7 +14,7 @@ export const handelMovieApi = async () => {
 export const getMovieApi = async (id: string) => {
   try {
     const response = await axios.get(
-      `${import.meta.env.VITE_BACKEND_API_BASE_URL}/movie/${id}`
+      `${import.meta.env.VITE_BACKEND_API_BASE_URL}/movie/movie/${id}`
     );
     return response.data;
   } catch (error) {

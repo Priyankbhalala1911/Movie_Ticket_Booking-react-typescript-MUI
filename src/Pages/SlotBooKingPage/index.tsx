@@ -34,8 +34,6 @@ const SlotBooking: React.FC = () => {
     retry: true,
   });
 
-  console.log(day);
-
   return (
     <>
       <Stack
