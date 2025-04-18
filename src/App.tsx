@@ -24,6 +24,12 @@ import { Toaster } from "react-hot-toast";
 import { AuthHandler } from "./AuthHandler";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ProfilePage from "./Pages/ProfilePage";
+import {
+  PaymentGuard,
+  SeatGuard,
+  SessionGuard,
+  SlotTimeGuard,
+} from "./Layout/SessionGuard";
 
 const queryClient = new QueryClient();
 const App: React.FC = () => {
@@ -42,16 +48,24 @@ const App: React.FC = () => {
               <Route index element={<Home />} />
               <Route element={<AuthWrapper />}>
                 <Route path={routes.Profile} element={<ProfilePage />} />
-                <Route path={routes.slotBooking} element={<SlotBooking />} />
-                <Route path={routes.chooseSeat} element={<ChooseSeat />} />
-                <Route
-                  path={routes.ticketDetails}
-                  element={<TicketDetails />}
-                />
-                <Route
-                  path={routes.paymentSuccess}
-                  element={<PaymentSuccess />}
-                />
+                <Route element={<SessionGuard />}>
+                  <Route path={routes.slotBooking} element={<SlotBooking />} />
+                  <Route element={<SlotTimeGuard />}>
+                    <Route path={routes.chooseSeat} element={<ChooseSeat />} />
+                    <Route element={<SeatGuard />}>
+                      <Route
+                        path={routes.ticketDetails}
+                        element={<TicketDetails />}
+                      />
+                      <Route element={<PaymentGuard />}>
+                        <Route
+                          path={routes.paymentSuccess}
+                          element={<PaymentSuccess />}
+                        />
+                      </Route>
+                    </Route>
+                  </Route>
+                </Route>
                 <Route path={routes.myTicket} element={<MyTicket />}>
                   <Route
                     index
