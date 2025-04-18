@@ -1,8 +1,17 @@
 import { Box, Grid, Stack, Typography } from "@mui/material";
 import Details from "../../Section/TicketDetailsPage/Details";
 import PaymentBox from "../../Section/TicketDetailsPage/PaymentBox";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { clearPayment } from "../../Store/Slices/ShowSlice";
+import { clearSessionId } from "../../Utils";
 
 const TicketDetails: React.FC = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(clearPayment());
+    clearSessionId();
+  }, [dispatch]);
   return (
     <Stack
       sx={{
