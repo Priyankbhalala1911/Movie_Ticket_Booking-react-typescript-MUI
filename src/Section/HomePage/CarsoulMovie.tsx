@@ -25,6 +25,7 @@ import toast from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
 import { handelMovieApi } from "../../services/movie";
 import { clearSlot } from "../../Store/Slices/ShowSlice";
+import { getOrCreateSessionId } from "../../Utils";
 
 const chainColors: Record<string, string> = {
   INOX: `linear-gradient(${customColors.xxiGradientStart}, ${customColors.xxiGradientEnd})`,
@@ -154,6 +155,7 @@ const CarsoulMovie: React.FC = () => {
                 elevation={0}
                 key={index}
                 onClick={() => {
+                  getOrCreateSessionId();
                   dispatch(selectMovie(item.title));
                   dispatch(selecteMovieId(item.movie_id));
                   navigate(`/slot-booking/${item.movie_id}`);
