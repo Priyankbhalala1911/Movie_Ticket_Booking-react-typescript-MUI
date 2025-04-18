@@ -10,6 +10,7 @@ interface showState {
   location: string | null;
   date: string | null;
   movie_title: string | null;
+  payment_status: boolean;
 }
 
 const initialState: showState = {
@@ -21,6 +22,7 @@ const initialState: showState = {
   location: null,
   date: null,
   movie_title: null,
+  payment_status: false,
 };
 
 const ShowSlice = createSlice({
@@ -52,6 +54,12 @@ const ShowSlice = createSlice({
     selectTime: (state, action: PayloadAction<string>) => {
       state.showTimes = action.payload;
     },
+    Payment: (state) => {
+      state.payment_status = true;
+    },
+    clearPayment: (state) => {
+      state.payment_status = false;
+    },
     clearSlot: (state) => {
       state.id = null;
       state.showTimes = null;
@@ -61,11 +69,13 @@ const ShowSlice = createSlice({
       state.location = null;
       state.date = null;
       state.movie_title = null;
+      state.payment_status = false;
     },
   },
 });
 
-export const { selectShows, clearSlot, selectTime } = ShowSlice.actions;
+export const { selectShows, clearSlot, selectTime, Payment, clearPayment } =
+  ShowSlice.actions;
 export const selectedShow = (state: RootState) => state.shows;
 
 export default ShowSlice.reducer;
