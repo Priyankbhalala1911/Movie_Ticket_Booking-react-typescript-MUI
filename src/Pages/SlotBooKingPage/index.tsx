@@ -14,6 +14,7 @@ import { FormattedDate, getCurrentDay } from "../../Utils";
 import { City, Day } from "../../types";
 import { useEffect } from "react";
 import { selectDate } from "../../Store/Slices/MovieSlice";
+import { clearSeat } from "../../Store/Slices/SeatSlice";
 const SlotBooking: React.FC = () => {
   const { id } = useParams();
   const city = useSelector((state: RootState) => state.filterTheater.location);
@@ -27,7 +28,7 @@ const SlotBooking: React.FC = () => {
   const dispatch = useDispatch();
 
   const { data, isLoading } = useQuery({
-    queryKey: ["Movies", city, day, chain, cinema, type],
+    queryKey: ["Movies", city, day, chain, cinema, type, id],
     queryFn: () =>
       id
         ? handelMovieById(id, city, day, chain, cinema, type)
@@ -39,6 +40,7 @@ const SlotBooking: React.FC = () => {
 
   useEffect(() => {
     dispatch(selectDate(FormattedDate(new Date(selectdDate))));
+    dispatch(clearSeat());
   }, [dispatch, selectdDate]);
   return (
     <>
