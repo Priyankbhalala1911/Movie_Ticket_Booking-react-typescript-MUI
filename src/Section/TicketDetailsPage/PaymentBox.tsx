@@ -1,17 +1,26 @@
 import {
+  Backdrop,
   Box,
   Button,
   Card,
   CardActions,
   CardContent,
+  CircularProgress,
   Divider,
   Stack,
   Typography,
 } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Store";
 import { handlePaymentOrder } from "../../services/payment";
+import { useNavigate } from "react-router";
+import { Payment } from "../../Store/Slices/ShowSlice";
+import { useState } from "react";
 const PaymentBox: React.FC = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
   const selectedSeat = useSelector(
     (state: RootState) => state.seats.selectedSeat
   );
@@ -35,6 +44,16 @@ const PaymentBox: React.FC = () => {
     time: selectedslot.showTimes,
     seat_number: selectedSeat,
     total_amount: TotalPrice,
+  };
+
+  const handlePayment = async () => {
+    setLoading(true);
+    const id = await handlePaymentOrder(TotalPrice, selectedMovie);
+    setLoading(false);
+    if (id) {
+      navigate(`/payment-success/${id}`);
+      dispatch(Payment());
+    }
   };
   return (
     <>
@@ -130,19 +149,26 @@ const PaymentBox: React.FC = () => {
           </Box>
         </CardContent>
         <CardActions sx={{ px: "16px", mb: "25px" }}>
-          <Button
-            variant="contained"
-            fullWidth
-            onClick={() => {
-              handlePaymentOrder(TotalPrice, selectedMovie);
-            }}
-          >
+          <Button variant="contained" fullWidth onClick={handlePayment}>
             <Typography variant="h5" color="warning">
               BUY TICKETS
             </Typography>
           </Button>
         </CardActions>
       </Card>
+      <Backdrop
+        open={loading}
+        sx={{
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          backdropFilter: "blur(4px)",
+          backgroundColor: "rgba(0, 0, 0, 0.2)",
+        }}
+      >
+        <CircularProgress color="primary" />
+        <Typography variant="h5" color="primary" sx={{ ml: 2 }}>
+          Verify Payment...
+        </Typography>
+      </Backdrop>
     </>
   );
 };
