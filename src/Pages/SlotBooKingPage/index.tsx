@@ -10,7 +10,7 @@ import { handelMovieById } from "../../services/movie";
 import { useQuery } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Store";
-import { getCurrentDay } from "../../Utils";
+import { FormattedDate, getCurrentDay } from "../../Utils";
 import { City, Day } from "../../types";
 import { useEffect } from "react";
 import { selectDate } from "../../Store/Slices/MovieSlice";
@@ -38,8 +38,8 @@ const SlotBooking: React.FC = () => {
   });
 
   useEffect(() => {
-    dispatch(selectDate(new Date().toDateString()));
-  }, [dispatch]);
+    dispatch(selectDate(FormattedDate(new Date(selectdDate))));
+  }, [dispatch, selectdDate]);
   return (
     <>
       <Stack

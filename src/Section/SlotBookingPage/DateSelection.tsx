@@ -55,7 +55,6 @@ const DateSelection: React.FC = () => {
   );
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  console.log(selectedDate);
   const handleNext = () => {
     if (currentIndex < dates.length - 5) {
       setCurrentIndex((prev) => prev + 1);
