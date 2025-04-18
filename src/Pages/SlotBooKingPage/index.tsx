@@ -8,20 +8,23 @@ import CategoryTicket from "../../Section/SlotBookingPage/CategoryTicket";
 import { useParams } from "react-router";
 import { handelMovieById } from "../../services/movie";
 import { useQuery } from "@tanstack/react-query";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Store";
 import { getCurrentDay } from "../../Utils";
 import { City, Day } from "../../types";
+import { useEffect } from "react";
+import { selectDate } from "../../Store/Slices/MovieSlice";
 const SlotBooking: React.FC = () => {
   const { id } = useParams();
   const city = useSelector((state: RootState) => state.filterTheater.location);
   const chain = useSelector((state: RootState) => state.filterTheater.brand);
   const cinema = useSelector((state: RootState) => state.filterTheater.cinema);
   const type = useSelector((state: RootState) => state.filterTheater.type);
-  const selectDate = useSelector(
+  const selectdDate = useSelector(
     (state: RootState) => state.movies.selectedDate
   );
-  const day = getCurrentDay(selectDate);
+  const day = getCurrentDay(selectdDate);
+  const dispatch = useDispatch();
 
   const { data, isLoading } = useQuery({
     queryKey: ["Movies", city, day, chain, cinema, type],
@@ -34,6 +37,9 @@ const SlotBooking: React.FC = () => {
     retry: true,
   });
 
+  useEffect(() => {
+    dispatch(selectDate(new Date().toDateString()));
+  }, [dispatch]);
   return (
     <>
       <Stack
