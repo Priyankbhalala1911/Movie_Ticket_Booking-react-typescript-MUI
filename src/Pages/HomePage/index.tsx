@@ -3,8 +3,18 @@ import { Container } from "@mui/material";
 import CarsoualAdv from "../../Section/HomePage/CarsoulAdv";
 import MovieNews from "../../Section/HomePage/MovieNews";
 import MoviePoster from "../../Section/HomePage/MoviePoster";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { clearPayment, clearSlot } from "../../Store/Slices/ShowSlice";
+import { clearSessionId } from "../../Utils";
 
 const Home: React.FC = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(clearSlot());
+    clearSessionId();
+    dispatch(clearPayment());
+  }, [dispatch]);
   return (
     <>
       <Container
