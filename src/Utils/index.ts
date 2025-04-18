@@ -1,4 +1,22 @@
+import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
+
+export const getOrCreateSessionId = (): string => {
+  let sessionId = sessionStorage.getItem("sessionId");
+  if (!sessionId) {
+    sessionId = uuidv4();
+    sessionStorage.setItem("sessionId", sessionId);
+  }
+  return sessionId;
+};
+
+export const clearSessionId = () => {
+  sessionStorage.removeItem("sessionId");
+};
+
+export const hasSession = (): boolean => {
+  return !!sessionStorage.getItem("sessionId");
+};
 
 export const convertDurationToMinutes = (duration: string): number => {
   const hoursMatch = duration.match(/(\d+)\s*hours?/);
