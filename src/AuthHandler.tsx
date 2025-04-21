@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { loginSuccess, logoutUser } from "./Store/Slices/AuthSlice";
 import axios from "axios";
+import { selectDate } from "./Store/Slices/MovieSlice";
 
 export const AuthHandler = () => {
   const dispatch = useDispatch();
@@ -14,6 +15,7 @@ export const AuthHandler = () => {
         });
 
         dispatch(loginSuccess());
+        dispatch(selectDate(new Date().toISOString().split("T")[0]));
       } catch (err) {
         dispatch(logoutUser());
         console.log(err);
