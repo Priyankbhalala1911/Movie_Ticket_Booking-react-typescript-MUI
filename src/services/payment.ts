@@ -44,6 +44,7 @@ export const handlePaymentOrder = async (
     return id;
   } catch (error) {
     console.log(error);
+    toast.error("Payment Failed");
     return error;
   }
 };
@@ -80,9 +81,10 @@ export const handlePaymentVerify = (
               withCredentials: true,
             }
           );
+          console.log(verify);
           if (verify.data.id) {
             toast.success(verify.data.message);
-            resolve(verify.data.id);
+            resolve(verify.data);
           } else {
             reject("Verification failed");
           }
