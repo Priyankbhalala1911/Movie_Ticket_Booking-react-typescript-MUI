@@ -1,7 +1,6 @@
 import {
   AppBar,
   Avatar,
-  Badge,
   Box,
   Button,
   Container,
@@ -23,7 +22,6 @@ import {
   Home,
   Menu,
   Newspaper,
-  NotificationsNone,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router";
 
@@ -173,11 +171,6 @@ const Navbar: React.FC = () => {
                 display: { xs: "none", md: "block" },
               }}
             />
-            <IconButton size="small">
-              <Badge variant="standard" badgeContent={100} color="warning">
-                <NotificationsNone />
-              </Badge>
-            </IconButton>
             {isAuthenticated ? (
               <Avatar
                 src={profileImage || data?.user.profile_image}
