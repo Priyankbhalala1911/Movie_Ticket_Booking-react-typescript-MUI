@@ -13,18 +13,28 @@ import PaymentDetails from "../../Section/TicketPage/PaymentDetails";
 import { useNavigate, useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Ticket } from "../../services/ticket";
+import { clearSessionId } from "../../Utils";
+import { useDispatch } from "react-redux";
+import { clearPayment } from "../../Store/Slices/ShowSlice";
+import { useEffect } from "react";
 
 const TicketPage: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const navigate = useNavigate();
   const { id } = useParams();
+  const dispatch = useDispatch();
   const { data, isLoading } = useQuery({
     queryKey: ["ticket"],
     queryFn: () => (id ? Ticket(id) : Promise.reject("Ticket ID is undefined")),
     staleTime: 0,
     gcTime: 0,
   });
+
+  useEffect(() => {
+    clearSessionId();
+    dispatch(clearPayment());
+  }, [dispatch]);
   return (
     <Stack
       sx={{
@@ -59,7 +69,11 @@ const TicketPage: React.FC = () => {
             fontWeight: 700,
           }}
           startIcon={<KeyboardBackspace />}
-          onClick={() => navigate("/my-ticket/active-ticket")}
+          onClick={() => {
+            navigate("/my-ticket/active-ticket");
+            clearSessionId();
+            dispatch(clearPayment());
+          }}
         >
           Return
         </Button>

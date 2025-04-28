@@ -36,8 +36,10 @@ export const handlePaymentOrder = async (
     const response = await axios.post(
       `${import.meta.env.VITE_BACKEND_API_BASE_URL}/payment/order`,
       {
-        withCredentials: true,
         amount: amount,
+      },
+      {
+        withCredentials: true,
       }
     );
     const id = await handlePaymentVerify(response.data.data, selectedMovie);

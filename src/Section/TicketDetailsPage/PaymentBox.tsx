@@ -15,7 +15,7 @@ import { RootState } from "../../Store";
 import { handlePaymentOrder } from "../../services/payment";
 import { useNavigate } from "react-router";
 import { Payment } from "../../Store/Slices/ShowSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 const PaymentBox: React.FC = () => {
   const dispatch = useDispatch();
@@ -47,25 +47,34 @@ const PaymentBox: React.FC = () => {
     total_amount: TotalPrice,
   };
 
+  useEffect(() => {
+    setLoading(false);
+  });
   const handlePayment = async () => {
     try {
       setLoading(true);
 
-      const data = await handlePaymentOrder(TotalPrice, selectedMovie);
+      const data = (await handlePaymentOrder(TotalPrice, selectedMovie)) as {
+        id: string;
+      };
 
       if (data && data.id) {
-        navigate(`/payment-success/${data.id}`);
+        setLoading(false);
         dispatch(Payment());
+        navigate(`/payment-success/${data.id}`);
       } else {
+        setLoading(false);
         toast.error("Payment order creation failed.");
+        navigate("/ticket-details");
       }
     } catch (error) {
       console.error("Payment error:", error);
-      toast.error("Something went wrong while processing the payment.");
-    } finally {
       setLoading(false);
+      toast.error("Something went wrong while processing the payment.");
+      navigate("/ticket-details");
     }
   };
+
   return (
     <>
       <Card

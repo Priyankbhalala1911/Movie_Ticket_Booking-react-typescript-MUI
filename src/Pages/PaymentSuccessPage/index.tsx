@@ -1,14 +1,14 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { useNavigate, useParams } from "react-router";
 import { Cinema1, Cinema2 } from "../../assets";
-import { clearSessionId } from "../../Utils";
-import { useDispatch } from "react-redux";
-import { clearPayment } from "../../Store/Slices/ShowSlice";
 
 const PaymentSuccess: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+
+  const handlePayment = async () => {
+    await navigate(`/ticket/${id}`);
+  };
   return (
     <>
       <Stack
@@ -66,11 +66,7 @@ const PaymentSuccess: React.FC = () => {
               color: "white",
             },
           }}
-          onClick={() => {
-            navigate(`/ticket/${id}`);
-            clearSessionId();
-            dispatch(clearPayment());
-          }}
+          onClick={handlePayment}
         >
           Ticket
         </Button>
