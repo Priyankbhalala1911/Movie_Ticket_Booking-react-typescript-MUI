@@ -67,8 +67,18 @@ const SlotBooking: React.FC = () => {
           >
             <Grid item xs={12} md={6} sm={6}>
               <DateSelection />
-              <CityLocation />
-              <SearchTicket />
+              <CityLocation
+                city={Array.from(
+                  new Set(data?.cities.flatMap((city: City) => city.name))
+                )}
+              />
+              <SearchTicket
+                theatres={data?.cities.flatMap((city: City) =>
+                  city.days
+                    .filter((days: Day) => days.day === day)
+                    .flatMap((day: Day) => day.theatres || [])
+                )}
+              />
               {!data?.response?.data?.message ? (
                 <CategoryTicket
                   loading={isLoading}
