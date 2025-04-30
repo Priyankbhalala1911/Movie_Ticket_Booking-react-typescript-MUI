@@ -13,26 +13,27 @@ import { useDispatch, useSelector } from "react-redux";
 import { UpdatedCinema } from "../../Store/Slices/FilterSlice";
 import { RootState } from "../../Store";
 
-const Studio = [
-  { label: "", value: "All Type" },
-  { label: "Regular 2D", value: "Regular 2D" },
-  { label: "Premium 2D", value: "Premium 2D" },
-  { label: "IMAX 3D", value: "IMAX 3D" },
-  { label: "4DX", value: "4DX" },
-  { label: "Gold Class", value: "Gold Class" },
-];
+interface Screen {
+  type: string;
+}
 
-const Cinema = [
-  { label: "", value: "All Category" },
-  { label: "INOX", value: <img src={INOX} alt="logo1" width={35} /> },
-  { label: "PVR", value: <img src={PVR} alt="logo2" width={35} /> },
-  { label: "CGV", value: <img src={CGV} alt="logo3" width={35} /> },
-  {
-    label: "Cinepolis",
-    value: <img src={Cinemapolis} alt="logo4" width={75} />,
-  },
-];
-const SearchTicket: React.FC = () => {
+interface Theatre {
+  chain: string;
+  screens: Screen[];
+}
+
+interface TheaterProps {
+  theatres: Theatre[];
+}
+
+const CinemaLogo = {
+  INOX: <img src={INOX} alt="logo1" width={35} />,
+  PVR: <img src={PVR} alt="logo2" width={35} />,
+  CGV: <img src={CGV} alt="logo3" width={35} />,
+  Cinepolis: <img src={Cinemapolis} alt="logo4" width={75} />,
+};
+
+const SearchTicket: React.FC<TheaterProps> = ({ theatres = [] }) => {
   const searchTerm = useSelector(
     (state: RootState) => state.filterTheater.cinema
   );
@@ -41,6 +42,32 @@ const SearchTicket: React.FC = () => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(UpdatedCinema(event.target.value));
   };
+
+  const alltypeObject = [
+    { label: "", value: "Type" },
+    ...Array.from(
+      new Set(
+        theatres.flatMap((theater) =>
+          theater.screens.flatMap((screen) => screen.type)
+        )
+      )
+    ).map((type) => ({ label: type, value: type })),
+  ];
+
+  const allCinemaObject = [
+    { label: "", value: "Cinema" },
+    ...Array.from(
+      new Set(
+        theatres.flatMap((theater) => ({
+          label: theater.chain,
+          value: CinemaLogo[theater.chain as keyof typeof CinemaLogo],
+        }))
+      )
+    ),
+  ];
+  const allChains = new Set(theatres.flatMap((theater) => theater.chain));
+
+  console.log(Array.from(allChains));
 
   return (
     <>
@@ -69,11 +96,19 @@ const SearchTicket: React.FC = () => {
         </Grid>
         <Grid item container xs={12} md={6} alignItems="center">
           <Grid item xs={4} textAlign="center">
-            <MenuItemSelect record={Studio} fontSize="14px" filterKey="type" />
+            <MenuItemSelect
+              record={alltypeObject}
+              fontSize="14px"
+              filterKey="type"
+            />
           </Grid>
 
           <Grid item xs={6} textAlign="center">
-            <MenuItemSelect record={Cinema} fontSize="14px" filterKey="brand" />
+            <MenuItemSelect
+              record={allCinemaObject}
+              fontSize="14px"
+              filterKey="brand"
+            />
           </Grid>
         </Grid>
       </Grid>
