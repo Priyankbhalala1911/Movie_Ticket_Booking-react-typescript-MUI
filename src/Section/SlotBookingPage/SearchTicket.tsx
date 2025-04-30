@@ -56,18 +56,14 @@ const SearchTicket: React.FC<TheaterProps> = ({ theatres = [] }) => {
 
   const allCinemaObject = [
     { label: "", value: "Cinema" },
-    ...Array.from(
-      new Set(
-        theatres.flatMap((theater) => ({
-          label: theater.chain,
-          value: CinemaLogo[theater.chain as keyof typeof CinemaLogo],
-        }))
-      )
+    ...Array.from(new Set(theatres.flatMap((theater) => theater.chain))).map(
+      (chain) => ({
+        label: chain,
+        value: CinemaLogo[chain as keyof typeof CinemaLogo],
+      })
     ),
   ];
-  const allChains = new Set(theatres.flatMap((theater) => theater.chain));
-
-  console.log(Array.from(allChains));
+  console.log(allCinemaObject);
 
   return (
     <>

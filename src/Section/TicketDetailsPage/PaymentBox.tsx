@@ -15,7 +15,7 @@ import { RootState } from "../../Store";
 import { handlePaymentOrder } from "../../services/payment";
 import { useNavigate } from "react-router";
 import { Payment } from "../../Store/Slices/ShowSlice";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 const PaymentBox: React.FC = () => {
   const dispatch = useDispatch();
@@ -47,9 +47,6 @@ const PaymentBox: React.FC = () => {
     total_amount: TotalPrice,
   };
 
-  useEffect(() => {
-    setLoading(false);
-  });
   const handlePayment = async () => {
     try {
       setLoading(true);
