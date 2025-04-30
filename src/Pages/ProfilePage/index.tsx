@@ -23,6 +23,7 @@ import PopUpBox from "../../components/PopupBox";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { getUser } from "../../services/getUser";
+import toast from "react-hot-toast";
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
@@ -71,6 +72,7 @@ const ProfilePage = () => {
       );
       dispatch(loginSuccess());
       setProfileImage(res.data.imageurl);
+      toast.success(res.data?.message);
     } catch (err) {
       console.error("Image upload failed", err);
     } finally {
@@ -81,11 +83,13 @@ const ProfilePage = () => {
   const handleUpdateData = async () => {
     setIsUpdating(true);
     try {
-      await axios.post(
+      const res = await axios.post(
         `${import.meta.env.VITE_BACKEND_API_BASE_URL}/updateUser`,
         { name, email },
         { withCredentials: true }
       );
+      const data = await res.data;
+      toast.success(data?.message);
     } catch (err) {
       console.error("Update failed", err);
     } finally {
@@ -96,11 +100,16 @@ const ProfilePage = () => {
 
   const handleLogOut = async () => {
     try {
-      await fetch(`${import.meta.env.VITE_BACKEND_API_BASE_URL}/logout`, {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_API_BASE_URL}/logout`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      const data = await res.json();
+      toast.success(data.message);
       dispatch(logoutUser());
       navigate("/account/login");
     } catch (err) {
